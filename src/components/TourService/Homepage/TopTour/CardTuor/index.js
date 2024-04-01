@@ -21,7 +21,7 @@ const CardTour = ({ tour }) => {
           height="140"
           image={
             tour?.image ||
-            "https://s3.nucuoimekong.com/ncmk/wp-content/uploads/cho-noi-cai-rang-2-600x338.jpg"
+            "https://r2.nucuoimekong.com/wp-content/uploads/tour-mien-tay-2-ngay-1-dem-gia-re.jpg"
           }
           alt="green iguana"
         />
@@ -64,7 +64,7 @@ const CardTour = ({ tour }) => {
               <div className="title-infor">
                 <div className="icon-infor">
                   <img
-                    src="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/thoi-gian.png"
+                    src="https://r2.nucuoimekong.com/wp-content/uploads/tour-mien-tay-2-ngay-1-dem-gia-re.jpg"
                     alt=""
                   />
                 </div>
@@ -76,7 +76,7 @@ const CardTour = ({ tour }) => {
               <div className="title-infor">
                 <div className="icon-infor">
                   <img
-                    src="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/dia-diem.png"
+                    src="https://r2.nucuoimekong.com/wp-content/uploads/tour-mien-tay-2-ngay-1-dem-gia-re.jpg"
                     alt=""
                   />
                 </div>
@@ -88,7 +88,7 @@ const CardTour = ({ tour }) => {
               <div className="title-infor">
                 <div className="icon-infor">
                   <img
-                    src="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/thoi-gian-tour.png"
+                    src="https://r2.nucuoimekong.com/wp-content/uploads/tour-mien-tay-2-ngay-1-dem-gia-re.jpg"
                     alt=""
                   />
                 </div>

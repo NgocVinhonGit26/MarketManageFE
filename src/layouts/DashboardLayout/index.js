@@ -34,12 +34,13 @@ import LocalMallIcon from "@mui/icons-material/LocalMall";
 import StoreIcon from "@mui/icons-material/Store";
 import TourIcon from "@mui/icons-material/Tour";
 
-import { logoutService } from "api/auth";
+import { signoutService } from "api/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useLayoutEffect } from "react";
 import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 import { getShopBoatByOwnerId } from "api/shopBoat";
+import { useDispatch, useSelector } from "react-redux";
 
 function Copyright(props) {
   return (
@@ -192,12 +193,16 @@ export default function DashboardLayout({ children, layoutRole }) {
   const navigate = useNavigate();
   const [cookies] = useCookies(["access_token"]);
   const [open, setOpen] = React.useState(true);
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.user.token);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   useLayoutEffect(() => {
     const checkRole = async () => {
+      // console.log("cookies >>>>>>", cookies);
+      // console.log("cookies.access_token >>>>>>", cookies.access_token)
       if (cookies.access_token) {
         const { id, role } = jwt_decode(cookies.access_token);
         if (
@@ -223,7 +228,7 @@ export default function DashboardLayout({ children, layoutRole }) {
 
   const handleLogout = async () => {
     try {
-      const response = await logoutService();
+      const response = await signoutService(token);
       if (response?.status === 200) {
         navigate("/signin");
       }

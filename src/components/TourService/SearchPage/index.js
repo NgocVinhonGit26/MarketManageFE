@@ -12,7 +12,7 @@ import BasicBreadcrumbs from "components/Market/Searchpage/Breadcrumbs";
 import BtnOrder from "components/Market/Searchpage/BtnOrder";
 import GridTable from "./GridTable";
 import { useParams } from "react-router-dom";
-import { searchTour } from "api/tour";
+import { searchTour, getListTour } from "api/tour";
 import Pagination from "@mui/material/Pagination";
 const Searchpage = () => {
   const { name } = useParams();
@@ -36,15 +36,26 @@ const Searchpage = () => {
     console.log("cost", cost);
   }, [cost]);
 
+  // const fetchTour = async () => {
+  //   try {
+  //     const response = await searchTour(page, limit, {
+  //       name,
+  //       minPrice: cost[0],
+  //       maxPrice: cost[1],
+  //     });
+  //     setTours(response.data.docs || []);
+  //     setTotalPage(response.data.totalPages);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const fetchTour = async () => {
     try {
-      const response = await searchTour(page, limit, {
-        name,
-        minPrice: cost[0],
-        maxPrice: cost[1],
-      });
-      setTours(response.data.docs || []);
-      setTotalPage(response.data.totalPages);
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await getListTour(accessToken);
+      console.log("response >>>>>", response);
+      setTours(response || []);
     } catch (error) {
       console.log(error);
     }

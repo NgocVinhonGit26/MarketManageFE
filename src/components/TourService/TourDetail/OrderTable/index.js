@@ -20,6 +20,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import { ThirtyFps } from "@mui/icons-material";
+import { orderTour } from "api/tour";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -35,12 +37,34 @@ const ExpandMore = styled((props) => {
 export default function OrderTable(props) {
   const { quantityOder, setQuantityOrder, tour } = props;
 
+  const [order, setOrder] = React.useState({
+    "status": "Confirmed",
+    "paymentMethod": "credit card",
+    "startTime": "2024-03-20T10:00:00",
+    "quantity": 2,
+    "tourId": 1,
+    "userId": 1,
+    "price": 100.50
+  });
+
   const handleAdd = () => {
     setQuantityOrder(quantityOder + 1);
   };
   const handleReduce = () => {
     if (quantityOder > 0) {
       setQuantityOrder(quantityOder - 1);
+    }
+  };
+
+  const handleAddOrder = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      console.log("accessTOken >>>>>>>>>", accessToken)
+      const res = await orderTour(order, accessToken);
+      console.log("order tour", res);
+    }
+    catch (error) {
+      console.log(error);
     }
   };
 
@@ -75,7 +99,7 @@ export default function OrderTable(props) {
                   </div>
                   <div className="text-infor">Thời gian khởi hành:</div>
                 </div>
-                <div className="value-infor">7:10</div>
+                <div className="value-infor">{tour?.startTime}</div>
               </div>
               <div className="detail-infor">
                 <div className="title-infor">
@@ -111,7 +135,7 @@ export default function OrderTable(props) {
                   </div>
                   <div className="text-infor">Phương tiện di chuyển:</div>
                 </div>
-                <div className="value-infor">{tour?.transportation}</div>
+                <div className="value-infor">{tour?.transport}</div>
               </div>
             </Typography>
             <Typography
@@ -166,7 +190,10 @@ export default function OrderTable(props) {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={["DatePicker"]}>
                 <DemoItem label="Ngày khởi hành">
-                  <DesktopDatePicker defaultValue={dayjs("2023-10-01")} />
+                  <DesktopDatePicker
+                    defaultValue={dayjs()}
+                    renderInput={(params) => <TextField {...params} value={dayjs().format("DD/MM/YYYY")} />}
+                  />
                 </DemoItem>
               </DemoContainer>
             </LocalizationProvider>
@@ -195,8 +222,10 @@ export default function OrderTable(props) {
                 -
               </button>
             </div>
-            <button type="button" className="btn btn-success">
-              Thêm vào giỏ hàng{" "}
+            <button type="button" className="btn btn-success"
+              onClick={() => handleAddOrder()}
+            >
+              Thêm vào giỏ hàng
             </button>
           </Typography>
           <Typography>

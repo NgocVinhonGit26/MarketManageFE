@@ -17,7 +17,8 @@ const MerchantDashboard = () => {
       try {
         // const { id } = await jwt_decode(cookies.access_token);
         const id = 1;
-        const response = await getShopBoatByOwnerId(id);
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await getShopBoatByOwnerId(id, accessToken);
         // console.log(response.data[0]);
         setShopBoat(response.data[0]);
       } catch (error) {

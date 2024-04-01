@@ -1,17 +1,35 @@
 import "./style.scss";
 import { Container, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaPhoneAlt } from "react-icons/fa";
 import { BsCart4 } from "react-icons/bs";
 import ResponsiveAppBar from "./MarketHeader";
 import "react-slideshow-image/dist/styles.css";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserDefault } from "redux/slices/userSlice";
+import { signoutService } from "api/auth";
 
 const MarketNavbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const username = useSelector((state) => state.user.name);
+  const token = useSelector((state) => state.user.token);
+  console.log("token>>>>", token);
+  const [isSignedIn, setIsSignedIn] = useState(true);
+  const dispatch = useDispatch();
+
+
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (username === "") {
+      setIsSignedIn(false);
+    } else {
+      setIsSignedIn(true);
+    }
+  }, [username]);
 
   const handleChange = (event) => {
     setSearchTerm(event.target.value);
@@ -19,6 +37,20 @@ const MarketNavbar = () => {
 
   const handleLogin = () => {
     navigate("/signin");
+  };
+
+  const handleSignOut = async () => {
+
+    try {
+      const response = await signoutService(token);
+      console.log("token1>>>>", token);
+      console.log("response", response);
+      dispatch(setUserDefault());
+      navigate("/marketplace");
+    }
+    catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSearch = () => {
@@ -65,11 +97,23 @@ const MarketNavbar = () => {
           </div>
         </div>
         <div className="login-item">
-          <div className="login" onClick={() => handleLogin()}>
-            <span className="tracking-tight font-medium text-black">
-              Đăng nhập
-            </span>
-          </div>
+          {isSignedIn ? (
+            <div className="item-login">
+              <span className="text-base font-medium mr-2">
+                {username}
+              </span>
+              <span
+                className="text-base font-medium"
+                onClick={() => { handleSignOut(); }}
+              >Đăng xuất</span>
+            </div>
+          ) : (
+            <div className="login" onClick={() => handleLogin()}>
+              <span className="tracking-tight font-medium text-black">
+                Đăng nhập
+              </span>
+            </div>
+          )}
           <div className="item-cart">
             <span className=" font-medium relative mr-2">
               <span className="text-base">0</span>

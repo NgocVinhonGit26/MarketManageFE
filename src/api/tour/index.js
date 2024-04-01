@@ -20,6 +20,20 @@ const getAllTours = async (page, limit, queryCondition = {}) => {
   }
 };
 
+const getListTour = async (token) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await instance.get("/tour/getAllTour", config);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 const addTour = async (data) => {
   try {
     const response = await instance.post("/tours", data);
@@ -56,9 +70,16 @@ const getBestSalerToursInHomePage = async () => {
   }
 };
 
-const getTourBySlug = async (slug) => {
+const getTourBySlug = async (slug, token) => {
   try {
-    const response = await instance.get(`/customer/tours/${slug}`);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await instance.get(`/tour/getTourBySlug/${slug}`, config);
+
     return response.data;
   } catch (error) {
     throw error;
@@ -84,6 +105,20 @@ const searchTour = async (page, limit, queryCondition = {}) => {
   }
 };
 
+const orderTour = async (data, token) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await instance.post("/tour/insertOrder", data, config);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export {
   getAllTours,
   updateTour,
@@ -92,4 +127,6 @@ export {
   getBestSalerToursInHomePage,
   getTourBySlug,
   searchTour,
+  getListTour,
+  orderTour
 };

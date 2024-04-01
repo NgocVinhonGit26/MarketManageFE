@@ -16,6 +16,7 @@ const Shops = () => {
   const [searchData, setSearchData] = useState([]);
 
 
+
   useEffect(() => {
     const fetchShopBoats = async () => {
       try {
@@ -32,8 +33,12 @@ const Shops = () => {
 
     const fetchShopBoatsOnSearch = async (data) => {
       try {
-        const response = await getAllShopBoats(page - 1, data);
-        const total = await getTotalPages(page - 1, data);
+        const accessToken = localStorage.getItem("accessToken");
+        // console.log("accessToken2", accessToken);
+        // console.log("accessToken>>>>>>", accessToken)
+        const response = await getAllShopBoats(page - 1, data, accessToken);
+        // console.log("response>>>>>>", response)
+        const total = await getTotalPages(page - 1, data, accessToken);
         // console.log("dhdhhd 2", response.data)
         setIsSearching(true);
         setTotal(total.data);
@@ -60,8 +65,10 @@ const Shops = () => {
   const onSearch = async (data) => {
     try {
       setPage(1);
-      const response = await getAllShopBoats(page - 1, data);
-      const total = await getTotalPages(page - 1, data);
+      const accessToken = localStorage.getItem("accessToken");
+      console.log("accessToken3", accessToken);
+      const response = await getAllShopBoats(page - 1, data, accessToken);
+      const total = await getTotalPages(page - 1, data, accessToken);
       // console.log("dhdhhd 23", total.data)
       setIsSearching(true);
       setTotal(total.data);

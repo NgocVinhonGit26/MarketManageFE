@@ -17,6 +17,8 @@ import { ROLES } from "../../enum";
 import { signinService } from "api/auth";
 import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { setUser } from "redux/slices/userSlice";
 function Copyright(props) {
   return (
     <Typography
@@ -41,14 +43,26 @@ const defaultTheme = createTheme();
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleLogin = async (email, password) => {
+  const handleLogin = async (username, password) => {
     try {
-      const res = await signinService(email, password);
+      const res = await signinService(username, password);
+      // console.log("accessToken1", res.data.token);
+      localStorage.setItem("accessToken", res.data.token);
       if (res?.status === 200) {
         successToast("Login successful");
-        const { role } = await jwt_decode(res.data.accessToken);
-        redirectAfterLogin(role);
+        const payload = {
+          token: res.data.token,
+          role: res.data.role,
+          name: res.data.name,
+        };
+        dispatch(setUser(payload));
+
+        const role = res.data.role;
+        redirectAfterLogin(
+          role === "ADMIN" ? 0 : role === "MERCHANT" ? 1 : 2
+        );
       }
     } catch (error) {
       if (error?.response?.status === 401) {
@@ -65,7 +79,7 @@ export default function SignIn() {
       case ROLES.MERCHANT:
         navigate("/merchant"); // Sử dụng history.push để điều hướng
         break;
-      case ROLES.CUSTOMER:
+      case ROLES.USER:
         navigate("/marketplace"); // Sử dụng history.push để điều hướng
         break;
       default:
@@ -77,9 +91,9 @@ export default function SignIn() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get("email");
+    const username = data.get("username");
     const password = data.get("password");
-    await handleLogin(email, password);
+    await handleLogin(username, password);
   };
 
   return (
@@ -110,10 +124,10 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -145,7 +159,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

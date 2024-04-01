@@ -40,24 +40,19 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const [email, setEmail] = React.useState("");
+  const [username, setUsername] = React.useState("");
+  const [address, setAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [role, setRole] = React.useState("");
   const [isSeller, setIsSeller] = React.useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await signupService(
-        firstName,
-        lastName,
-        email,
-        password,
-        isSeller
-      );
-      if (response?.status === 201) {
+      const response = await signupService(name, address, username, password, isSeller);
+      if (response?.status === 200) {
         successToast("Sign up successfully, redirecting to sign in page");
         navigate("/signin");
       } else {
@@ -96,29 +91,31 @@ export default function SignUp() {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  autoComplete="given-name"
-                  name="firstName"
+                  autoComplete="name"
+                  name="name"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="name"
+                  label="Name"
                   autoFocus
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  autoComplete="address"
+                  name="address"
                   required
                   fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  id="address"
+                  label="Address"
+                  autoFocus
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
                 />
               </Grid>
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -127,8 +124,8 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -164,7 +161,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2" to="/signin">
+                <Link href="/signin" variant="body2" to="/signin">
                   Already have an account? Sign in
                 </Link>
               </Grid>

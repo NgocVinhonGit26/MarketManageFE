@@ -39,10 +39,12 @@ export default function ShopsTable({ shopBoats, updateData, fetchShopBoats }) {
   const handleChangeStatus = async (id, status, data) => {
     console.log("check onClick")
     try {
+      const accessToken = localStorage.getItem("accessToken");
       const response = await updateShopBoatStatus(id, {
         ...data,
         status: status,
-      });
+
+      }, accessToken);
       // console.log(response);
       // console.log(updateData);
 

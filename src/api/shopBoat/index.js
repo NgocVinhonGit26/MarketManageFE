@@ -57,9 +57,15 @@ const createProduct = async (data) => {
   }
 };
 
-const getShopBoatByOwnerId = async (id) => {
+const getShopBoatByOwnerId = async (id, token) => {
   try {
-    const response = await instance.get(`/user/${id}` + `/shopboat`);
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+
+    const response = await instance.get(`/user/${id}` + `/shopboat`, config);
     // console.log(response);
     return response;
   } catch (error) {
@@ -76,8 +82,16 @@ const updateShopBoat = async (data) => {
   }
 };
 
-const getAllShopBoats = async (page, formData = {}) => {
-  let url = `/shopboat/getListShopBoats/${page}`
+const getAllShopBoats = async (page, formData = {}, token) => {
+  let url = `/admin/getListShopBoats/${page}`
+  // console.log("accessToken>>>>>>", token)
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
   if (formData.name) {
     url += `?name=${formData.name}`;
   }
@@ -95,16 +109,22 @@ const getAllShopBoats = async (page, formData = {}) => {
   }
 
   try {
-    const response = await instance.get(url);
-    // console.log(response);
+    const response = await instance.get(url, config);
+    // console.log("response>>>>>>", response);
     return response;
   } catch (error) {
-    console.log(error);
+    console.error('Error fetching list of shop boats:', error);
   }
 };
 
-const getTotalPages = async (page, formData = {}) => {
-  let url = `/shopboat/getTotalPage/${page}`
+const getTotalPages = async (page, formData = {}, token) => {
+  let url = `admin/getTotalPage/${page}`
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
   if (formData.name) {
     url += `?name=${formData.name}`;
   }
@@ -118,7 +138,7 @@ const getTotalPages = async (page, formData = {}) => {
     url += `?status=${formData.status}`;
   }
   try {
-    const response = await instance.get(url);
+    const response = await instance.get(url, config);
     return response;
   }
   catch (error) {
@@ -126,23 +146,33 @@ const getTotalPages = async (page, formData = {}) => {
   }
 }
 
-const updateShopBoatById = async (id, data) => {
+const updateShopBoatById = async (id, data, token) => {
   try {
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
     let formData = new FormData();
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("avatar", data.avatar);
     formData.append("type", data.type);
-    const response = await instance.post(`/shopboat/updateShopBoatById/${id}`, formData);
+    const response = await instance.post(`/updateShopBoatById/${id}`, formData, config);
     return response;
   } catch (error) {
     console.log(error);
   }
 };
 
-const updateShopBoatStatus = async (id, data) => {
+const updateShopBoatStatus = async (id, data, token) => {
   try {
-    const response = await instance.post(`/shopboat/updateStatusById/${id}`, data);
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+    const response = await instance.post(`/admin/updateStatusById/${id}`, data, config);
     return response;
   }
   catch (error) {

@@ -20,8 +20,10 @@ const TourDetail = () => {
   useLayoutEffect(() => {
     const fetchTour = async () => {
       try {
-        const res = await getTourBySlug(slug);
-        setTour(res.data);
+        const accessToken = localStorage.getItem("accessToken");
+        const res = await getTourBySlug(slug, accessToken);
+        console.log("get tour by slug", res);
+        setTour(res);
       } catch (error) {
         console.log(error);
       }
@@ -95,9 +97,9 @@ const TourDetail = () => {
               <div className="Detail-Description-Container">
                 <div className="Detail-Description">
                   <div className="Avt-tour">
-                    <img src={tour?.image} alt="" />
+                    <img src={tour?.avatar} alt="" />
                   </div>
-                  <div className="Description-review mt-10">
+                  {/* <div className="Description-review mt-10">
                     {tour?.tourInformation?.map((item, index) => {
                       return (
                         <div key={uuidv4()} className="Description-Item my-2">
@@ -110,7 +112,7 @@ const TourDetail = () => {
                         </div>
                       );
                     })}
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="Consultation-table">

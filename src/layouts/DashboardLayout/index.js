@@ -41,6 +41,7 @@ import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 import { getShopBoatByOwnerId } from "api/shopBoat";
 import { useDispatch, useSelector } from "react-redux";
+import { setUserDefault } from "redux/slices/userSlice";
 
 function Copyright(props) {
   return (
@@ -230,6 +231,7 @@ export default function DashboardLayout({ children, layoutRole }) {
     try {
       const response = await signoutService(token);
       if (response?.status === 200) {
+        dispatch(setUserDefault());
         navigate("/signin");
       }
     } catch (error) {

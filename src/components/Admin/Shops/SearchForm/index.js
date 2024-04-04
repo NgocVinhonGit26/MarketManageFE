@@ -1,31 +1,37 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
 
-class SearchForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "",
-      code: "",
-      phoneNumber: "",
-      // nameOwner: "",
-      status: "",
-    };
+function SearchForm(props) {
+  const { setIsSearching, onSearch, fetchShopBoats } = props;
+  const [formData, setFormData] = useState({
+    name: "",
+    code: "",
+    phoneNumber: "",
+    type: "",
+    // nameOwner: "",
+    status: "",
+  });
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.resetForm = this.resetForm.bind(this);
+  const isFormDataEmpty = () => {
+    for (const key in formData) {
+      if (formData[key] !== "") {
+        return false; // trar ve false neu co 1 key nao do co gia tri
+      }
+    }
+    return true; // tra ve true neu tat ca key deu rong
   }
 
-  handleChange = (event) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    this.setState({ [name]: value });
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
-  resetForm = () => {
-    this.props.setIsSearching(false);
-    this.props.setSearchData([]);
-    this.setState({
+  const resetForm = () => {
+
+    setFormData({
       name: "",
       code: "",
       phoneNumber: "",
@@ -33,108 +39,102 @@ class SearchForm extends Component {
       // nameOwner: "",
       status: "",
     });
+
+    setIsSearching(false);
+    fetchShopBoats([])
   };
 
-  handleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    // Thực hiện tìm kiếm với các giá trị trong state
-    const { name, code, phoneNumber, type, status } = this.state;
-    // Gửi các giá trị tìm kiếm đến phần xử lý tìm kiếm
-    // Ví dụ: this.props.performSearch(name, boatNumber, phoneNumber, boatType, status);
-    this.props.setSearchData({
-      name,
-      code,
-      phoneNumber,
-      type,
-      // nameOwner,
-      status,
-    });
-    this.props.onSearch(this.props.searchData);
+    if (!isFormDataEmpty()) {
+      setIsSearching(true);
+    }
+    onSearch(formData);
   };
 
-  render() {
-    return (
-      <Form onSubmit={this.handleSubmit} className="mb-6">
-        <Row className="mb-3">
-          <Col>
-            <Form.Group controlId="formName">
-              <Form.Label>Tên</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={this.state.name}
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formBoatNumber">
-              <Form.Label>Mã số thuyền</Form.Label>
-              <Form.Control
-                type="text"
-                name="code"
-                value={this.state.code}
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Form.Group controlId="formPhoneNumber">
-              <Form.Label>Số điện thoại</Form.Label>
-              <Form.Control
-                type="text"
-                name="phoneNumber"
-                value={this.state.phoneNumber}
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formType">
-              <Form.Label>Loại thuyền</Form.Label>
-              <Form.Control
-                type="text"
-                name="type"
-                value={this.state.type}
-                onChange={this.handleChange}
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formStatus">
-              <Form.Label>Trạng thái</Form.Label>
-              <Form.Control
-                as="select"
-                name="status"
-                value={this.state.status}
-                onChange={this.handleChange}
-              >
-                <option value="">Tất cả</option>
-                <option value="active">Hoạt động</option>
-                <option value="inactive">Ngừng hoạt động</option>
-                <option value="banned">Bị cấm</option>
-              </Form.Control>
-            </Form.Group>
-          </Col>
-          <Col className="d-flex align-items-end">
-            <Button variant="primary" type="submit">
-              Tìm kiếm
-            </Button>
-            <Button
-              variant="warning"
-              className="ms-2"
-              type="button"
-              onClick={this.resetForm}
+
+  return (
+    <Form onSubmit={handleSubmit} className="mb-6">
+      <Row className="mb-3">
+        <Col>
+          <Form.Group controlId="formName">
+            <Form.Label>Tên</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group controlId="formBoatNumber">
+            <Form.Label>Mã số thuyền</Form.Label>
+            <Form.Control
+              type="text"
+              name="code"
+              value={formData.code}
+              onChange={handleChange}
+            />
+          </Form.Group>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Form.Group controlId="formPhoneNumber">
+            <Form.Label>Số điện thoại</Form.Label>
+            <Form.Control
+              type="text"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+            />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group controlId="formType">
+            <Form.Label>Loại thuyền</Form.Label>
+            <Form.Control
+              type="text"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+            />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group controlId="formStatus">
+            <Form.Label>Trạng thái</Form.Label>
+            <Form.Control
+              as="select"
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
             >
-              Xóa bộ lọc
-            </Button>
-          </Col>
-        </Row>
-      </Form>
-    );
-  }
+              <option value="">Tất cả</option>
+              <option value={0}>Chưa kích hoạt</option>
+              <option value={1}>Hoạt động</option>
+              <option value={2}>Bị cấm</option>
+            </Form.Control>
+          </Form.Group>
+        </Col>
+        <Col className="d-flex align-items-end">
+          <Button variant="primary" type="submit">
+            Tìm kiếm
+          </Button>
+          <Button
+            variant="warning"
+            className="ms-2"
+            type="button"
+            onClick={resetForm}
+          >
+            Xóa bộ lọc
+          </Button>
+        </Col>
+      </Row>
+    </Form>
+  );
+
 }
 
 export default SearchForm;

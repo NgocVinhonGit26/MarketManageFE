@@ -33,6 +33,8 @@ export default function EditModal({ shopBoat, setShopBoat }) {
   const [avatar, setAvatar] = React.useState(shopBoat?.avatar || "");
   const [type, setType] = React.useState(shopBoat?.type || "");
 
+  const accessToken = localStorage.getItem("accessToken");
+
   const handleSubmit = async () => {
     const data = {
       name,
@@ -41,7 +43,7 @@ export default function EditModal({ shopBoat, setShopBoat }) {
       type,
     };
     try {
-      const response = await updateShopBoatById(id, data);
+      const response = await updateShopBoatById(id, data, accessToken);
       // console.log("check >>>>", response.data);
       setShopBoat(response.data);
       handleClose();

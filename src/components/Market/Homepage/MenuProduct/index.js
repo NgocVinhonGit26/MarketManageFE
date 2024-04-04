@@ -8,13 +8,19 @@ import Collapse from "@mui/material/Collapse";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import MenuImg from "./MenuImg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const MenuProduct = () => {
   const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [open3, setOpen3] = React.useState(false);
   const [open4, setOpen4] = React.useState(false);
+
+  const navigate = useNavigate()
+
+  const reditectToTourPage = () => {
+    navigate("/tour")
+  }
 
   const [NSS, setNSS] = React.useState([
     {
@@ -267,7 +273,9 @@ const MenuProduct = () => {
             <ListItemButton>
               <ListItemText
                 primary={
-                  <span className="font-medium">CHỢ NỔI CÁI RĂNG ONLINE</span>
+                  <span className="font-medium"
+                    onClick={reditectToTourPage}
+                  >TOUR DU LỊCH CHỢ NỔI</span>
                 }
                 className="title-product"
               />

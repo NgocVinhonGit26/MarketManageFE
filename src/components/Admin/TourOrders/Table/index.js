@@ -60,7 +60,7 @@ export default function TourOrdersTable({ tourOrders, setTourOrders }) {
         <TableHead>
           <TableRow>
             <StyledTableCell>Thời gian đặt</StyledTableCell>
-            <StyledTableCell align="center">Email</StyledTableCell>
+            <StyledTableCell align="center">Tên khách hàng</StyledTableCell>
             <StyledTableCell align="center">Tên Tour</StyledTableCell>
             <StyledTableCell align="center">Số lượng</StyledTableCell>
             <StyledTableCell align="center">Đơn giá</StyledTableCell>
@@ -78,21 +78,21 @@ export default function TourOrdersTable({ tourOrders, setTourOrders }) {
                 {moment(row?.createdAt).format("DD/MM/YYYY HH:mm:ss")}
               </StyledTableCell>
               <StyledTableCell align="center">
-                {row?.userId?.email}
+                {row?.userName}
               </StyledTableCell>
               <StyledTableCell align="center">
-                {row?.tourId?.name}
+                {row?.tourName}
               </StyledTableCell>
               <StyledTableCell align="center">{row?.quantity}</StyledTableCell>
               <StyledTableCell align="center">{row?.tourPrice}</StyledTableCell>
               <StyledTableCell align="center">
                 {moment(row?.tourId?.tourTime).format("DD/MM/YYYY")}
               </StyledTableCell>
-              <StyledTableCell align="center">{row?.total}</StyledTableCell>
+              <StyledTableCell align="center">{row?.price}</StyledTableCell>
               <StyledTableCell align="center">
-                {row?.status === "pending" ? (
+                {row?.status === 0 ? (
                   <Badge bg="warning">Chờ xác nhận</Badge>
-                ) : row?.status === "accepted" ? (
+                ) : row?.status === 1 ? (
                   <Badge bg="success">Đã xác nhận</Badge>
                 ) : (
                   <Badge bg="danger">Đã hủy</Badge>
@@ -102,15 +102,15 @@ export default function TourOrdersTable({ tourOrders, setTourOrders }) {
                 <DetailModal tourOrder={row} />
               </StyledTableCell>
               <StyledTableCell align="center">
-                {row?.status === "pending" ? (
+                {row?.status != null ? (
                   <div className="d-flex justify-content-center">
                     {/* <Button
                       variant="success"
                       onClick={() => handleChangeStatus(row?._id, "accepted")}
                     >
                       Xác nhận
-                    </Button> */}
-                    {/* <Button
+                    </Button>
+                    <Button
                       variant="danger"
                       onClick={() => handleChangeStatus(row?._id, "cancelled")}
                     >

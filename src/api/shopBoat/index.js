@@ -83,7 +83,7 @@ const updateShopBoat = async (data) => {
 };
 
 const getAllShopBoats = async (page, formData = {}, token) => {
-  let url = `/admin/getListShopBoats/${page}`
+  let url = `/admin/getListShopBoats/${page}?`
   // console.log("accessToken>>>>>>", token)
 
   const config = {
@@ -93,19 +93,19 @@ const getAllShopBoats = async (page, formData = {}, token) => {
   }
 
   if (formData.name) {
-    url += `?name=${formData.name}`;
+    url += `&name=${formData.name}`;
   }
   if (formData.code) {
-    url += `?code=${formData.code}`;
+    url += `&code=${formData.code}`;
   }
   if (formData.phoneNumber) {
-    url += `?phoneNumber=${formData.phoneNumber}`;
+    url += `&phoneNumber=${formData.phoneNumber}`;
   }
   if (formData.type) {
-    url += `?type=${formData.type}`;
+    url += `&type=${formData.type}`;
   }
   if (formData.status) {
-    url += `?status=${formData.status}`;
+    url += `&status=${formData.status}`;
   }
 
   try {
@@ -118,7 +118,7 @@ const getAllShopBoats = async (page, formData = {}, token) => {
 };
 
 const getTotalPages = async (page, formData = {}, token) => {
-  let url = `admin/getTotalPage/${page}`
+  let url = `admin/getTotalPageShopBoat/${page}?`
   const config = {
     headers: {
       'Authorization': `Bearer ${token}`
@@ -126,16 +126,16 @@ const getTotalPages = async (page, formData = {}, token) => {
   }
 
   if (formData.name) {
-    url += `?name=${formData.name}`;
+    url += `&name=${formData.name}`;
   }
   if (formData.code) {
-    url += `?code=${formData.code}`;
+    url += `&code=${formData.code}`;
   }
   if (formData.phoneNumber) {
-    url += `?phoneNumber=${formData.phoneNumber}`;
+    url += `&phoneNumber=${formData.phoneNumber}`;
   }
   if (formData.status) {
-    url += `?status=${formData.status}`;
+    url += `&status=${formData.status}`;
   }
   try {
     const response = await instance.get(url, config);
@@ -158,7 +158,7 @@ const updateShopBoatById = async (id, data, token) => {
     formData.append("description", data.description);
     formData.append("avatar", data.avatar);
     formData.append("type", data.type);
-    const response = await instance.post(`/updateShopBoatById/${id}`, formData, config);
+    const response = await instance.post(`merchant/updateShopBoatById/${id}`, formData, config);
     return response;
   } catch (error) {
     console.log(error);

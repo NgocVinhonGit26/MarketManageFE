@@ -44,7 +44,7 @@ export default function DetailModal({ tourOrder }) {
         <Box sx={style}>
           <div className="d-flex justify-content-center w-full  mb-4">
             <img
-              src={tourOrder?.tourId?.image}
+              src={tourOrder?.avatar}
               alt="Tour image"
               style={{ width: "100%" }}
             />
@@ -60,12 +60,12 @@ export default function DetailModal({ tourOrder }) {
                     {moment(tourOrder?.createdAt).format("DD/MM/YYYY HH:mm")}
                   </td>
                 </tr>
-                <tr>
+                {/* <tr>
                   <td>
                     <strong>Email</strong>
                   </td>
                   <td>{tourOrder?.userId?.email}</td>
-                </tr>
+                </tr> */}
                 <tr>
                   <td>
                     <strong>Ngày xuất phát</strong>
@@ -79,74 +79,82 @@ export default function DetailModal({ tourOrder }) {
                     <strong>Tên Tour</strong>
                   </td>
                   <td>
-                    <strong>{tourOrder?.tourId?.name}</strong> -{" "}
+                    <strong>{tourOrder?.tourName}</strong> -{" "}
                     {tourOrder?.tourId?.tourDuration}{" "}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Thời lượng</strong>
+                  </td>
+                  <td>
+                    <td>{tourOrder?.duration}</td>
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Địa điểm xuất phát</strong>
                   </td>
-                  <td>{tourOrder?.tourId?.startLocation}</td>
+                  <td>{tourOrder?.startLocation}</td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Phương tiện</strong>
                   </td>
-                  <td>{tourOrder?.tourId?.transportation}</td>
+                  <td>{tourOrder?.transport}</td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Tên khách hàng</strong>
                   </td>
                   <td>
-                    {tourOrder?.userId?.firstName} {tourOrder?.userId?.lastName}
+                    {tourOrder?.userName}
                   </td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Email</strong>
                   </td>
-                  <td>{tourOrder?.userId?.email}</td>
+                  <td>{tourOrder?.userUName}</td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Số điện thoại</strong>
                   </td>
-                  <td>{tourOrder?.userId?.phone}</td>
+                  <td>{tourOrder?.userNumberPhone}</td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Địa chỉ</strong>
                   </td>
-                  <td>{tourOrder?.userId?.address}</td>
+                  <td>{tourOrder?.userAddress}</td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Số lượng</strong>
                   </td>
-                  <td>{tourOrder?.quantity}</td>
+                  <td>{tourOrder?.quantity} người</td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Đơn giá</strong>
                   </td>
-                  <td>{tourOrder?.tourPrice}</td>
+                  <td>{tourOrder?.tourPrice} đồng /người</td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Tổng tiền</strong>
                   </td>
-                  <td>{tourOrder?.total}</td>
+                  <td>{tourOrder?.price} đồng</td>
                 </tr>
                 <tr>
                   <td>
                     <strong>Trạng thái</strong>
                   </td>
                   <td>
-                    {tourOrder?.status === "pending" ? (
+                    {tourOrder?.status === 0 ? (
                       <Badge bg="warning">Chờ xác nhận</Badge>
-                    ) : tourOrder?.status === "accepted" ? (
+                    ) : tourOrder?.status === 1 ? (
                       <Badge bg="success">Đã xác nhận</Badge>
                     ) : (
                       <Badge bg="danger">Đã hủy</Badge>

@@ -10,47 +10,33 @@ import { getTotalPages } from "api/shopBoat";
 const Shops = () => {
   const [shopBoats, setShopBoats] = useState([]);
   const [page, setPage] = useState(1);
+  const [pageSearch, setPageSearch] = useState(1);
   const [total, setTotal] = useState(0);
   const limit = 5;
   const [isSearching, setIsSearching] = useState(false);
   const [searchData, setSearchData] = useState([]);
+  const accessToken = localStorage.getItem("accessToken");
 
+
+  const fetchShopBoats = async (data) => {
+    try {
+      const total = await getTotalPages(page - 1, data, accessToken);
+      const response = await getAllShopBoats(page - 1, data, accessToken);
+      // console.log("dhdhhd 1", response.data)
+      setShopBoats(response.data);
+      setTotal(total.data);
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
 
 
   useEffect(() => {
-    const fetchShopBoats = async () => {
-      try {
-        const total = await getTotalPages(page - 1);
-        const response = await getAllShopBoats(page - 1);
-        // console.log("dhdhhd 1", response.data)
-        setShopBoats(response.data);
-        setTotal(total.data);
-      }
-      catch (error) {
-        console.log(error);
-      }
+    if (!isSearching) {
+      fetchShopBoats([])
     }
-
-    const fetchShopBoatsOnSearch = async (data) => {
-      try {
-        const accessToken = localStorage.getItem("accessToken");
-        // console.log("accessToken2", accessToken);
-        // console.log("accessToken>>>>>>", accessToken)
-        const response = await getAllShopBoats(page - 1, data, accessToken);
-        // console.log("response>>>>>>", response)
-        const total = await getTotalPages(page - 1, data, accessToken);
-        // console.log("dhdhhd 2", response.data)
-        setIsSearching(true);
-        setTotal(total.data);
-        setShopBoats(response.data);
-      }
-      catch (error) {
-        console.log(error);
-      }
-    }
-    // isSearching ? fetchShopBoatsOnSearch() : fetchShopBoats();
-    fetchShopBoatsOnSearch(searchData)
-  }, [shopBoats]);
+  }, [page]);
 
   const updateData = (data) => {
     const newData = shopBoats.map((shopBoat) => {
@@ -64,17 +50,10 @@ const Shops = () => {
 
   const onSearch = async (data) => {
     try {
-      setPage(1);
-      const accessToken = localStorage.getItem("accessToken");
-      console.log("accessToken3", accessToken);
-      const response = await getAllShopBoats(page - 1, data, accessToken);
-      const total = await getTotalPages(page - 1, data, accessToken);
-      // console.log("dhdhhd 23", total.data)
-      setIsSearching(true);
+      const response = await getAllShopBoats(pageSearch - 1, data, accessToken);
+      const total = await getTotalPages(pageSearch - 1, data, accessToken);
       setTotal(total.data);
       setShopBoats(response.data);
-
-      // setTotal(response.data.data.totalPages);
     } catch (error) {
       console.log(error);
     }
@@ -84,11 +63,10 @@ const Shops = () => {
     <DashboardLayout layoutRole={0}>
       <h1>Quản lí các thuyền buôn</h1>
       <Grid item xs={12}>
-        <SearchForm onSearch={onSearch}
+        <SearchForm
           setIsSearching={setIsSearching}
-          setPage={setPage}
-          searchData={searchData}
-          setSearchData={setSearchData}
+          onSearch={onSearch}
+          fetchShopBoats={fetchShopBoats}
         />
       </Grid>
       <Grid item xs={12}>

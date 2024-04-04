@@ -1,41 +1,60 @@
 import instance from "api/axios";
 
-const getAllTourOrders = async (page, limit, queryCondition = {}) => {
-  let url = `/tour-orders?page=${page}&limit=${limit}`;
-  if (queryCondition.email) {
-    url += `&email=${queryCondition.email}`;
+const getAllTourOrders = async (page, queryCondition = {}, token) => {
+  let url = `/admin/getListOrderTour/${page}?`;
+  console.log("page >>>>>>> aka: ", page)
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
   }
+  if (queryCondition.status) {
+    url += `&status=${queryCondition.status}`;
+  }
+
+  if (queryCondition.userName) {
+    url += `&userName=${queryCondition.userName}`;
+  }
+
   if (queryCondition.tourName) {
     url += `&tourName=${queryCondition.tourName}`;
   }
-  if (queryCondition.departureStartDate) {
-    url += `&departureStartDate=${queryCondition.departureStartDate}`;
-  }
-  if (queryCondition.departureEndDate) {
-    url += `&departureEndDate=${queryCondition.departureEndDate}`;
-  }
-  if (queryCondition.totalBillMin) {
-    url += `&totalBillMin=${queryCondition.totalBillMin}`;
-  }
-  if (queryCondition.totalBillMax) {
-    url += `&totalBillMax=${queryCondition.totalBillMax}`;
-  }
-  if (queryCondition.orderStatus) {
-    url += `&status=${queryCondition.orderStatus}`;
-  }
-  if (queryCondition.bookingStartDate) {
-    url += `&bookingStartDate=${queryCondition.bookingStartDate}`;
-  }
-  if (queryCondition.bookingEndDate) {
-    url += `&bookingEndDate=${queryCondition.bookingEndDate}`;
-  }
+
+  console.log("url >>>>>>> aka: ", url)
   try {
-    const response = await instance.get(url);
+    const response = await instance.get(url, config);
+    // console.log("response >>>>>>> aka: ", response)
     return response.data;
   } catch (error) {
     throw error;
   }
 };
+
+const getTotalPageOrderTour = async (page, queryCondition = {}, token) => {
+  let url = `/admin/getTotalPageOrderTour/${page}?`;
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+  if (queryCondition.status) {
+    url += `&status=${queryCondition.status}`;
+  }
+  if (queryCondition.userName) {
+    url += `&userName=${queryCondition.userName}`;
+  }
+  if (queryCondition.tourName) {
+    url += `&tourName=${queryCondition.tourName}`;
+  }
+
+  // console.log("url >>>>>>> aka: ", url)
+  try {
+    const response = await instance.get(url, config);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 const updateTourOrder = async (tourOrderId, tourOrderData) => {
   let url = `/tour-orders/${tourOrderId}`;
@@ -57,4 +76,4 @@ const changeStatus = async (tourOrderId, status) => {
   }
 };
 
-export { getAllTourOrders, updateTourOrder, changeStatus };
+export { getAllTourOrders, updateTourOrder, changeStatus, getTotalPageOrderTour };

@@ -64,6 +64,11 @@ export default function SignUp() {
     }
   };
 
+  const reditectToSignIn = (event) => {
+    event.preventDefault();
+    navigate("/signin");
+  }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -161,7 +166,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="/signin" variant="body2" to="/signin">
+                <Link href="" variant="body2" onClick={reditectToSignIn}>
                   Already have an account? Sign in
                 </Link>
               </Grid>

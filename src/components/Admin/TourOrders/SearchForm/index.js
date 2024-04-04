@@ -2,18 +2,24 @@ import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-function SearchForm({ onSearch }) {
+function SearchForm(props) {
+
+  const { onSearch, fetchTourOrders, setIsSearch } = props;
   const [formData, setFormData] = useState({
-    email: "",
+    userName: "",
     tourName: "",
-    departureStartDate: "",
-    departureEndDate: "",
-    totalBillMin: "",
-    totalBillMax: "",
-    orderStatus: "",
-    bookingStartDate: "",
-    bookingEndDate: "",
+    status: "",
   });
+
+  const isFormDataEmpty = () => {
+    for (const key in formData) {
+      if (formData[key] !== "") {
+        return false; // trar ve false neu co 1 key nao do co gia tri
+      }
+    }
+    return true; // tra ve true neu tat ca key deu rong
+  }
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -23,23 +29,37 @@ function SearchForm({ onSearch }) {
     });
   };
 
+  const handleReset = (event) => {
+    setFormData({
+      userName: "",
+      tourName: "",
+      status: "",
+
+    });
+    setIsSearch(false);
+    fetchTourOrders([])
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // Gửi thông tin tìm kiếm đi đâu đó (ví dụ: API hoặc xử lý ở phía máy chủ)
+    if (!isFormDataEmpty()) {
+      setIsSearch(true);
+    }
     onSearch(formData);
     console.log(formData);
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} onReset={handleReset}>
       <Row className="mb-3">
         <Col>
-          <Form.Group controlId="email">
-            <Form.Label>Email khách hàng</Form.Label>
+          <Form.Group controlId="userName">
+            <Form.Label>Tên khách hàng</Form.Label>
             <Form.Control
               type="text"
-              name="email"
-              value={formData.email}
+              name="userName"
+              value={formData.userName}
               onChange={handleChange}
             />
           </Form.Group>
@@ -109,14 +129,14 @@ function SearchForm({ onSearch }) {
             <Form.Label>Trạng thái đơn</Form.Label>
             <Form.Control
               as="select"
-              name="orderStatus"
-              value={formData.orderStatus}
+              name="status"
+              value={formData.status}
               onChange={handleChange}
             >
               <option value="all">Chọn trạng thái</option>
-              <option value="pending">Chưa xử lý</option>
-              <option value="accepted">Đã xác nhận</option>
-              <option value="cancelled">Đã hủy</option>
+              <option value={0}>Chưa xử lý</option>
+              <option value={1}>Đã xác nhận</option>
+              <option value={2}>Đã hủy</option>
             </Form.Control>
           </Form.Group>
         </Col>

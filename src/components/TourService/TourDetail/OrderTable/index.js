@@ -38,13 +38,12 @@ export default function OrderTable(props) {
   const { quantityOder, setQuantityOrder, tour } = props;
 
   const [order, setOrder] = React.useState({
-    "status": "Confirmed",
-    "paymentMethod": "credit card",
+    "status": 2,
+    "paymentMethod": "cash",
     "startTime": "2024-03-20T10:00:00",
     "quantity": 2,
-    "tourId": 1,
-    "userId": 1,
-    "price": 100.50
+    "tourId": 6,
+    "userId": 9
   });
 
   const handleAdd = () => {
@@ -59,7 +58,11 @@ export default function OrderTable(props) {
   const handleAddOrder = async () => {
     try {
       const accessToken = localStorage.getItem("accessToken");
-      console.log("accessTOken >>>>>>>>>", accessToken)
+      // console.log("accessTOken >>>>>>>>>", accessToken)
+      if (quantityOder === 0) {
+        alert("Vui lòng chọn số lượng tour")
+        return;
+      }
       const res = await orderTour(order, accessToken);
       console.log("order tour", res);
     }

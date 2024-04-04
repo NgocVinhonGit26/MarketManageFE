@@ -45,6 +45,10 @@ export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const reditectToSignUp = (event) => {
+    event.preventDefault();
+    navigate("/signup");
+  }
   const handleLogin = async (username, password) => {
     try {
       const res = await signinService(username, password);
@@ -159,7 +163,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/signup" variant="body2">
+                <Link href="" variant="body2" onClick={reditectToSignUp}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

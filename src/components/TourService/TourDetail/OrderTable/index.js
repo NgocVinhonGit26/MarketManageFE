@@ -21,7 +21,13 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { ThirtyFps } from "@mui/icons-material";
-import { orderTour } from "api/tour";
+import { orderTour } from "api/tourOrder";
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { setOrderTourRD } from "redux/slices/orderTourSlice";
+import { resetState } from "redux/slices/mySlice";
+import { addOrder } from "redux/slices/listOrderTourSlice";
+import { create } from "@mui/material/styles/createTransitions";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -36,35 +42,96 @@ const ExpandMore = styled((props) => {
 
 export default function OrderTable(props) {
   const { quantityOder, setQuantityOrder, tour } = props;
+  const navigate = useNavigate();
+  const userId = useSelector((state) => state.user.id);
+  const dispatch = useDispatch();
 
   const [order, setOrder] = React.useState({
-    "status": 2,
-    "paymentMethod": "cash",
-    "startTime": "2024-03-20T10:00:00",
-    "quantity": 2,
-    "tourId": 6,
-    "userId": 9
+    idOrderTour: 0,
+    status: 0,
+    paymentMethod: "cash",
+    startTime: "",
+    quantity: quantityOder,
+    tourId: 0,
+    tourName: "",
+    price: 0,
+    userId: userId,
+    createAt: "",
   });
+
+  React.useEffect(() => {
+    const idOrderTourFromLocalStorage = localStorage.getItem('idOrderTour');
+    if (idOrderTourFromLocalStorage) {
+      // Nếu có giá trị trong localStorage, cập nhật state
+      setOrder(prevOrder => ({
+        ...prevOrder,
+        idOrderTour: parseInt(idOrderTourFromLocalStorage),
+      }));
+    }
+  }, []);
+
+
 
   const handleAdd = () => {
     setQuantityOrder(quantityOder + 1);
+    //update order
+    setOrder({
+      ...order,
+      quantity: quantityOder + 1,
+      tourId: tour.id,
+      tourName: tour.name,
+      price: tour.price,
+      createAt: new Date().toISOString(),
+    });
   };
   const handleReduce = () => {
     if (quantityOder > 0) {
       setQuantityOrder(quantityOder - 1);
+      //update order
+      setOrder({
+        ...order,
+        quantity: quantityOder - 1,
+        tourId: tour.id,
+        tourName: tour.name,
+        price: tour.price,
+        createAt: new Date().toISOString(),
+      });
     }
+  };
+
+  const handleDatePickerChange = (newDate) => {
+    console.log("khien bon chim lon phai cam mom")
+    setOrder(prevOrder => ({
+      ...prevOrder,
+      startTime: newDate.toISOString(), // Chuyển đổi ngày thành chuỗi ISO
+    }));
+
+    console.log("update time ", order)
   };
 
   const handleAddOrder = async () => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
+
       // console.log("accessTOken >>>>>>>>>", accessToken)
       if (quantityOder === 0) {
-        alert("Vui lòng chọn số lượng tour")
+        alert("Vui lòng chọn số lượng tour muốn đặt");
         return;
       }
-      const res = await orderTour(order, accessToken);
-      console.log("order tour", res);
+      console.log("order>>1", order);
+      // dispatch(setOrderTourRD(order));
+      setOrder(prevOrder => ({
+        ...prevOrder,
+        idOrderTour: prevOrder.idOrderTour + 1,
+      }));
+      localStorage.setItem('idOrderTour', order.idOrderTour + 1);
+      console.log("order>>2", order);
+      dispatch(addOrder(order));
+      // dispatch(resetState())
+      // const res = await orderTour(order, accessToken);
+      // console.log("order tour", res);
+      // if (res.status === 201) {
+      navigate("/tour/cart")
+      // }
     }
     catch (error) {
       console.log(error);
@@ -100,7 +167,7 @@ export default function OrderTable(props) {
                       alt=""
                     />
                   </div>
-                  <div className="text-infor">Thời gian khởi hành:</div>
+                  <div className="text-infor">Dự kiến khởi hành:</div>
                 </div>
                 <div className="value-infor">{tour?.startTime}</div>
               </div>
@@ -126,7 +193,7 @@ export default function OrderTable(props) {
                   </div>
                   <div className="text-infor">Thời gian tour:</div>
                 </div>
-                <div className="value-infor">{tour?.tourDuration} ngày</div>
+                <div className="value-infor">{tour?.duration} </div>
               </div>
               <div className="detail-infor">
                 <div className="title-infor">
@@ -194,8 +261,11 @@ export default function OrderTable(props) {
               <DemoContainer components={["DatePicker"]}>
                 <DemoItem label="Ngày khởi hành">
                   <DesktopDatePicker
-                    defaultValue={dayjs()}
-                    renderInput={(params) => <TextField {...params} value={dayjs().format("DD/MM/YYYY")} />}
+                    defaultValue={dayjs(tour?.startTime)}
+                    renderInput={(params) => <TextField {...params}
+                      value={dayjs().format("DD/MM/YYYY")}
+                    />}
+                    onChange={handleDatePickerChange}
                   />
                 </DemoItem>
               </DemoContainer>

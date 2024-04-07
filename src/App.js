@@ -36,6 +36,7 @@ import TourSearchPage from "components/TourService/SearchPage";
 import MerchantProducts from "components/Merchant/Products";
 import MerchantDashbroad from "components/Merchant/MerchantDashbroad";
 import Orders from "components/Merchant/Orders";
+import OrderTour from "components/TourService/OrderTour";
 
 function App() {
   const [cookies] = useCookies(["access_token"]);
@@ -61,6 +62,7 @@ function App() {
         <Route path="/tour/detail/:slug" element={<TourDetail />} />
         <Route path="/tour/search/:name" element={<TourSearchPage />} />
         <Route path="/tour/search" element={<TourSearchPage />} />
+        <Route path="/tour/cart" element={<OrderTour />} />
 
         {/* Marketplace */}
         <Route path="/" element={<Navigate to="/marketplace" />} />

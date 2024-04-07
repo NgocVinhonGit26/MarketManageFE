@@ -99,20 +99,6 @@ const TourDetail = () => {
                   <div className="Avt-tour">
                     <img src={tour?.avatar} alt="" />
                   </div>
-                  {/* <div className="Description-review mt-10">
-                    {tour?.tourInformation?.map((item, index) => {
-                      return (
-                        <div key={uuidv4()} className="Description-Item my-2">
-                          <div className="Description-Title">
-                            <h3 className="my-2">{item.key}</h3>
-                          </div>
-                          <div className="Description-Content">
-                            <p>{parse(item.value)}</p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div> */}
                 </div>
               </div>
               <div className="Consultation-table">

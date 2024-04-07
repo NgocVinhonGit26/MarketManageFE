@@ -105,19 +105,7 @@ const searchTour = async (page, limit, queryCondition = {}) => {
   }
 };
 
-const orderTour = async (data, token) => {
-  try {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const response = await instance.post("/tour/insertOrder", data, config);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-}
+
 
 export {
   getAllTours,
@@ -127,6 +115,5 @@ export {
   getBestSalerToursInHomePage,
   getTourBySlug,
   searchTour,
-  getListTour,
-  orderTour
+  getListTour
 };

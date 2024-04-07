@@ -56,6 +56,20 @@ const getTotalPageOrderTour = async (page, queryCondition = {}, token) => {
   }
 }
 
+const orderTour = async (data, token) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = await instance.post("/tour/insertOrder", data, config);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
 const updateTourOrder = async (tourOrderId, tourOrderData) => {
   let url = `/tour-orders/${tourOrderId}`;
   try {
@@ -76,4 +90,4 @@ const changeStatus = async (tourOrderId, status) => {
   }
 };
 
-export { getAllTourOrders, updateTourOrder, changeStatus, getTotalPageOrderTour };
+export { getAllTourOrders, updateTourOrder, changeStatus, getTotalPageOrderTour, orderTour };

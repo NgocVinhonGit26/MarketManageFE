@@ -8,10 +8,16 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const TourNavbar = () => {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleNavigateToCart = () => {
+    navigate("/tour/cart")
+  }
 
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
@@ -87,10 +93,10 @@ const TourNavbar = () => {
             </NavDropdown>
           </Nav>
           <Nav>
-            <Nav.Link href="#deets">
+            <Nav.Link onClick={handleNavigateToCart}>
               <WorkOutlineIcon />
             </Nav.Link>
-            <Nav.Link eventKey={2} href="#memes">
+            <Nav.Link eventKey={2} >
               <AccountCircleOutlinedIcon />
             </Nav.Link>
             <div className="nav-link relative">

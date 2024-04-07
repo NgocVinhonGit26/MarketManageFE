@@ -127,6 +127,7 @@ INSERT INTO Tour (Name, Slug, start_time, start_location, Description, Price, av
 		start_time VARCHAR(255),
 		quantity INT NOT NULL,
 		tour_id INT NOT NULL,
+        tour_name VARCHAR(255) NOT NULL,
 		user_id INT NOT NULL,
 		price DECIMAL(10, 2) NOT NULL,
 		created_at TIMESTAMP ,

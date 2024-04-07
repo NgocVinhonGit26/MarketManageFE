@@ -60,7 +60,9 @@ export default function SignIn() {
           token: res.data.token,
           role: res.data.role,
           name: res.data.name,
+          id: res.data.id,
         };
+        // console.log("payload>>>>>>>>>", payload);
         dispatch(setUser(payload));
 
         const role = res.data.role;

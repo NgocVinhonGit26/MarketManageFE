@@ -54,6 +54,7 @@ export default function SignIn() {
       const res = await signinService(username, password);
       // console.log("accessToken1", res.data.token);
       localStorage.setItem("accessToken", res.data.token);
+      localStorage.setItem("id", res.data.id);
       if (res?.status === 200) {
         successToast("Login successful");
         const payload = {

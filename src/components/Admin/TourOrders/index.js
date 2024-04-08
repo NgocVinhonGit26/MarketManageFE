@@ -53,6 +53,20 @@ const TourOrders = () => {
 
   };
 
+  const updateData = (data) => {
+    const newData = tourOrders.map((tourOrder) => {
+      if (tourOrder.id === data.id) {
+        return {
+          ...tourOrder,
+          status: data.status, // Cập nhật trường status của tourOrder
+        };
+      }
+      return tourOrder;
+    });
+    setTourOrders(newData);
+  };
+
+
   return (
     <DashboardLayout layoutRole={0}>
       <h1>Quản lí đặt Tour du lịch</h1>
@@ -66,6 +80,7 @@ const TourOrders = () => {
           <TourOrdersTable
             tourOrders={tourOrders}
             setTourOrders={setTourOrders}
+            updateData={updateData}
           />
         </Paper>
       </Grid>

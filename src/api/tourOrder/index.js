@@ -80,11 +80,17 @@ const updateTourOrder = async (tourOrderId, tourOrderData) => {
   }
 };
 
-const changeStatus = async (tourOrderId, status) => {
-  let url = `/tour-orders/${tourOrderId}/status`;
+const changeStatus = async (tourOrderId, data, token) => {
+  let url = `/admin/updateStatusOrderById/${tourOrderId}`;
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
   try {
-    const response = await instance.patch(url, { status: status });
-    return response.data;
+    const response = await instance.post(url, data, config);
+    return response;
   } catch (error) {
     throw error;
   }

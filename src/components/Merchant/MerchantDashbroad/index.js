@@ -16,7 +16,7 @@ const MerchantDashboard = () => {
     const fetchShopBoat = async () => {
       try {
         // const { id } = await jwt_decode(cookies.access_token);
-        const id = 1;
+        const id = localStorage.getItem("id");
         const accessToken = localStorage.getItem("accessToken");
         const response = await getShopBoatByOwnerId(id, accessToken);
         // console.log(response.data[0]);

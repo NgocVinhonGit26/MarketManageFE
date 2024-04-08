@@ -63,6 +63,8 @@ CREATE TABLE ShopBoat (
     FOREIGN KEY (owner) REFERENCES User(id)
 );
 
+UPDATE ShopBoat SET owner = 11 WHERE id = 1;
+
 INSERT INTO ShopBoat (name, address, owner, description, avatar, phone_number, type, status, code)
 VALUES 
 ('Boat Haven', '100 Harbor Drive, Marina Bay, Anytown, USA', 1, 'Your destination for all things boating', 'https://th.bing.com/th/id/R.74b4260070f4a610bc2e92d0d173a4a5?rik=CP61V%2fOrQslCgw&pid=ImgRaw&r=0', '15995165412', 'Thuyền Lớn', 0, 'SHB001'),
@@ -122,7 +124,7 @@ INSERT INTO Tour (Name, Slug, start_time, start_location, Description, Price, av
 
 	CREATE TABLE order_tour (
 		id INT AUTO_INCREMENT PRIMARY KEY,
-		status INT NOT NULL, -- 0: dnag cho, 1: da xac nhan, 2: da huy
+		status INT NOT NULL, -- 0: dnag cho, 1: da xac nhan, 2: da huy, 3: đã hoàn thành
 		payment_method VARCHAR(255) ,
 		start_time VARCHAR(255),
 		quantity INT NOT NULL,
@@ -135,7 +137,7 @@ INSERT INTO Tour (Name, Slug, start_time, start_location, Description, Price, av
 		FOREIGN KEY (user_id) REFERENCES user(id)
 	);
     
- --   UPDATE order_tour SET status = 1 WHERE id = 2;
+    UPDATE order_tour SET status = 3 WHERE id = 18;
     
     DELIMITER $$
 CREATE TRIGGER calculate_order_price BEFORE INSERT ON order_tour

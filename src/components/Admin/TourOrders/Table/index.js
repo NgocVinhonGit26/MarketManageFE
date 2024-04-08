@@ -34,21 +34,18 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function TourOrdersTable({ tourOrders, setTourOrders }) {
-  const handleChangeStatus = async (tourOrderId, status) => {
+export default function TourOrdersTable({ tourOrders, setTourOrders, updateData }) {
+  const handleChangeStatus = async (id, status, orderTour) => {
     try {
-      const response = await changeStatus(tourOrderId, status);
-      if (response?.code === 200) {
-        const newTourOrders = tourOrders.map((tourOrder) => {
-          if (tourOrder._id === tourOrderId) {
-            return { ...tourOrder, status: status };
-          }
-          return tourOrder;
-        });
-        setTourOrders(newTourOrders);
-      }
-
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await changeStatus(id, {
+        ...orderTour,
+        status: status,
+      }, accessToken);
       console.log(response);
+      if (response?.status === 200) {
+        updateData(response.data);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -94,31 +91,21 @@ export default function TourOrdersTable({ tourOrders, setTourOrders }) {
                   <Badge bg="warning">Chờ xác nhận</Badge>
                 ) : row?.status === 1 ? (
                   <Badge bg="success">Đã xác nhận</Badge>
-                ) : (
+                ) : row?.status === 2 ? (
                   <Badge bg="danger">Đã hủy</Badge>
+                ) : (
+                  <Badge bg="info">Đã hoàn thành</Badge>
                 )}
               </StyledTableCell>
               <StyledTableCell align="center">
                 <DetailModal tourOrder={row} />
               </StyledTableCell>
               <StyledTableCell align="center">
-                {row?.status != null ? (
+                {row?.status === 0 ? (
                   <div className="d-flex justify-content-center">
-                    {/* <Button
-                      variant="success"
-                      onClick={() => handleChangeStatus(row?._id, "accepted")}
-                    >
-                      Xác nhận
-                    </Button>
-                    <Button
-                      variant="danger"
-                      onClick={() => handleChangeStatus(row?._id, "cancelled")}
-                    >
-                      Hủy
-                    </Button> */}
                     <Tooltip title="Xác nhận" arrow>
                       <IconButton
-                        onClick={() => handleChangeStatus(row?._id, "accepted")}
+                        onClick={() => handleChangeStatus(row?.id, 1, row)}
                         color="success"
                       >
                         <CheckCircleIcon />
@@ -127,7 +114,7 @@ export default function TourOrdersTable({ tourOrders, setTourOrders }) {
                     <Tooltip title="Hủy" arrow>
                       <IconButton
                         onClick={() =>
-                          handleChangeStatus(row?._id, "cancelled")
+                          handleChangeStatus(row?.id, 2, row)
                         }
                         color="error"
                       >
@@ -135,8 +122,27 @@ export default function TourOrdersTable({ tourOrders, setTourOrders }) {
                       </IconButton>
                     </Tooltip>
                   </div>
-                ) : row?.status === "accepted" ? (
-                  <></>
+                ) : row?.status === 1 ? (
+                  <div className="d-flex justify-content-center">
+                    <Tooltip title="Đã hoàn thành" arrow>
+                      <IconButton
+                        onClick={() => handleChangeStatus(row?.id, 3, row)}
+                        color="info"
+                      >
+                        <CheckCircleIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Hủy" arrow>
+                      <IconButton
+                        onClick={() =>
+                          handleChangeStatus(row?.id, 2, row)
+                        }
+                        color="error"
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
                 ) : (
                   <></>
                 )}

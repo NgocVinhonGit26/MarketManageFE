@@ -156,9 +156,12 @@ export default function DetailModal({ tourOrder }) {
                       <Badge bg="warning">Chờ xác nhận</Badge>
                     ) : tourOrder?.status === 1 ? (
                       <Badge bg="success">Đã xác nhận</Badge>
-                    ) : (
+                    ) : tourOrder?.status === 2 ? (
                       <Badge bg="danger">Đã hủy</Badge>
-                    )}
+                    ) : (
+                      <Badge bg="info">Đã hoàn thành</Badge>
+                    )
+                    }
                   </td>
                 </tr>
               </tbody>

@@ -45,7 +45,7 @@ export default function ShopsTable({ shopBoats, updateData, fetchShopBoats }) {
         status: status,
 
       }, accessToken);
-      // console.log(response);
+      console.log("response update status shopbooat:>>> ", response);
       // console.log(updateData);
 
       if (response?.status === 200) {

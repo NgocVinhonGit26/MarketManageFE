@@ -8,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
 import { updateShopBoatById } from "api/shopBoat";
+import ImageUpload from "components/ImageUpload";
 
 const style = {
   position: "absolute",
@@ -33,6 +34,15 @@ export default function EditModal({ shopBoat, setShopBoat }) {
   const [avatar, setAvatar] = React.useState(shopBoat?.avatar || "");
   const [type, setType] = React.useState(shopBoat?.type || "");
 
+  const [image, setImage] = React.useState("");
+
+  // Thêm useEffect ở đây
+  React.useEffect(() => {
+    if (avatar !== "") {
+      handleSubmit();
+    }
+  }, [avatar]);
+
   const accessToken = localStorage.getItem("accessToken");
 
   const handleSubmit = async () => {
@@ -50,6 +60,29 @@ export default function EditModal({ shopBoat, setShopBoat }) {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleImageUpload = () => {
+    const dataImg = new FormData();
+    dataImg.append("file", image);
+    dataImg.append("upload_preset", "cspmjsnn");
+    dataImg.append("cloud_name", "dkcetq9et");
+
+    fetch("https://api.cloudinary.com/v1_1/dkcetq9et/image/upload", {
+      method: "post",
+      body: dataImg,
+    })
+      .then((response) => response.json())
+      .then((dataImg) => {
+        setAvatar(dataImg.url);
+        console.log("dataImg.url: ", dataImg.url);
+        console.log("avatar: >>>>>>>>>>", avatar);
+        // handleSubmit();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
   };
 
   React.useEffect(() => {
@@ -111,16 +144,16 @@ export default function EditModal({ shopBoat, setShopBoat }) {
                 <Form.Group>
                   <Form.Label>Ảnh</Form.Label>
                   <Form.Control
-                    type="text"
+                    type="file"
                     name="avatar"
-                    value={avatar}
-                    onChange={(e) => setAvatar(e.target.value)}
+                    // value={avatar}
+                    onChange={(e) => setImage(e.target.files[0])}
                   />
                 </Form.Group>
 
                 <Button
                   variant="primary"
-                  onClick={handleSubmit}
+                  onClick={handleImageUpload}
                   className="mt-3"
                 >
                   Cập nhật

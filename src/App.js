@@ -37,6 +37,7 @@ import MerchantProducts from "components/Merchant/Products";
 import MerchantDashbroad from "components/Merchant/MerchantDashbroad";
 import Orders from "components/Merchant/Orders";
 import OrderTour from "components/TourService/OrderTour";
+import ImageUpload from "components/ImageUpload";
 
 function App() {
   const [cookies] = useCookies(["access_token"]);
@@ -81,6 +82,9 @@ function App() {
         {/* Auth */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+
+        {/* <Route path="/ImageUpload" element={<ImageUpload />} /> */}
+
       </Routes>
       <ToastContainer />
     </div>

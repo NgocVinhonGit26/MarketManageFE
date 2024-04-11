@@ -63,7 +63,7 @@ CREATE TABLE ShopBoat (
     FOREIGN KEY (owner) REFERENCES User(id)
 );
 
-UPDATE ShopBoat SET owner = 11 WHERE id = 1;
+-- UPDATE ShopBoat SET owner = 13 WHERE id = 2;
 
 INSERT INTO ShopBoat (name, address, owner, description, avatar, phone_number, type, status, code)
 VALUES 

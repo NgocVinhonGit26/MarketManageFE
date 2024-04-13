@@ -148,7 +148,7 @@ const TourInformation = ({ tourInformation, setTourData }) => {
         <strong>Thông Tin Tour</strong>
         <AddEditModal infoData={{}} setTourData={setTourData} type="add" />
       </h5>
-      {tourInformation?.map((item, index) => (
+      {/* {tourInformation?.map((item, index) => (
         <div key={uuidv4()} className="mb-3">
           <div className="font-semibold flex text-4xl justify-between underline">
             {item.key}
@@ -161,7 +161,7 @@ const TourInformation = ({ tourInformation, setTourData }) => {
           </div>
           <span>{parse(item.value)}</span>
         </div>
-      ))}
+      ))} */}
     </div>
   );
 };

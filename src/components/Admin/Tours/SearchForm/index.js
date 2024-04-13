@@ -5,20 +5,26 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddModal from "../AddModal";
 const SearchForm = ({ onSearch, setTours }) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+  const [name, setName] = useState("");
+  const [priceFrom, setPriceFrom] = useState("");
+  const [priceTo, setPriceTo] = useState("");
+  const [transport, setTransport] = useState("");
+  const [startLocation, setStartLocation] = useState("");
+  const [tourDuration, setTourDuration] = useState("");
 
   const handleSearch = (e) => {
     e.preventDefault();
     // Gửi các giá trị tìm kiếm đến hàm onSearch
-    onSearch(searchTerm, minPrice, maxPrice);
+    onSearch(name, priceFrom, priceTo, transport, startLocation, tourDuration);
   };
 
   const resetForm = () => {
-    setSearchTerm("");
-    setMinPrice("");
-    setMaxPrice("");
+    setName("");
+    setPriceFrom("");
+    setPriceTo("");
+    setTransport("");
+    setStartLocation("");
+    setTourDuration("");
   };
 
   return (
@@ -30,8 +36,8 @@ const SearchForm = ({ onSearch, setTours }) => {
             <Form.Control
               type="text"
               placeholder="Tìm theo tên"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
           </Form.Group>
         </Col>
@@ -41,8 +47,8 @@ const SearchForm = ({ onSearch, setTours }) => {
             <Form.Control
               type="number"
               placeholder="Giá tối thiểu"
-              value={minPrice}
-              onChange={(e) => setMinPrice(e.target.value)}
+              value={priceFrom}
+              onChange={(e) => setPriceFrom(e.target.value)}
             />
           </Form.Group>
         </Col>
@@ -52,8 +58,44 @@ const SearchForm = ({ onSearch, setTours }) => {
             <Form.Control
               type="number"
               placeholder="Giá tối đa"
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
+              value={priceTo}
+              onChange={(e) => setPriceTo(e.target.value)}
+            />
+          </Form.Group>
+        </Col>
+
+      </Row>
+      <Row>
+        <Col>
+          <Form.Group controlId="transport">
+            <Form.Label>Phương tiện</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Phương tiện"
+              value={transport}
+              onChange={(e) => setTransport(e.target.value)}
+            />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group controlId="startLocation">
+            <Form.Label>Điểm khởi hành</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Điểm khởi hành"
+              value={startLocation}
+              onChange={(e) => setStartLocation(e.target.value)}
+            />
+          </Form.Group>
+        </Col>
+        <Col>
+          <Form.Group controlId="tourDuration">
+            <Form.Label>Thời gian tour</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Thời lượng tour"
+              value={tourDuration}
+              onChange={(e) => setTourDuration(e.target.value)}
             />
           </Form.Group>
         </Col>

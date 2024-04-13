@@ -5,18 +5,22 @@ import { useEffect, useState } from "react";
 import ToursTable from "./Table";
 import { getAllTours } from "api/tour";
 import SearchForm from "./SearchForm";
+import { searchTour, getTotalPageTour } from "api/tour";
 const Tours = () => {
   const [tours, setTours] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const limit = 5;
+  const accessToken = localStorage.getItem("accessToken");
 
   useEffect(() => {
     const fetchTours = async () => {
       try {
-        const response = await getAllTours(page, limit);
-        setTours(response.data.docs);
-        setTotal(response.data.totalPages);
+        const response = await searchTour(page - 1, accessToken);
+        const totalPageTour = await getTotalPageTour(page - 1, accessToken);
+        setTours(response);
+        setTotal(totalPageTour.data);
+        console.log("response totalPageTour: ", total);
       } catch (error) {
         console.log(error);
       }
@@ -28,23 +32,33 @@ const Tours = () => {
     setPage(value);
   };
 
-  const handleSearch = (name, minPrice, maxPrice) => {
+  const handleSearch = (name, priceFrom, priceTo, transport, startLocation, tourDuration) => {
+
     let queryCondition = {};
     if (name) {
       queryCondition.name = name;
     }
-    if (minPrice) {
-      queryCondition.minPrice = minPrice;
+    if (priceFrom) {
+      queryCondition.priceFrom = priceFrom;
     }
-    if (maxPrice) {
-      queryCondition.maxPrice = maxPrice;
+    if (priceTo) {
+      queryCondition.priceTo = priceTo;
+    }
+    if (transport) {
+      queryCondition.transport = transport;
+    }
+    if (startLocation) {
+      queryCondition.startLocation = startLocation;
+    }
+    if (tourDuration) {
+      queryCondition.tourDuration = tourDuration;
     }
     const fetchTours = async () => {
       try {
-        const response = await getAllTours(page, limit, queryCondition);
-        console.log(response);
-        setTours(response.data.docs);
-        setTotal(response.data.totalPages);
+        const response = await searchTour(page - 1, accessToken, queryCondition);
+        console.log("response search tour: ", response);
+        setTours(response);
+        // setTotal(response.data.totalPages);
       } catch (error) {
         console.log(error);
       }

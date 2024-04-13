@@ -56,7 +56,7 @@ export default function ToursTable({ tours, setTours }) {
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Tên</StyledTableCell>
+            <StyledTableCell align="center">Tên tour</StyledTableCell>
             <StyledTableCell align="center">
               Thời gian khởi hành
             </StyledTableCell>
@@ -70,14 +70,12 @@ export default function ToursTable({ tours, setTours }) {
         <TableBody>
           {tours.map((tour) => (
             <StyledTableRow key={tour._id}>
-              <StyledTableCell component="th" scope="row">
-                <Tooltip title={tour.name} placement="top">
-                  <p className="truncate w-32 font-semibold">{tour.name}</p>{" "}
-                </Tooltip>
+              <StyledTableCell align="center" >
+                <p className=" font-semibold"> {tour.name}</p>
               </StyledTableCell>
-
               <StyledTableCell align="center">
-                {tourTimeParser(tour.startTime, tour.scheduleType)}
+                {/* {tourTimeParser(tour.startTime, tour.scheduleType)} */}
+                {moment(tour.startTime).format("DD/MM/YYYY")}
               </StyledTableCell>
               <StyledTableCell align="center">
                 {tour.tourDuration}
@@ -86,12 +84,15 @@ export default function ToursTable({ tours, setTours }) {
                 {tour.startLocation}
               </StyledTableCell>
               <StyledTableCell align="center">
-                {tour.transportation}
+                {tour.transport}
               </StyledTableCell>
               <StyledTableCell align="center">{tour.price}</StyledTableCell>
               <StyledTableCell align="center">
                 <div className="flex justify-center">
-                  <EditModal tour={tour} setTours={setTours} />
+                  <EditModal
+                    tour={tour}
+                    setTours={setTours}
+                  />
                   <Tooltip title="Xóa" placement="top">
                     <IconButton
                       aria-label="delete"

@@ -94,7 +94,7 @@ const StatTimePicker = ({ tourData, setTourData }) => {
           <Select
             isMulti
             options={dayOptions}
-            value={dayOptions.filter((item) => startTime.includes(item.value))}
+            // value={dayOptions.filter((item) => startTime.includes(item.value))}
             closeMenuOnSelect={false}
             components={animatedComponents}
             onChange={(value) => {

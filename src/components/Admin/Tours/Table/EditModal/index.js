@@ -32,12 +32,12 @@ const EditModal = ({ tour, setTours }) => {
   };
   const [tourData, setTourData] = useState({
     name: tour.name || "",
-    image: tour.image || "",
+    avatar: tour.avatar || "",
     startTime: tour.startTime || "",
-    scheduleType: tour.scheduleType || "daily",
+    // scheduleType: tour.scheduleType || "daily",
     tourDuration: tour.tourDuration || "",
     startLocation: tour.startLocation || "",
-    transportation: tour.transportation || "",
+    transport: tour.transport || "",
     price: tour.price || 0,
     tourInformation: tour.tourInformation || [],
   });
@@ -55,11 +55,11 @@ const EditModal = ({ tour, setTours }) => {
     //console.log("Dữ liệu tour:", tourData);
 
     try {
-      const res = await updateTour(tour._id, tourData);
+      const res = await updateTour(tour.id, tourData);
       if (res?.code === 200) {
         successToast("Cập nhật tour thành công");
         setTours((prev) =>
-          prev.map((item) => (item._id === tour._id ? res.data : item))
+          prev.map((item) => (item.id === tour.id ? res.data : item))
         );
         handleClose();
         resetForm(res.data);
@@ -101,12 +101,12 @@ const EditModal = ({ tour, setTours }) => {
   const resetForm = (data = {}) => {
     setTourData({
       name: data?.name || "",
-      image: data?.image || "",
+      avatar: data?.avatar || "",
       startTime: data?.startTime || "",
-      scheduleType: data?.scheduleType || "daily",
+      // scheduleType: data?.scheduleType || "daily",
       tourTime: data?.tourTime || "",
       startLocation: data?.startLocation || "",
-      transportation: data?.transportation || "",
+      transport: data?.transport || "",
       price: data?.price || 0,
       tourInformation: data?.tourInformation || [],
       tourDuration: data?.tourDuration || "",
@@ -151,7 +151,7 @@ const EditModal = ({ tour, setTours }) => {
             <Form onSubmit={handleSubmit}>
               <Row className="mb-3">
                 <Col>
-                  <img src={tourData.image} alt="" />
+                  <img src={tourData.avatar} alt="" />
                 </Col>
                 <Col className="d-flex flex-column">
                   {" "}
@@ -165,7 +165,7 @@ const EditModal = ({ tour, setTours }) => {
                       required
                     />
                   </Form.Group>
-                  {/* <Form.Group controlId="startTime" className="mb-3">
+                  <Form.Group controlId="startTime" className="mb-3">
                     <Form.Label>Thời Gian Bắt Đầu</Form.Label>
                     <Form.Control
                       type="text"
@@ -174,7 +174,7 @@ const EditModal = ({ tour, setTours }) => {
                       onChange={handleInputChange}
                       required
                     />
-                  </Form.Group> */}
+                  </Form.Group>
                   <StartTimePicker
                     tourData={tourData}
                     setTourData={setTourData}
@@ -185,7 +185,7 @@ const EditModal = ({ tour, setTours }) => {
               <Row className="mb-3">
                 <Col>
                   <Form.Group controlId="image" className="mb-3">
-                    <Form.Label>Anh</Form.Label>
+                    <Form.Label>Ảnh</Form.Label>
                     <Form.Control
                       type="file"
                       placeholder="Enter image URL"
@@ -234,12 +234,12 @@ const EditModal = ({ tour, setTours }) => {
                   </Form.Group>
                 </Col>
                 <Col>
-                  <Form.Group controlId="transportation">
+                  <Form.Group controlId="transport">
                     <Form.Label>Phương Tiện</Form.Label>
                     <Form.Control
                       type="text"
-                      name="transportation"
-                      value={tourData.transportation}
+                      name="transport"
+                      value={tourData.transport}
                       onChange={handleInputChange}
                       required
                     />

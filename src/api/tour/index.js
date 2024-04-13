@@ -86,24 +86,73 @@ const getTourBySlug = async (slug, token) => {
   }
 };
 
-const searchTour = async (page, limit, queryCondition = {}) => {
-  let url = `/customer/tours/search?page=${page}&limit=${limit}`;
+const searchTour = async (page, token, queryCondition = {}) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  let url = `/admin/getListTour/${page}?`;
   if (queryCondition.name) {
     url += `&name=${queryCondition.name}`;
   }
-  if (queryCondition.minPrice) {
-    url += `&minPrice=${queryCondition.minPrice}`;
+  if (queryCondition.priceFrom) {
+    url += `&priceFrom=${queryCondition.priceFrom}`;
   }
-  if (queryCondition.maxPrice) {
-    url += `&maxPrice=${queryCondition.maxPrice}`;
+  if (queryCondition.priceTo) {
+    url += `&priceTo=${queryCondition.priceTo}`;
+  }
+  if (queryCondition.transport) {
+    url += `&transport=${queryCondition.transport}`;
+  }
+  if (queryCondition.startLocation) {
+    url += `&startLocation=${queryCondition.startLocation}`;
+  }
+  if (queryCondition.tourDuration) {
+    url += `&tourDuration=${queryCondition.tourDuration}`;
   }
   try {
-    const response = await instance.get(url);
+    const response = await instance.get(url, config);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
+
+
+const getTotalPageTour = async (page, token, queryCondition = {}) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  let url = `/admin/getTotalPageTour/${page}?`;
+  if (queryCondition.name) {
+    url += `&name=${queryCondition.name}`;
+  }
+  if (queryCondition.priceFrom) {
+    url += `&priceFrom=${queryCondition.priceFrom}`;
+  }
+  if (queryCondition.priceTo) {
+    url += `&priceTo=${queryCondition.priceTo}`;
+  }
+  if (queryCondition.transport) {
+    url += `&transport=${queryCondition.transport}`;
+  }
+  if (queryCondition.startLocation) {
+    url += `&startLocation=${queryCondition.startLocation}`;
+  }
+  if (queryCondition.tourDuration) {
+    url += `&tourDuration=${queryCondition.tourDuration}`;
+  }
+  try {
+    const response = await instance.get(url, config);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
 
 
 
@@ -114,6 +163,7 @@ export {
   addTour,
   getBestSalerToursInHomePage,
   getTourBySlug,
+  getListTour,
   searchTour,
-  getListTour
+  getTotalPageTour
 };

@@ -1,12 +1,12 @@
 import React, { useEffect, useLayoutEffect } from "react";
 import { Card, Container, Row, Col, Image, Button } from "react-bootstrap";
 import DashboardLayout from "layouts/DashboardLayout";
-import { getShopBoatByOwnerId } from "api/shopBoat";
 import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
 import EditModal from "./EditModal";
 import Badge from "react-bootstrap/Badge";
 import Skeleton from "@mui/material/Skeleton";
+import { getShopBoatByIdUser } from "api/shopBoat";
 
 const MerchantDashboard = () => {
   // const [cookies] = useCookies(["access_token"]);
@@ -18,9 +18,9 @@ const MerchantDashboard = () => {
         // const { id } = await jwt_decode(cookies.access_token);
         const id = localStorage.getItem("id");
         const accessToken = localStorage.getItem("accessToken");
-        const response = await getShopBoatByOwnerId(id, accessToken);
-        // console.log(response.data[0]);
-        setShopBoat(response.data[0]);
+        const response = await getShopBoatByIdUser(id, accessToken);
+        console.log(response);
+        setShopBoat(response.data);
       } catch (error) {
         console.log(error);
       }

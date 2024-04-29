@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -37,17 +37,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function OrdersTable({ orders, updateData }) {
+
+  const accessToken = localStorage.getItem("accessToken");
   const handleChaneStatus = async (orderId, status) => {
     try {
-      const response = await updateOrderStatus(orderId, status);
+      const response = await updateOrderStatus(orderId, status, accessToken);
+      console.log("response updateOrderStatus>>>>>>", response);
       if (response?.status === 200) {
-        updateData(response.data.data);
+        updateData(response.data);
       }
     } catch (err) {
       console.log(err);
     }
   };
-
+  useEffect(() => {
+    console.log("orders>>>>>>", orders);
+  }
+    , [orders]);
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -87,14 +93,14 @@ export default function OrdersTable({ orders, updateData }) {
               </StyledTableCell>
               <StyledTableCell component="th" scope="row">
                 <span className="font-semibold">
-                  {order.customer.firstName} {order.customer.lastName}
+                  {order.userName}
                 </span>
               </StyledTableCell>
               <StyledTableCell align="center">
-                {order.customer.phone}
+                {order.userNumberPhone}
               </StyledTableCell>
               <StyledTableCell align="center">
-                {order.customer.address}
+                {order.userAddress}
               </StyledTableCell>
               <StyledTableCell align="center">{order.total}</StyledTableCell>
               <StyledTableCell align="center">
@@ -106,9 +112,17 @@ export default function OrdersTable({ orders, updateData }) {
                   <Badge pill bg="success">
                     Đã xác nhận
                   </Badge>
-                ) : (
+                ) : order.status === "cancelled" ? (
                   <Badge pill bg="danger">
                     Đã hủy
+                  </Badge>
+                ) : order.status === "delivering" ? (
+                  <Badge pill bg="info">
+                    Đang giao hàng
+                  </Badge>
+                ) : (
+                  <Badge pill bg="primary">
+                    Đã hoàn thành
                   </Badge>
                 )}
               </StyledTableCell>
@@ -120,7 +134,7 @@ export default function OrdersTable({ orders, updateData }) {
                   <div className="flex">
                     <Tooltip title="Xác nhận">
                       <IconButton
-                        onClick={() => handleChaneStatus(order._id, "accepted")}
+                        onClick={() => handleChaneStatus(order.id, "accepted")}
                         color="success"
                       >
                         <CheckIcon />
@@ -129,7 +143,7 @@ export default function OrdersTable({ orders, updateData }) {
                     <Tooltip title="Hủy">
                       <IconButton
                         onClick={() =>
-                          handleChaneStatus(order._id, "cancelled")
+                          handleChaneStatus(order.id, "cancelled")
                         }
                         color="error"
                       >
@@ -138,6 +152,35 @@ export default function OrdersTable({ orders, updateData }) {
                     </Tooltip>
                   </div>
                 )}
+                {
+                  order.status === "accepted" && (
+                    <Tooltip title="Giao hàng">
+                      <IconButton
+                        onClick={() =>
+                          handleChaneStatus(order.id, "delivering")
+                        }
+                        color="info"
+                      >
+                        <CheckIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )
+                }
+
+                {
+                  order.status === "delivering" && (
+                    <Tooltip title="Đã hoàn thành">
+                      <IconButton
+                        onClick={() =>
+                          handleChaneStatus(order.id, "completed")
+                        }
+                        color="primary"
+                      >
+                        <CheckIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )
+                }
               </StyledTableCell>
             </StyledTableRow>
           ))}

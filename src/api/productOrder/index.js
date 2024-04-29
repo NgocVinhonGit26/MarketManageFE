@@ -1,3 +1,4 @@
+import userEvent from "@testing-library/user-event";
 import instance from "api/axios";
 
 const getOrdersOfShop = (shopBoatId, page, limit, searchParams = {}) => {
@@ -34,13 +35,58 @@ const getOrdersOfShop = (shopBoatId, page, limit, searchParams = {}) => {
   }
 };
 
-const updateOrderStatus = (orderId, status) => {
+const updateOrderStatus = (orderId, status, token) => {
   try {
-    const response = instance.patch(`/orders/${orderId}`, { status });
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    let formData = new FormData();
+    formData.append("status", status);
+    const response = instance.post(`/merchant/updateStatusOrderProductById/${orderId}`, formData, config);
     return response;
   } catch (error) {
     console.log(error);
   }
 };
 
-export { getOrdersOfShop, updateOrderStatus };
+const createOrderProduct = (data) => {
+  try {
+    const response = instance.post("/product/createOrderProduct", data);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getLastOrderProduct = (userId) => {
+  try {
+    const response = instance.get(`/product/getLastOrderProduct?userId=${userId}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const insertOrderItem = (data) => {
+  try {
+    const response = instance.post("/product/insertOrderItem", data);
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+
+
+
+
+export {
+  getOrdersOfShop,
+  updateOrderStatus,
+  createOrderProduct,
+  getLastOrderProduct,
+  insertOrderItem
+};

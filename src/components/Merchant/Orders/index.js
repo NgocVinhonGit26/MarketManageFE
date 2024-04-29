@@ -4,11 +4,13 @@ import { useLayoutEffect, useState, useEffect } from "react";
 import { navigate, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
-import { getShopBoatByOwnerId } from "api/shopBoat";
-import { getOrdersOfShop } from "api/productOrder";
 import OrdersTable from "./Table";
 import Pagination from "@mui/material/Pagination";
 import SearchForm from "./SearchForm";
+import { getAllListOrderProduct } from "api/shopBoat";
+import { number } from "prop-types";
+import { getShopBoatByIdUser } from "api/shopBoat";
+import { getTotalPageOrderProduct } from "api/shopBoat";
 
 const Orders = () => {
   const [cookies, setCookie] = useCookies(["access_token"]);
@@ -18,39 +20,49 @@ const Orders = () => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const [orders, setOrders] = useState([]);
+  const accessToken = localStorage.getItem("accessToken");
+  const id = localStorage.getItem("id");
+  const role = parseInt(localStorage.getItem("role"), 10);
+
 
   useLayoutEffect(() => {
     const checkRole = async () => {
-      if (cookies.access_token) {
-        const { id, role } = await jwt_decode(cookies.access_token);
+      if (accessToken) {
+        // const { id, role } = await jwt_decode(cookies.access_token);
+
         if (role !== 1) {
           navigate("/signin");
         }
         const fetchShopBoat = async (id) => {
-          const response = await getShopBoatByOwnerId(id);
+          const response = await getShopBoatByIdUser(id, accessToken);
+          console.log("getShopBoatByIdUser>>> ", response);
           if (response) {
-            const shopBoatId = response.data.data._id;
+            const shopBoatId = response.data.id;
             setShopBoatId(shopBoatId);
           }
         };
         fetchShopBoat(id);
       } else {
         // Nếu không có access_token, chuyển hướng đến trang đăng nhập
-        // navigate("/signin");
+        navigate("/signin");
       }
     };
     checkRole();
-  }, [cookies.access_token, navigate]);
+  }, [accessToken, navigate]);
 
   useEffect(() => {
     if (shopBoatId) {
       const fetchOrders = async () => {
         try {
-          const response = await getOrdersOfShop(shopBoatId, page, limit);
+          const response = await getAllListOrderProduct(shopBoatId, page - 1, accessToken);
+          console.log("getAllListOrderProduct>>> ", response);
+          const totalPage = await getTotalPageOrderProduct(shopBoatId, page - 1, accessToken);
+          console.log("getTotalPageOrderProduct>>> ", totalPage);
           if (response?.status === 200) {
-            setOrders(response.data.data.docs);
-            setTotal(response.data.data.totalPages);
+            setOrders(response.data);
+            setTotal(totalPage.data);
           }
+
         } catch (err) {
           console.log(err);
         }
@@ -65,7 +77,7 @@ const Orders = () => {
 
   const updateData = (data) => {
     const newOrders = orders.map((order) => {
-      if (order._id === data._id) {
+      if (order.id === data.id) {
         return data;
       }
       return order;
@@ -76,11 +88,11 @@ const Orders = () => {
   const handleSearch = (data) => {
     const fetchOrders = async () => {
       try {
-        const response = await getOrdersOfShop(shopBoatId, page, limit, data);
-        if (response?.status === 200) {
-          setOrders(response.data.data.docs);
-          setTotal(response.data.data.totalPages);
-        }
+        const response = await getAllListOrderProduct(shopBoatId, page, accessToken);
+        // if (response?.status === 200) {
+        //   setOrders(response.data.data.docs);
+        //   setTotal(response.data.data.totalPages);
+        // }
       } catch (err) {
         console.log(err);
       }

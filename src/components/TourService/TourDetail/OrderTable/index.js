@@ -20,14 +20,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { ThirtyFps } from "@mui/icons-material";
-import { orderTour } from "api/tourOrder";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { setOrderTourRD } from "redux/slices/orderTourSlice";
-import { resetState } from "redux/slices/mySlice";
 import { addOrder } from "redux/slices/listOrderTourSlice";
-import { create } from "@mui/material/styles/createTransitions";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;

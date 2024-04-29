@@ -11,6 +11,7 @@ import { getShopBoatByOwnerId } from "api/shopBoat";
 import { getListCategories } from "api/category";
 import { useNavigate } from "react-router-dom";
 import ProductSearchForm from "./ProductSearchForm";
+import { searchProduct, getTotalPageProduct } from "api/product";
 
 const MerchantProducts = () => {
   const [products, setProducts] = useState([]);
@@ -21,67 +22,47 @@ const MerchantProducts = () => {
   const navigate = useNavigate();
   const [shopBoatId, setShopBoatId] = useState(null);
   const [categories, setCategories] = useState([]);
+  const accessToken = localStorage.getItem("accessToken");
 
-  useLayoutEffect(() => {
-    const checkRole = async () => {
-      if (cookies.access_token) {
-        const { id, role } = await jwt_decode(cookies.access_token);
-        if (role !== 1) {
-          navigate("/signin");
-        }
-        const fetchShopBoat = async (id) => {
-          const response = await getShopBoatByOwnerId(id);
-          if (response) {
-            const shopBoatId = response.data.data._id;
-            setShopBoatId(shopBoatId);
-          }
-        };
-        fetchShopBoat(id);
-      } else {
-        // Nếu không có access_token, chuyển hướng đến trang đăng nhập
-        // navigate("/signin");
-      }
-    };
-    checkRole();
-  }, [cookies.access_token, navigate]);
+  // useLayoutEffect(() => {
+  //   const checkRole = async () => {
+  //     if (cookies.access_token) {
+  //       const { id, role } = await jwt_decode(cookies.access_token);
+  //       if (role !== 1) {
+  //         navigate("/signin");
+  //       }
+  //       const fetchShopBoat = async (id) => {
+  //         const response = await getShopBoatByOwnerId(id);
+  //         if (response) {
+  //           const shopBoatId = response.data.data._id;
+  //           setShopBoatId(shopBoatId);
+  //         }
+  //       };
+  //       fetchShopBoat(id);
+  //     } else {
+  //       // Nếu không có access_token, chuyển hướng đến trang đăng nhập
+  //       // navigate("/signin");
+  //     }
+  //   };
+  //   checkRole();
+  // }, [cookies.access_token, navigate]);
+  const fetchProducts = async (formData = {}) => {
 
+    const response = await searchProduct(page - 1, accessToken, formData);
+    const totalPages = await getTotalPageProduct(page - 1, accessToken, formData);
+    console.log("response searchProduct:", response)
+    console.log("totalPages:", totalPages)
+    setProducts(response.data);
+    setTotal(totalPages.data);
+  };
   useEffect(() => {
-    const fetchProducts = async () => {
-      if (shopBoatId) {
-        const response = await getShopBoatProducts(shopBoatId, 1, limit);
-        if (response) {
-          setProducts(response.data.data.docs);
-          setTotal(response.data.data.totalPages);
-        }
-      }
-    };
-    fetchProducts();
-  }, [shopBoatId]);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await getListCategories();
-      if (response?.status === 200) {
-        let categories = response.data.data;
-        categories = categories.map((category) => {
-          return { value: category._id, label: category.name };
-        });
-        setCategories(categories);
-      }
-    };
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const response = await getShopBoatProducts(shopBoatId, page, limit);
-      if (response?.status === 200) {
-        setProducts(response.data.data.docs);
-        setTotal(response.data.data.totalPages);
-      }
-    };
     fetchProducts();
   }, [page]);
+
+
+
+
 
   const handleChangePage = (event, value) => {
     setPage(value);
@@ -111,16 +92,10 @@ const MerchantProducts = () => {
 
   const handleSearch = async (formData) => {
     try {
-      const response = await getShopBoatProducts(
-        shopBoatId,
-        1,
-        limit,
-        formData
-      );
-      if (response?.status === 200) {
-        setProducts(response.data.data.docs);
-        setTotal(response.data.data.totalPages);
-      }
+      const response = await searchProduct(page - 1, accessToken, formData);
+      const totalPages = await getTotalPageProduct(page - 1, accessToken, formData);
+      console.log("response searchProduct:", response)
+      console.log("totalPages:", totalPages)
     } catch (err) {
       console.log(err);
     }

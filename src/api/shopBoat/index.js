@@ -57,7 +57,7 @@ const createProduct = async (data) => {
   }
 };
 
-const getShopBoatByOwnerId = async (id, token) => {
+const getShopBoatByIdUser = async (id, token) => {
   try {
     const config = {
       headers: {
@@ -65,7 +65,7 @@ const getShopBoatByOwnerId = async (id, token) => {
       }
     }
 
-    const response = await instance.get(`/user/${id}` + `/shopboat`, config);
+    const response = await instance.get(`merchant/getShopBoatByIdUser/${id}`, config);
     // console.log(response);
     return response;
   } catch (error) {
@@ -193,11 +193,70 @@ const getAllShopBoatsWithoutPagination = async () => {
   return instance.get('/shopboat/getListShopBoats');
 }
 
+const getAllListOrderProduct = async (idShop, page, token) => {
+  let url = `merchant/getAllListOrderProduct/${page}?`;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+  try {
+    console.log("url>>>>", url);
+    if (idShop) {
+      url += `shopBoatId=${idShop}`
+    }
+    console.log("url>>>>1", url);
+    const response = await instance.get(url, config)
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalPageOrderProduct = async (idShop, page, token) => {
+  let url = `merchant/getTotalPageOrderProduct/${page}?`;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+  try {
+    if (idShop) {
+      url += `shopBoatId=${idShop}`
+    }
+    const response = await instance.get(url, config)
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const getOrderItemByOrderProductId = (orderProductId, token) => {
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const response = instance.get(`/merchant/getOrderItemByOrderProductId/${orderProductId}`, config);
+
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+
 export {
   getShopBoatProducts,
   updateProduct,
   deleteProduct,
-  getShopBoatByOwnerId,
+  getShopBoatByIdUser,
   createProduct,
   updateShopBoat,
   getAllShopBoats,
@@ -205,5 +264,8 @@ export {
   updateShopBoatById,
   getListCategoriesOfShop,
   getAllShopBoatsWithoutPagination,
-  updateShopBoatStatus
+  updateShopBoatStatus,
+  getAllListOrderProduct,
+  getTotalPageOrderProduct,
+  getOrderItemByOrderProductId
 };

@@ -55,7 +55,19 @@ export default function SignIn() {
       // console.log("accessToken1", res.data.token);
       localStorage.setItem("accessToken", res.data.token);
       localStorage.setItem("id", res.data.id);
+      if (res.data.role === "ADMIN") {
+        localStorage.setItem("role", 0);
+      }
+      if (res.data.role === "MERCHANT") {
+        localStorage.setItem("role", 1);
+      }
+      if (res.data.role === "USER") {
+        localStorage.setItem("role", 2);
+      }
+
       if (res?.status === 200) {
+        localStorage.setItem("hadCart", false);
+        console.log("localstorage>>>", localStorage.getItem("hadCart"));
         successToast("Login successful");
         const payload = {
           token: res.data.token,

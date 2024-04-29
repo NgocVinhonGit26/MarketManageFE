@@ -38,11 +38,24 @@ import MerchantDashbroad from "components/Merchant/MerchantDashbroad";
 import Orders from "components/Merchant/Orders";
 import OrderTour from "components/TourService/OrderTour";
 import ImageUpload from "components/ImageUpload";
+import CartProduct from "components/Market/CartProduct";
 
 function App() {
   const [cookies] = useCookies(["access_token"]);
   const [role, setRole] = useState(null);
   const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   const clearLocalStorage = () => {
+  //     localStorage.clear();
+  //   };
+
+  //   window.addEventListener('beforeunload', clearLocalStorage);
+
+  //   return () => {
+  //     window.removeEventListener('beforeunload', clearLocalStorage);
+  //   };
+  // }, []);
 
   return (
     <div className="App">
@@ -78,6 +91,7 @@ function App() {
           element={<MarketSearchpage />}
         />
         <Route path="/marketplace/product/:slug" element={<DetailProduct />} />
+        <Route path="/marketplace/cart" element={<CartProduct />} />
 
         {/* Auth */}
         <Route path="/signin" element={<SignIn />} />

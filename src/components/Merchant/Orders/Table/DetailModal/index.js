@@ -4,6 +4,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { Container, Row, Col, Card, Badge } from "react-bootstrap";
+import moment from "moment";
+import { useEffect } from "react";
+import { getOrderItemByOrderProductId } from "api/shopBoat";
 const style = {
   position: "absolute",
   top: "50%",
@@ -20,11 +23,27 @@ const DetailModal = ({ order }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const accessToken = localStorage.getItem("accessToken");
+  const [orderItems, setOrderItems] = React.useState([]);
+
+  useEffect(() => {
+    const getOrderItem = async (orderProductId) => {
+      try {
+        // console.log("orderProductId>>>>>>", orderProductId);
+        const response = await getOrderItemByOrderProductId(orderProductId, accessToken);
+        // console.log("response getOrderItemByOrderProductId>>>>>>", response);
+        setOrderItems(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getOrderItem(order.id);
+  }, [open]);
 
   return (
     <div>
-      <Button variant="primary" onClick={handleOpen}>
-        Detail
+      <Button variant="primary" onClick={handleOpen} style={{ width: "80px", height: "40px" }}>
+        Chi tiết
       </Button>
       <Modal
         open={open}
@@ -37,40 +56,48 @@ const DetailModal = ({ order }) => {
             <Col>
               <Card>
                 <Card.Body>
-                  <h4>Invoice Details</h4>
+                  <h4>Chi tiết đơn hàng</h4>
                   <p>
-                    <span className="font-semibold">Date:</span>{" "}
-                    {order?.createdAt}
+                    <span className="font-semibold">Ngày:</span>{" "}
+                    {moment(order.createdAt).format("DD/MM/YYYY HH:mm")}
                   </p>
                   <p>
-                    <span className="font-semibold">Customer:</span>{" "}
-                    {order?.customerName}
+                    <span className="font-semibold">Khách hàng:</span>{" "}
+                    {order?.userName}
                   </p>
                   <p>
-                    <span className="font-semibold">Phone:</span>{" "}
-                    {order?.customer?.phone}
+                    <span className="font-semibold">Số điện thoại:</span>{" "}
+                    {order?.userNumberPhone}
                   </p>
                   <p>
-                    <span className="font-semibold">Address:</span>{" "}
-                    {order?.customer?.address}
+                    <span className="font-semibold">Địa chỉ:</span>{" "}
+                    {order?.userAddress}
                   </p>
                   <p>
-                    <span className="font-semibold">Total:</span> $
+                    <span className="font-semibold">Tổng đơn:</span> $
                     {order?.total}
                   </p>
                   <p>
-                    <span className="font-semibold">Status:</span>{" "}
-                    {order?.status === "pending" ? (
+                    <span className="font-semibold">Trạng thái:</span>{" "}
+                    {order.status === "pending" ? (
                       <Badge pill bg="warning">
-                        Pending
+                        Chờ xác nhận
                       </Badge>
                     ) : order.status === "accepted" ? (
                       <Badge pill bg="success">
-                        Accepted
+                        Đã xác nhận
+                      </Badge>
+                    ) : order.status === "cancelled" ? (
+                      <Badge pill bg="danger">
+                        Đã hủy
+                      </Badge>
+                    ) : order.status === "delivering" ? (
+                      <Badge pill bg="info">
+                        Đang giao hàng
                       </Badge>
                     ) : (
-                      <Badge pill bg="danger">
-                        Cancelled
+                      <Badge pill bg="primary">
+                        Đã hoàn thành
                       </Badge>
                     )}
                   </p>
@@ -86,27 +113,27 @@ const DetailModal = ({ order }) => {
                   <table className="table">
                     <thead>
                       <tr>
-                        <th>Image</th>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
+                        <th>Ảnh</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Giá</th>
                         <th>Discount (%)</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {order.orderItems.map((item, index) => (
+                      {orderItems.map((item, index) => (
                         <tr key={index}>
                           <td>
                             <img
-                              src={item.product?.image}
-                              alt={item.product?.name}
-                              width="50"
+                              src={item?.productAvatar}
+                              alt={item?.productName}
+                              style={{ width: "50px", height: "50px" }}
                             />
                           </td>
-                          <td>{item.product?.name}</td>
-                          <td>{item.quantity}</td>
-                          <td>${item.price}</td>
-                          <td>{item.sale}%</td>
+                          <td align="center" style={{ textAlign: "center" }}>{item?.productName}</td>
+                          <td align="center">{item.quantity}</td>
+                          <td align="center">${item.price}</td>
+                          <td align="center">{item.sale}%</td>
                         </tr>
                       ))}
                     </tbody>

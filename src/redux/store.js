@@ -6,6 +6,9 @@ import thunk from "redux-thunk";
 import orderTourSlice from "./slices/orderTourSlice";
 import mySlice from "./slices/mySlice";
 import listOrderTourSlice from "./slices/listOrderTourSlice";
+import listOrderProductSlice from "./slices/listOrderProductSlice";
+
+
 
 const persistConfig = {
     key: "root",
@@ -14,13 +17,17 @@ const persistConfig = {
 const user = persistReducer(persistConfig, userSlice);
 const orderTour = persistReducer(persistConfig, orderTourSlice);
 const listOrderTour = persistReducer(persistConfig, listOrderTourSlice);
-const mySlices = persistReducer(persistConfig, mySlice)
+const mySlices = persistReducer(persistConfig, mySlice);
+const listOrderProduct = persistReducer(persistConfig, listOrderProductSlice);
+
 export const store = configureStore({
     reducer: {
         user,
         orderTour,
         listOrderTour,
-        mySlices
+        mySlices,
+        listOrderProduct
+
     },
     middleware: [thunk],
 });

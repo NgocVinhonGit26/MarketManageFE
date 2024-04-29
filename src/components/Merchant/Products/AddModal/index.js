@@ -139,19 +139,19 @@ function AddModal({ updateData, addProduct }) {
   const [information, setInformation] = useState([]);
   const [image, setImage] = useState(defaultImage);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await getListCategories();
-      if (response?.status === 200) {
-        let categories = response?.data.data.map((category) => {
-          return { value: category.slug, label: category.name };
-        });
-        setListCategory(categories);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     const response = await getListCategories();
+  //     if (response?.status === 200) {
+  //       let categories = response?.data.data.map((category) => {
+  //         return { value: category.slug, label: category.name };
+  //       });
+  //       setListCategory(categories);
+  //     }
+  //   };
 
-    fetchCategories();
-  }, []);
+  //   fetchCategories();
+  // }, []);
 
   const style = {
     position: "absolute",

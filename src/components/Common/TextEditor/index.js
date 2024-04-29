@@ -9,7 +9,7 @@ function CustomUploadAdapterPlugin(editor) {
     return new UploadAdapter(loader, url);
   };
 }
-const TextEditor = ({ value, setValue }) => {
+const TextEditor = ({ information, setInformation }) => {
   const editorConfiguration = {
     toolbar: [
       "heading",
@@ -31,7 +31,7 @@ const TextEditor = ({ value, setValue }) => {
   return (
     <CKEditor
       editor={ClassicEditor}
-      data={value}
+      data={information}
       config={editorConfiguration}
       onReady={(editor) => {
         // You can store the "editor" and use when it is needed.
@@ -41,7 +41,7 @@ const TextEditor = ({ value, setValue }) => {
         const data = editor.getData();
         //console.log({ event, editor, data });
         console.log(data);
-        setValue(data);
+        setInformation(data);
       }}
       onBlur={(event, editor) => {
         //console.log("Blur.", editor);

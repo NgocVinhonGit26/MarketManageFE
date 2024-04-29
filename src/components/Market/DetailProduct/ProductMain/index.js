@@ -1,27 +1,115 @@
 import "./style.scss";
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Badge from "react-bootstrap/Badge";
 import { getCategoryById } from "api/category";
 import { Link } from "react-router-dom";
 import Skeleton from "@mui/material/Skeleton";
+import { infoToast } from "utilities/toast";
+import { warningToast } from "utilities/toast";
+import { createOrderProduct } from "api/productOrder";
+import { getLastOrderProduct } from "api/productOrder";
+import { insertOrderItem } from "api/productOrder";
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { addOrderProduct } from "redux/slices/listOrderProductSlice";
+import { resetListOderProduct } from "redux/slices/listOrderProductSlice";
+
+
 
 const ProductMain = (props) => {
-  const { product } = props;
+  const { product, orderProduct, setOrderProduct } = props;
   const [quantity, setQuantity] = React.useState(0);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [item, setItem] = React.useState({
+    productId: 0,
+    productName: "",
+    productPrice: 0,
+    orderProductId: 0,
+    quantity: 0,
+    price: 0,
+    sale: 0,
+  });
 
   const handleIncrement = () => {
     setQuantity(quantity + 1);
+    setItem(prevState => ({
+      ...prevState,
+      productId: product.id,
+      productName: product.name,
+      productPrice: product.price,
+      orderProductId: parseInt(localStorage.getItem("orderProductId")),
+      quantity: quantity + 1,
+      price: product.price * (quantity + 1),
+    }))
+
   };
 
   const handleDecrement = () => {
     if (quantity > 0) {
       setQuantity(quantity - 1);
+      setItem(prevState => ({
+        ...prevState,
+        productId: product.id,
+        productName: product.name,
+        productPrice: product.price,
+        orderProductId: parseInt(localStorage.getItem("orderProductId")),
+        quantity: quantity - 1,
+        price: product.price * (quantity - 1),
+      }))
     } else {
-      alert("Số lượng không thể nhỏ hơn 0");
+      warningToast("Số lượng không thể nhỏ hơn 0", 3000);
+      return
     }
   };
+
+  const handleAddProductToCart = async () => {
+    // setQuantity(121)
+    if (quantity > product.countInStock) {
+      warningToast(`Xin lỗi quý khách ! Chúng tôi chỉ còn ${product.countInStock} sản phẩm trong kho.`, 3000);
+      return
+    }
+    if (quantity === 0) {
+      warningToast("Số lượng không thể nhỏ hơn 1", 3000);
+      return;
+    }
+    try {
+      if (localStorage.getItem("hadCart") === "false") {
+        const hadCart = await createOrderProduct(orderProduct)
+        console.log("response: createOrderProduct", hadCart)
+        localStorage.setItem("hadCart", true)
+      }
+      const response = await getLastOrderProduct(localStorage.getItem("id"))
+      console.log("response: getLastOrderProduct", response.data)
+
+      localStorage.setItem("orderProductId", response.data)
+      setItem(prevState => ({
+        ...prevState,
+        productId: product.id,
+        orderProductId: response.data,
+      }))
+      console.log("dcm item", item);
+      dispatch(addOrderProduct(item))
+      // dispatch(resetListOderProduct())
+      localStorage.setItem("hadCart", false)
+      navigate("/marketplace/cart")
+
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    // setQuantity(quantity);
+    //const response2 = await insertOrderItem(item)
+    //console.log("response: insertOrderItem", response2)
+    // dispatch(addOrderProduct(item))
+    // navigate("/marketplace/cart")
+  }, [item]);
 
   return (
     <div className="product-main">
@@ -40,11 +128,11 @@ const ProductMain = (props) => {
         </div>
         <div className="product-main__content__right">
           <div className="product-main__content__path_product">
-            <a href="#">TRANG CHỦ</a>
+            <a href="#">Trang chủ</a>
             <span> / </span>
-            <a href="#">TRÁI CÂY</a>
+            <a href="#">{product.category}</a>
             <span> / </span>
-            <a href="#">CAM</a>
+            <a href="#">{product.name}</a>
           </div>
           <div className="product-main__content__name_product">
             <h1>{product.name}</h1>
@@ -76,6 +164,7 @@ const ProductMain = (props) => {
                 borderRadius: "1.35rem !important",
                 fontWeight: "bold !important",
               }}
+              onClick={() => handleAddProductToCart()}
             >
               Thêm hàng vào giỏ
             </Button>

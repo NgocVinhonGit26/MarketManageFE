@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserDefault } from "redux/slices/userSlice";
 import { signoutService } from "api/auth";
+import { successToast } from "utilities/toast";
 
 const MarketNavbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,6 +37,7 @@ const MarketNavbar = () => {
   };
 
   const handleLogin = () => {
+
     navigate("/signin");
   };
 
@@ -45,6 +47,7 @@ const MarketNavbar = () => {
       const response = await signoutService(token);
       console.log("token1>>>>", token);
       console.log("response", response);
+      successToast("Đăng xuất thành công");
       dispatch(setUserDefault());
       navigate("/marketplace");
     }
@@ -55,6 +58,10 @@ const MarketNavbar = () => {
 
   const handleSearch = () => {
     navigate(`/marketplace/search/${searchTerm}`);
+  };
+
+  const handleNavigateToCart = () => {
+    navigate("/marketplace/cart");
   };
 
   return (
@@ -114,9 +121,11 @@ const MarketNavbar = () => {
               </span>
             </div>
           )}
-          <div className="item-cart">
+          <div className="item-cart" onClick={() => handleNavigateToCart()}>
             <span className=" font-medium relative mr-2">
-              <span className="text-base">0</span>
+              <span className="text-base">{
+                localStorage.getItem("totalPriceProduct") ? localStorage.getItem("totalPriceProduct") : 0
+              }</span>
               <span className="text-xs relative top-[-0.2em] font-medium underline">
                 đ
               </span>

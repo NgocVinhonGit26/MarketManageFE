@@ -9,9 +9,14 @@ const getTop4Products = () => {
   }
 };
 
-const getListProductsInHomePage = () => {
+const getAllProductOrderByCategory = (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   try {
-    const response = instance.get(`/products/homepage`);
+    const response = instance.get(`/product/getAllProductOrderByCategory`, config);
     return response;
   } catch (error) {
     console.log(error);
@@ -20,21 +25,69 @@ const getListProductsInHomePage = () => {
 
 const getProductBySlug = (slug) => {
   try {
-    const response = instance.get(`/products/${slug}`);
+    const response = instance.get(`/product/getProductBySlug/${slug}`);
     return response;
   } catch (error) {
     console.log(error);
   }
 };
 
-const searchProduct = (page, limit, query) => {
+const searchProduct = (page, query = {}) => {
+
+  let url = `/product/searchProduct/${page}?`;
+  if (query.name) {
+    url += "&name=" + query.name;
+  }
+  if (query.priceFrom) {
+    url += "&priceFrom=" + query.priceFrom;
+  }
+  if (query.priceTo) {
+    url += "&priceTo=" + query.priceTo;
+  }
+  if (query.countInStock) {
+    url += "&countInStock=" + query.countInStock;
+  }
+  if (query.category) {
+    url += "&category=" + query.category;
+  }
+  if (query.sale) {
+    url += "&sale=" + query.sale;
+  }
+
+
   try {
-    let url = "/customer/products/search?page=" + page + "&limit=" + limit;
-    if (query.name) {
-      url += "&name=" + query.name;
-    }
     const response = instance.get(url);
     return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getTotalPageProduct = (page, query = {}) => {
+  let url = `/product/getTotalPage/${page}?`;
+  if (query.name) {
+    url += "&name=" + query.name;
+  }
+  if (query.priceFrom) {
+    url += "&priceFrom=" + query.priceFrom;
+  }
+  if (query.priceTo) {
+    url += "&priceTo=" + query.priceTo;
+  }
+  if (query.countInStock) {
+    url += "&countInStock=" + query.countInStock;
+  }
+  if (query.category) {
+    url += "&category=" + query.category;
+  }
+  if (query.sale) {
+    url += "&sale=" + query.sale;
+  }
+
+
+  try {
+    const response = instance.get(url);
+    return response
   } catch (error) {
     console.log(error);
   }
@@ -58,8 +111,9 @@ const getProductByCategory = (page, limit, categorySlug) => {
 
 export {
   getTop4Products,
-  getListProductsInHomePage,
+  getAllProductOrderByCategory,
   getProductBySlug,
   searchProduct,
+  getTotalPageProduct,
   getProductByCategory,
 };

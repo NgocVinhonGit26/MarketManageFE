@@ -33,15 +33,17 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import LocalMallIcon from "@mui/icons-material/LocalMall";
 import StoreIcon from "@mui/icons-material/Store";
 import TourIcon from "@mui/icons-material/Tour";
+import HomeIcon from '@mui/icons-material/Home';
 
 import { signoutService } from "api/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useLayoutEffect } from "react";
 import { useCookies } from "react-cookie";
 import jwt_decode from "jwt-decode";
-import { getShopBoatByOwnerId } from "api/shopBoat";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserDefault } from "redux/slices/userSlice";
+import { successToast } from "utilities/toast";
+import { getShopBoatByIdUser } from "api/shopBoat";
 
 function Copyright(props) {
   return (
@@ -110,7 +112,7 @@ const Drawer = styled(MuiDrawer, {
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-const AdminListItems = ({ handleLogout }) => {
+const AdminListItems = ({ handleLogout, handleRedirectToHomepage }) => {
   return (
     <React.Fragment>
       <ListItemButton component={RouterLink} to="/admin">
@@ -149,11 +151,20 @@ const AdminListItems = ({ handleLogout }) => {
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>
+      <ListItemButton onClick={handleRedirectToHomepage}>
+        <ListItemIcon>
+          <HomeIcon />
+        </ListItemIcon>
+        <ListItemText primary="Trang chủ" />
+      </ListItemButton>
     </React.Fragment>
   );
 };
 
-const MerchantListItems = ({ handleLogout }) => {
+
+
+
+const MerchantListItems = ({ handleLogout, handleRedirectToHomepage }) => {
   return (
     <React.Fragment>
       <ListItemButton component={RouterLink} to="/merchant">
@@ -186,6 +197,12 @@ const MerchantListItems = ({ handleLogout }) => {
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItemButton>
+      <ListItemButton onClick={handleRedirectToHomepage}>
+        <ListItemIcon>
+          <HomeIcon />
+        </ListItemIcon>
+        <ListItemText primary="Trang chủ" />
+      </ListItemButton>
     </React.Fragment>
   );
 };
@@ -199,6 +216,8 @@ export default function DashboardLayout({ children, layoutRole }) {
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const accessToken = localStorage.getItem("accessToken")
 
   useLayoutEffect(() => {
     const checkRole = async () => {
@@ -215,7 +234,7 @@ export default function DashboardLayout({ children, layoutRole }) {
           navigate("/marketplace");
         }
         if (role === 1) {
-          const response = await getShopBoatByOwnerId(id);
+          const response = await getShopBoatByIdUser(id, accessToken);
           if (response) {
             localStorage.setItem("shopBoatId", response.data.data._id);
           }
@@ -232,12 +251,18 @@ export default function DashboardLayout({ children, layoutRole }) {
       const response = await signoutService(token);
       if (response?.status === 200) {
         dispatch(setUserDefault());
+        successToast("Đăng xuất thành công !")
         navigate("/signin");
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handleRedirectToHomepage = () => {
+
+    navigate('/');
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -293,9 +318,15 @@ export default function DashboardLayout({ children, layoutRole }) {
           <Divider />
           <List component="nav">
             {layoutRole === 0 ? (
-              <AdminListItems handleLogout={handleLogout} />
+              <AdminListItems
+                handleLogout={handleLogout}
+                handleRedirectToHomepage={handleRedirectToHomepage}
+              />
             ) : (
-              <MerchantListItems handleLogout={handleLogout} />
+              <MerchantListItems
+                handleLogout={handleLogout}
+                handleRedirectToHomepage={handleRedirectToHomepage}
+              />
             )}
             <Divider sx={{ my: 1 }} />
             {secondaryListItems}

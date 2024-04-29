@@ -119,11 +119,12 @@ export default function ProductsTable({
               </StyledTableCell>
               <StyledTableCell align="center">{product.unit}</StyledTableCell>
               <StyledTableCell align="center">
-                {product.categories.map((category, index) => (
+                {/* {product.categories.map((category, index) => (
                   <Badge key={index} pill bg="primary" className="me-1">
                     {category.name}
                   </Badge>
-                ))}
+                ))} */}
+                {product.category}
               </StyledTableCell>
               <StyledTableCell align="center">
                 <EditModal product={product} updateData={updateData} />{" "}

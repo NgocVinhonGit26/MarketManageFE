@@ -1,3 +1,5 @@
+
+
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "@mui/material/Modal";
@@ -136,27 +138,27 @@ function EditModal({ product, updateData }) {
   const [information, setInformation] = useState(product.information);
   const [image, setImage] = useState(product.image);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await getListCategories();
-      if (response?.status === 200) {
-        let categories = response?.data.data.map((category) => {
-          return { value: category.slug, label: category.name };
-        });
-        setListCategory(categories);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     const response = await getListCategories();
+  //     if (response?.status === 200) {
+  //       let categories = response?.data.data.map((category) => {
+  //         return { value: category.slug, label: category.name };
+  //       });
+  //       setListCategory(categories);
+  //     }
+  //   };
 
-    const initSelectedCategories = () => {
-      let categories = product.categories.map((category) => {
-        return { value: category.id, label: category.name };
-      });
-      setSelectedCategory(categories);
-    };
+  //   const initSelectedCategories = () => {
+  //     let categories = product.categories.map((category) => {
+  //       return { value: category.id, label: category.name };
+  //     });
+  //     setSelectedCategory(categories);
+  //   };
 
-    initSelectedCategories();
-    fetchCategories();
-  }, []);
+  //   initSelectedCategories();
+  //   fetchCategories();
+  // }, []);
 
   const style = {
     position: "absolute",
@@ -179,11 +181,11 @@ function EditModal({ product, updateData }) {
     setUnit(updatedProduct.unit);
     setCountInStock(updatedProduct.countInStock);
     setDescription(updatedProduct.description);
-    setSelectedCategory(
-      updatedProduct.categories.map((category) => {
-        return { value: category.slug, label: category.name };
-      })
-    );
+    // setSelectedCategory(
+    //   updatedProduct.categories.map((category) => {
+    //     return { value: category.slug, label: category.name };
+    //   })
+    // );
     setInformation(updatedProduct.information);
     setImage(updatedProduct.image);
   };
@@ -196,10 +198,10 @@ function EditModal({ product, updateData }) {
     data.append("unit", unit);
     data.append("countInStock", countInStock);
     data.append("description", description);
-    data.append(
-      "categories",
-      selectedCategories.map((category) => category.value)
-    );
+    // data.append(
+    //   "categories",
+    //   selectedCategories.map((category) => category.value)
+    // );
     data.append("information", JSON.stringify(information));
 
     if (image !== product.image) {
@@ -366,7 +368,7 @@ function EditModal({ product, updateData }) {
               </div>
 
               <div className="flex flex-col">
-                {information.map((info, index) => (
+                {/* {information.map((info, index) => (
                   <div
                     className="flex gap-4 border border-gray-300 p-2 border-b-0 mt-[-1px] relative"
                     key={uuidv4()}
@@ -388,7 +390,7 @@ function EditModal({ product, updateData }) {
                       <DeleteIcon />
                     </IconButton>
                   </div>
-                ))}
+                ))} */}
               </div>
             </Form.Group>
 

@@ -6,7 +6,7 @@ import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import SliderProduct from "./SliderProduct";
-import { getListProductsInHomePage } from "api/product";
+import { getAllProductOrderByCategory } from "api/product";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -43,14 +43,16 @@ function a11yProps(index) {
 
 const ListProduct = () => {
   const [value, setValue] = React.useState(0);
-  const [top1Category, setTop1Category] = React.useState("Category 1"); // "Category 1
+  const [top1Category, setTop1Category] = React.useState(""); // "Category 1
   const [top1Products, setTop1Products] = React.useState([]);
-  const [top2Category, setTop2Category] = React.useState("Category 2"); // "Category 2"
+  const [top2Category, setTop2Category] = React.useState(""); // "Category 2"
   const [top2Products, setTop2Products] = React.useState([]);
-  const [top3Category, setTop3Category] = React.useState("Category 3"); // "Category 3
+  const [top3Category, setTop3Category] = React.useState(""); // "Category 3
   const [top3Products, setTop3Products] = React.useState([]);
-  const [otherCategory, setOtherCategory] = React.useState("Others"); // "Others"
+  const [otherCategory, setOtherCategory] = React.useState(""); // "Others"
   const [otherProducts, setOtherProducts] = React.useState([]);
+
+  const accessToken = localStorage.getItem("accessToken");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -59,21 +61,54 @@ const ListProduct = () => {
   React.useEffect(() => {
     const fetchListProductsInHomePage = async () => {
       try {
-        const response = await getListProductsInHomePage();
-        setTop1Category(response.data.data[0].category);
-        setTop1Products(response.data.data[0].products);
-        setTop2Category(response.data.data[1].category);
-        setTop2Products(response.data.data[1].products);
-        setTop3Category(response.data.data[2].category);
-        setTop3Products(response.data.data[2].products);
-        setOtherCategory(response.data.data[3].category);
-        setOtherProducts(response.data.data[3].products);
+        const response = await getAllProductOrderByCategory(accessToken);
+        console.log("getAllProductOrderByCategory: ", response.data);
+
+        // Lặp qua các thuộc tính của response.data
+        Object.keys(response.data).forEach((category, index) => {
+          switch (index) {
+            case 0:
+              setTop1Category(category);
+              setTop1Products(response.data[category]);
+              console.log("category: ", category);
+              console.log("response.data[category]: ", response.data[category]);
+              // console.log("top1Products: ", top1Products);
+
+              break;
+            case 1:
+              setTop2Category(category);
+              setTop2Products(response.data[category]);
+
+              break;
+            case 2:
+              setTop3Category(category);
+              setTop3Products(response.data[category]);
+
+              break;
+            default:
+              // Xử lý các category và products khác ở đây
+              setOtherCategory(category);
+              setOtherProducts(response.data[category]);
+              break;
+          }
+        });
+
+
+
       } catch (error) {
         console.log(error);
       }
     };
     fetchListProductsInHomePage();
+
   }, []);
+
+  console.log("top1Category: ", top1Category);
+  console.log("top1Products: ", top1Products);
+  console.log("top2Category: ", top2Category);
+  console.log("top2Products: ", top2Products);
+  console.log("top3Category: ", top3Category);
+  console.log("top3Products: ", top3Products);
 
   return (
     <div className="container-listproduct">
@@ -95,7 +130,7 @@ const ListProduct = () => {
                 aria-label="basic tabs example"
               >
                 <Tab
-                  label={top1Category ? top1Category.name : ""}
+                  label={top1Category ? top1Category : ""}
                   {...a11yProps(0)}
                   sx={{
                     backgroundColor: value === 0 ? "#7DB249" : "",
@@ -106,7 +141,7 @@ const ListProduct = () => {
                   }}
                 />
                 <Tab
-                  label={top2Category ? top2Category.name : ""}
+                  label={top2Category ? top2Category : ""}
                   {...a11yProps(1)}
                   sx={{
                     backgroundColor: value === 1 ? "#7DB249" : "",
@@ -117,7 +152,7 @@ const ListProduct = () => {
                   }}
                 />
                 <Tab
-                  label={top3Category ? top3Category.name : ""}
+                  label={top3Category ? top3Category : ""}
                   {...a11yProps(2)}
                   sx={{
                     backgroundColor: value === 2 ? "#7DB249" : "",

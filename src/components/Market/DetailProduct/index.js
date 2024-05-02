@@ -28,7 +28,7 @@ const DetailProduct = () => {
       try {
         const response = await getProductBySlug(slug, accessToken);
         setProduct(response.data);
-        console.log("product detail: ", response);
+        // console.log("product detail: ", response);
         setOrderProduct(prevState => {
           setOrderProduct({
             ...prevState,

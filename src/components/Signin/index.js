@@ -67,6 +67,7 @@ export default function SignIn() {
 
       if (res?.status === 200) {
         localStorage.setItem("hadCart", false);
+        localStorage.setItem("orderProductId", "")
         console.log("localstorage>>>", localStorage.getItem("hadCart"));
         successToast("Login successful");
         const payload = {

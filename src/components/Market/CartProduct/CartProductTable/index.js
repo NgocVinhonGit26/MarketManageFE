@@ -82,7 +82,6 @@ const CartProductTable = ({ listOrderProduct, setTotalPrice }) => {
     const handleDeleteProduct = (row) => {
         alert("Xóa sản phẩm khỏi giỏ hàng");
         dispatch(removeOrderProduct(row.productId))
-
     }
     return (
         <div className='Container-OrderTourTable'>
@@ -143,7 +142,7 @@ const CartProductTable = ({ listOrderProduct, setTotalPrice }) => {
                                 variant="outlined"
                                 color="success"
                                 style={{ fontWeight: 'bold', borderWidth: '3px', margin: '16px' }}
-                                onClick={() => navigate("/")}
+                                onClick={() => navigate("/marketplace/search/")}
                             >
                                 <ArrowBackIcon />
                                 Tiếp tục mua hàng

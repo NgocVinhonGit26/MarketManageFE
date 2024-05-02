@@ -15,6 +15,7 @@ import { useParams, useLocation } from "react-router-dom";
 import { searchProduct, getProductByCategory } from "api/product";
 import Pagination from "@mui/material/Pagination";
 import { getCategoryBySlug } from "api/category";
+import { getTotalPageProduct } from "api/product";
 
 const Searchpage = () => {
   const [cost, setCost] = React.useState([20000, 500000]);
@@ -58,9 +59,11 @@ const Searchpage = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await searchProduct(page, limit, { name });
-      setProducts(response.data.data.docs);
-      setTotalPages(response.data.data.totalPages);
+      const response = await searchProduct(page - 1, {});
+      const totalPages = await getTotalPageProduct(page - 1, {});
+      console.log("searchProduct reposne", response);
+      setProducts(response.data);
+      setTotalPages(response.data);
     } catch (error) {
       console.log(error);
     }

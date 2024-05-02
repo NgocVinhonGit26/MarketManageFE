@@ -21,6 +21,7 @@ import { resetListOderProduct } from "redux/slices/listOrderProductSlice";
 const ProductMain = (props) => {
   const { product, orderProduct, setOrderProduct } = props;
   const [quantity, setQuantity] = React.useState(0);
+  const [lastOrderProductId, setLastOrderProductId] = React.useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -34,6 +35,13 @@ const ProductMain = (props) => {
     sale: 0,
   });
 
+  const fetchLastOrderProduct = async () => {
+    const response = await getLastOrderProduct(localStorage.getItem("id"))
+    console.log("response: getLastOrderProduct", response.data)
+    localStorage.setItem("orderProductId", response.data)
+    setLastOrderProductId(response.data)
+  }
+
   const handleIncrement = () => {
     setQuantity(quantity + 1);
     setItem(prevState => ({
@@ -41,7 +49,7 @@ const ProductMain = (props) => {
       productId: product.id,
       productName: product.name,
       productPrice: product.price,
-      orderProductId: parseInt(localStorage.getItem("orderProductId")),
+      orderProductId: lastOrderProductId,
       quantity: quantity + 1,
       price: product.price * (quantity + 1),
     }))
@@ -56,7 +64,7 @@ const ProductMain = (props) => {
         productId: product.id,
         productName: product.name,
         productPrice: product.price,
-        orderProductId: parseInt(localStorage.getItem("orderProductId")),
+        orderProductId: lastOrderProductId,
         quantity: quantity - 1,
         price: product.price * (quantity - 1),
       }))
@@ -82,21 +90,18 @@ const ProductMain = (props) => {
         console.log("response: createOrderProduct", hadCart)
         localStorage.setItem("hadCart", true)
       }
-      const response = await getLastOrderProduct(localStorage.getItem("id"))
-      console.log("response: getLastOrderProduct", response.data)
+      fetchLastOrderProduct()
 
-      localStorage.setItem("orderProductId", response.data)
       setItem(prevState => ({
         ...prevState,
         productId: product.id,
-        orderProductId: response.data,
+        orderProductId: lastOrderProductId,
       }))
-      console.log("dcm item", item);
+      console.log("dcm item ahehe", item);
       dispatch(addOrderProduct(item))
       // dispatch(resetListOderProduct())
-      localStorage.setItem("hadCart", false)
+      // localStorage.setItem("hadCart", false)
       navigate("/marketplace/cart")
-
     }
     catch (error) {
       console.log(error)
@@ -109,7 +114,13 @@ const ProductMain = (props) => {
     //console.log("response: insertOrderItem", response2)
     // dispatch(addOrderProduct(item))
     // navigate("/marketplace/cart")
-  }, [item]);
+    // const fetchLastOrderProduct = async () => {
+    //   const response = await getLastOrderProduct(localStorage.getItem("id"))
+    //   console.log("response: getLastOrderProduct", response.data)
+    //   localStorage.setItem("orderProductId", response.data)
+    // }
+    fetchLastOrderProduct()
+  },);
 
   return (
     <div className="product-main">

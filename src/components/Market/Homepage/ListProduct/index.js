@@ -103,12 +103,12 @@ const ListProduct = () => {
 
   }, []);
 
-  console.log("top1Category: ", top1Category);
-  console.log("top1Products: ", top1Products);
-  console.log("top2Category: ", top2Category);
-  console.log("top2Products: ", top2Products);
-  console.log("top3Category: ", top3Category);
-  console.log("top3Products: ", top3Products);
+  // console.log("top1Category: ", top1Category);
+  // console.log("top1Products: ", top1Products);
+  // console.log("top2Category: ", top2Category);
+  // console.log("top2Products: ", top2Products);
+  // console.log("top3Category: ", top3Category);
+  // console.log("top3Products: ", top3Products);
 
   return (
     <div className="container-listproduct">

@@ -39,6 +39,7 @@ import Orders from "components/Merchant/Orders";
 import OrderTour from "components/TourService/OrderTour";
 import ImageUpload from "components/ImageUpload";
 import CartProduct from "components/Market/CartProduct";
+import Chart from "components/dashboard/Chart";
 
 function App() {
   const [cookies] = useCookies(["access_token"]);
@@ -96,6 +97,8 @@ function App() {
         {/* Auth */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+
+        <Route path="/chart" element={<Chart />} />
 
         {/* <Route path="/ImageUpload" element={<ImageUpload />} /> */}
 

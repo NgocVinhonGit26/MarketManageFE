@@ -11,12 +11,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUserDefault } from "redux/slices/userSlice";
 import { signoutService } from "api/auth";
 import { successToast } from "utilities/toast";
+import { resetListOderProduct } from "redux/slices/listOrderProductSlice";
 
 const MarketNavbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const username = useSelector((state) => state.user.name);
   const token = useSelector((state) => state.user.token);
-  console.log("token>>>>", token);
+  // console.log("token>>>>", token);
   const [isSignedIn, setIsSignedIn] = useState(true);
   const dispatch = useDispatch();
 
@@ -49,6 +50,7 @@ const MarketNavbar = () => {
       console.log("response", response);
       successToast("Đăng xuất thành công");
       dispatch(setUserDefault());
+      dispatch(resetListOderProduct());
       navigate("/marketplace");
     }
     catch (error) {

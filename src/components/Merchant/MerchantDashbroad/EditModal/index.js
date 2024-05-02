@@ -75,8 +75,8 @@ export default function EditModal({ shopBoat, setShopBoat }) {
       .then((response) => response.json())
       .then((dataImg) => {
         setAvatar(dataImg.url);
-        console.log("dataImg.url: ", dataImg.url);
-        console.log("avatar: >>>>>>>>>>", avatar);
+        // console.log("dataImg.url: ", dataImg.url);
+        // console.log("avatar: >>>>>>>>>>", avatar);
         // handleSubmit();
       })
       .catch((err) => {

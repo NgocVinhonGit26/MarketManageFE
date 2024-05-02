@@ -45,19 +45,20 @@ const CartProductTotal = ({ totalPrice }) => {
             return;
         }
         for (const item of listOrderProduct) {
-            const res = await insertOrderItem(item, accessToken);
+            // const res = await insertOrderItem(item, accessToken);
             // Xử lý kết quả ở đây nếu cần
-            console.log("res>>>>>>>>>>>>>>: ", res)
-            if (res.status === 200) {
-                isSuccessful = true;
-            }
+            // console.log("res>>>>>>>>>>>>>>: ", item)
+            // if (res.status === 200) {
+            // isSuccessful = true;
+            // }
         }
 
         if (isSuccessful) {
             successToast("Đặt hàng thành công");
             dispatch(resetListOderProduct())
-            navigate("/")
+            navigate("/marketplace/search/")
             localStorage.setItem("hadCart", false)
+            localStorage.setItem("orderProductId", "")
         }
     }
     return (

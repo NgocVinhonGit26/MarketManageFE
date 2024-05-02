@@ -1,8 +1,16 @@
 import "./style.scss";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 const CardProduct = ({ item }) => {
   const { sale, image, name, price, slug } = item;
+  const navigate = useNavigate();
+
+  const handleAddToCart = (slug) => {
+    console.log("Add to cart");
+    navigate(`/marketplace/product/${slug}`);
+  }
 
   return (
     <div className="container-smallproductss cursor-pointer">
@@ -34,7 +42,7 @@ const CardProduct = ({ item }) => {
                 <p className="font-bold text-black">{price}đ</p>
               )}
             </div>
-            <div className="add-to-cart py-1">
+            <div className="add-to-cart py-1" onClick={() => handleAddToCart(slug)}>
               <button>THÊM VÀO GIỎ HÀNG</button>
             </div>
           </div>

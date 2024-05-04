@@ -21,6 +21,7 @@ const MerchantDashboard = () => {
         const response = await getShopBoatByIdUser(id, accessToken);
         console.log(response);
         setShopBoat(response.data);
+        localStorage.setItem("shopBoatId", response.data.id);
       } catch (error) {
         console.log(error);
       }

@@ -185,7 +185,7 @@ const MerchantListItems = ({ handleLogout, handleRedirectToHomepage }) => {
         </ListItemIcon>
         <ListItemText primary="Orders" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton component={RouterLink} to="/merchant/report">
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>

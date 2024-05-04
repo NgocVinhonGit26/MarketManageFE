@@ -206,38 +206,35 @@ CREATE TABLE order_product (
     status VARCHAR(255) NOT NULL ,
     payment_method VARCHAR(255)  NOT NULL,
     total DECIMAL(10, 2) NOT NULL,
-    shop_boat_id INT NOT NULL,
     customer INT NOT NULL,
     created_at TIMESTAMP ,
     updated_at TIMESTAMP ,
-    FOREIGN KEY (shop_boat_id) REFERENCES ShopBoat(id),
     FOREIGN KEY (customer) REFERENCES User(id)
 );
 
-INSERT INTO order_product (status, payment_method, total, shop_boat_id, customer, created_at, updated_at) 
+INSERT INTO order_product (status, payment_method, total, customer, created_at, updated_at) 
 VALUES 
-('pending', 'paypal', 100.00, 1, 1, '2024-04-13 08:00:00', '2024-04-13 08:00:00'),
-('accepted', 'stripe', 150.00, 2, 2, '2024-04-12 10:00:00', '2024-04-12 10:00:00'),
-('cancelled', 'paypal', 80.00, 3, 3, '2024-04-11 15:00:00', '2024-04-11 15:00:00');
--- status: pending, accepted, cancelled, delivering,completed
+('pending', 'paypal', 100.00 , 1, '2024-04-13 08:00:00', '2024-04-13 08:00:00'),
+('accepted', 'stripe', 150.002, 2, '2024-04-12 10:00:00', '2024-04-12 10:00:00'),
+('cancelled', 'paypal', 80.00, 3, '2024-04-11 15:00:00', '2024-04-11 15:00:00');
+
 
 
 
 CREATE TABLE order_item (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    status VARCHAR(255) NOT NULL ,
     product_id INT NOT NULL,
     order_product_id INT NOT NULL,
+    shop_boat_id INT NOT NULL,
     quantity INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     sale DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (product_id) REFERENCES Product(id),
-    FOREIGN KEY (order_product_id) REFERENCES order_product(id)
+    FOREIGN KEY (order_product_id) REFERENCES order_product(id),
+	FOREIGN KEY (shop_boat_id) REFERENCES ShopBoat(id)
 );
+-- status: pending, accepted, cancelled, delivering,completed
 
-INSERT INTO order_item (product_id, order_product_id,quantity, price, sale) 
-VALUES 
-(1, 1, 2, 10.00, 0.00),
-(2, 2, 3, 15.00, 0.00),
-(3, 3, 1, 8.00, 0.00);
 
 

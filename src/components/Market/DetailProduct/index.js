@@ -16,10 +16,9 @@ const DetailProduct = () => {
     status: "pending",
     paymentMethod: "cash",
     total: 0,
-    shopBoatId: 0,
     customer: userId,
-    createdAt: "",
-    updatedAt: ""
+    createdAt: new Date().toISOString().slice(0, 19).replace("T", " "),
+    updatedAt: new Date().toISOString().slice(0, 19).replace("T", " ")
   });
 
   useEffect(() => {
@@ -29,12 +28,12 @@ const DetailProduct = () => {
         const response = await getProductBySlug(slug, accessToken);
         setProduct(response.data);
         // console.log("product detail: ", response);
-        setOrderProduct(prevState => {
-          setOrderProduct({
-            ...prevState,
-            shopBoatId: response.data.shopBoatId,
-          })
-        })
+        // setOrderProduct(prevState => {
+        //   setOrderProduct({
+        //     ...prevState,
+        //     shopBoatId: response.data.shopBoatId,
+        //   })
+        // })
       } catch (error) {
         console.log(error);
       }

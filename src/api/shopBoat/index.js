@@ -193,8 +193,8 @@ const getAllShopBoatsWithoutPagination = async () => {
   return instance.get('/shopboat/getListShopBoats');
 }
 
-const getAllListOrderProduct = async (idShop, page, token) => {
-  let url = `merchant/getAllListOrderProduct/${page}?`;
+const getAllListOrderItem = async (idShop, page, token) => {
+  let url = `merchant/getAllListOrderItem/${page}?`;
 
   const config = {
     headers: {
@@ -215,8 +215,8 @@ const getAllListOrderProduct = async (idShop, page, token) => {
   }
 }
 
-const getTotalPageOrderProduct = async (idShop, page, token) => {
-  let url = `merchant/getTotalPageOrderProduct/${page}?`;
+const getTotalPageOrderItem = async (idShop, page, token) => {
+  let url = `merchant/getTotalPageOrderItem/${page}?`;
 
   const config = {
     headers: {
@@ -251,6 +251,188 @@ const getOrderItemByOrderProductId = (orderProductId, token) => {
   }
 }
 
+const getAllListOrderProduct = async (idShop, page, token) => {
+  let url = `merchant/getAllListOrderProduct/${idShop}/${page}`;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await instance.get(url, config)
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalPageOrderProduct = async (idShop, page, token) => {
+  let url = `merchant/getTotalPageOrderProduct/${idShop}/${page}`;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await instance.get(url, config)
+    return response;
+  }
+
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalOrderItemByShopBoatId = async (idShop, token) => {
+  let url = `merchant/getTotalOrderItemByShopBoatId/${idShop}`;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await instance.get(url, config)
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalOrderItemByShopBoatIdInTimeSlot = async (idShop, token) => {
+  let url = `merchant/getTotalOrderItemByShopBoatIdInTimeSlot/${idShop}`;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await instance.get(url, config)
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalOrderItemByShopBoatIdInWeek = async (idShop, token) => {
+  let url = `merchant/getTotalOrderItemByShopBoatIdInWeek/${idShop}`;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await instance.get(url, config)
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalOrderItemByShopBoatIdInDayOfWeek = async (idShop, token) => {
+  let url = `merchant/getTotalOrderItemByShopBoatIdInDayOfWeek/${idShop}`;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await instance.get(url, config)
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalOrderItemByShopBoatIdInMonth = async (idShop, token) => {
+  let url = `merchant/getTotalOrderItemByShopBoatIdInMonth/${idShop}`;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await instance.get(url, config)
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalOrderItemByShopBoatIdInWeekOfMonth = async (idShop, token) => {
+  let url = `merchant/getTotalOrderItemByShopBoatIdInWeekOfMonth/${idShop}`;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await instance.get(url, config)
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalOrderItemByShopBoatIdInYear = async (idShop, token) => {
+  let url = `merchant/getTotalOrderItemByShopBoatIdInYear/${idShop}`;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await instance.get(url, config)
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalOrderItemByShopBoatIdInMonthOfYear = async (idShop, token) => {
+  let url = `merchant/getTotalOrderItemByShopBoatIdInMonthOfYear/${idShop}`;
+
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+
+  try {
+    const response = await instance.get(url, config)
+    return response;
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+
 
 export {
   getShopBoatProducts,
@@ -265,7 +447,17 @@ export {
   getListCategoriesOfShop,
   getAllShopBoatsWithoutPagination,
   updateShopBoatStatus,
+  getAllListOrderItem,
+  getTotalPageOrderItem,
+  getOrderItemByOrderProductId,
   getAllListOrderProduct,
   getTotalPageOrderProduct,
-  getOrderItemByOrderProductId
+  getTotalOrderItemByShopBoatId,
+  getTotalOrderItemByShopBoatIdInTimeSlot,
+  getTotalOrderItemByShopBoatIdInWeek,
+  getTotalOrderItemByShopBoatIdInDayOfWeek,
+  getTotalOrderItemByShopBoatIdInMonth,
+  getTotalOrderItemByShopBoatIdInWeekOfMonth,
+  getTotalOrderItemByShopBoatIdInYear,
+  getTotalOrderItemByShopBoatIdInMonthOfYear,
 };

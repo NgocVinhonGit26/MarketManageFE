@@ -40,6 +40,8 @@ import OrderTour from "components/TourService/OrderTour";
 import ImageUpload from "components/ImageUpload";
 import CartProduct from "components/Market/CartProduct";
 import Chart from "components/dashboard/Chart";
+import Dashboard from "components/dashboard/Dashboard";
+import Reports from "components/Merchant/Reports";
 
 function App() {
   const [cookies] = useCookies(["access_token"]);
@@ -71,6 +73,7 @@ function App() {
         <Route path="/merchant" element={<MerchantDashbroad />} />
         <Route path="/merchant/products" element={<MerchantProducts />} />
         <Route path="/merchant/orders" element={<Orders />} />
+        <Route path="/merchant/report" element={<Reports />} />
 
         {/* TourOnline */}
         <Route path="/tour" element={<TourService />} />
@@ -98,9 +101,7 @@ function App() {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
 
-        <Route path="/chart" element={<Chart />} />
 
-        {/* <Route path="/ImageUpload" element={<ImageUpload />} /> */}
 
       </Routes>
       <ToastContainer />

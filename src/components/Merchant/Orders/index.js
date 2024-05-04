@@ -3,13 +3,14 @@ import { Grid, Paper } from "@mui/material";
 import { useLayoutEffect, useState, useEffect } from "react";
 import { navigate, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import jwt_decode from "jwt-decode";
 import OrdersTable from "./Table";
 import Pagination from "@mui/material/Pagination";
 import SearchForm from "./SearchForm";
-import { getAllListOrderProduct } from "api/shopBoat";
-import { number } from "prop-types";
 import { getShopBoatByIdUser } from "api/shopBoat";
+
+import { getAllListOrderItem } from "api/shopBoat";
+import { getTotalPageOrderItem } from "api/shopBoat";
+import { getAllListOrderProduct } from "api/shopBoat";
 import { getTotalPageOrderProduct } from "api/shopBoat";
 
 const Orders = () => {
@@ -28,8 +29,6 @@ const Orders = () => {
   useLayoutEffect(() => {
     const checkRole = async () => {
       if (accessToken) {
-        // const { id, role } = await jwt_decode(cookies.access_token);
-
         if (role !== 1) {
           navigate("/signin");
         }
@@ -88,7 +87,7 @@ const Orders = () => {
   const handleSearch = (data) => {
     const fetchOrders = async () => {
       try {
-        const response = await getAllListOrderProduct(shopBoatId, page, accessToken);
+        const response = await getAllListOrderItem(shopBoatId, page, accessToken);
         // if (response?.status === 200) {
         //   setOrders(response.data.data.docs);
         //   setTotal(response.data.data.totalPages);

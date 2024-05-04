@@ -26,15 +26,25 @@ const ProductMain = (props) => {
   const dispatch = useDispatch();
 
   const [item, setItem] = React.useState({
+    status: "pending",
     productId: 0,
     productName: "",
     productPrice: 0,
     orderProductId: 0,
+    shopBoatId: 0,
     quantity: 0,
     price: 0,
     sale: 0,
   });
 
+  const creatNewCart = async () => {
+    if (localStorage.getItem("hadCart") === "false") {
+      const hadCart = await createOrderProduct(orderProduct)
+      console.log("response: createOrderProduct", hadCart)
+      localStorage.setItem("hadCart", true)
+    }
+    await fetchLastOrderProduct()
+  }
   const fetchLastOrderProduct = async () => {
     const response = await getLastOrderProduct(localStorage.getItem("id"))
     console.log("response: getLastOrderProduct", response.data)
@@ -50,6 +60,7 @@ const ProductMain = (props) => {
       productName: product.name,
       productPrice: product.price,
       orderProductId: lastOrderProductId,
+      shopBoatId: product.shopBoatId,
       quantity: quantity + 1,
       price: product.price * (quantity + 1),
     }))
@@ -65,6 +76,7 @@ const ProductMain = (props) => {
         productName: product.name,
         productPrice: product.price,
         orderProductId: lastOrderProductId,
+        shopBoatId: product.shopBoatId,
         quantity: quantity - 1,
         price: product.price * (quantity - 1),
       }))
@@ -85,18 +97,14 @@ const ProductMain = (props) => {
       return;
     }
     try {
-      if (localStorage.getItem("hadCart") === "false") {
-        const hadCart = await createOrderProduct(orderProduct)
-        console.log("response: createOrderProduct", hadCart)
-        localStorage.setItem("hadCart", true)
-      }
-      fetchLastOrderProduct()
+      setItem(prevState => {
+        return {
+          ...prevState,
+          productId: product.id,
+          orderProductId: lastOrderProductId, // cart ID
+        };
+      });
 
-      setItem(prevState => ({
-        ...prevState,
-        productId: product.id,
-        orderProductId: lastOrderProductId,
-      }))
       console.log("dcm item ahehe", item);
       dispatch(addOrderProduct(item))
       // dispatch(resetListOderProduct())
@@ -109,18 +117,32 @@ const ProductMain = (props) => {
   }
 
   useEffect(() => {
-    // setQuantity(quantity);
-    //const response2 = await insertOrderItem(item)
-    //console.log("response: insertOrderItem", response2)
-    // dispatch(addOrderProduct(item))
-    // navigate("/marketplace/cart")
-    // const fetchLastOrderProduct = async () => {
-    //   const response = await getLastOrderProduct(localStorage.getItem("id"))
-    //   console.log("response: getLastOrderProduct", response.data)
-    //   localStorage.setItem("orderProductId", response.data)
-    // }
-    fetchLastOrderProduct()
-  },);
+    const fetchData = async () => {
+      // Gọi các hàm async ở đây
+      // Ví dụ: 
+      // await setQuantity(quantity);
+      // const response2 = await insertOrderItem(item)
+      // console.log("response: insertOrderItem", response2)
+      // dispatch(addOrderProduct(item))
+      // navigate("/marketplace/cart")
+      // const response = await getLastOrderProduct(localStorage.getItem("id"))
+      // console.log("response: getLastOrderProduct", response.data)
+      // localStorage.setItem("orderProductId", response.data)
+      await creatNewCart();
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    setItem(prevState => {
+      return {
+        ...prevState,
+        orderProductId: lastOrderProductId, // cart ID
+      };
+    }
+    );
+  }, [lastOrderProductId]);
 
   return (
     <div className="product-main">

@@ -45,12 +45,13 @@ const CartProductTotal = ({ totalPrice }) => {
             return;
         }
         for (const item of listOrderProduct) {
-            // const res = await insertOrderItem(item, accessToken);
+            // item.orderProductId = localStorage.getItem("orderProductId")
+            const res = await insertOrderItem(item, accessToken);
             // Xử lý kết quả ở đây nếu cần
-            // console.log("res>>>>>>>>>>>>>>: ", item)
-            // if (res.status === 200) {
-            // isSuccessful = true;
-            // }
+            console.log("res>>>>>>>>>>>>>>: ", item)
+            if (res.status === 200) {
+                isSuccessful = true;
+            }
         }
 
         if (isSuccessful) {

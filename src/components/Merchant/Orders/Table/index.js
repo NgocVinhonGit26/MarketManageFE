@@ -42,7 +42,7 @@ export default function OrdersTable({ orders, updateData }) {
   const handleChaneStatus = async (orderId, status) => {
     try {
       const response = await updateOrderStatus(orderId, status, accessToken);
-      console.log("response updateOrderStatus>>>>>>", response);
+      // console.log("response updateOrderStatus>>>>>>", response);
       if (response?.status === 200) {
         updateData(response.data);
       }
@@ -52,8 +52,8 @@ export default function OrdersTable({ orders, updateData }) {
   };
   useEffect(() => {
     console.log("orders>>>>>>", orders);
-  }
-    , [orders]);
+  }, [orders]);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">

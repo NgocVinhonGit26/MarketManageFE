@@ -108,9 +108,9 @@ const MerchantDashboard = () => {
                       ) : (
                         <Skeleton width={100} />
                       )}{" "}
-                      {shopBoat?.status === "active" ? (
+                      {shopBoat?.status === 1 ? (
                         <Badge bg="success">Đang hoạt động</Badge>
-                      ) : shopBoat?.status === "inactive" ? (
+                      ) : shopBoat?.status === 0 ? (
                         <Badge bg="danger">Chưa hoạt động</Badge>
                       ) : (
                         <Badge bg="warning">Bị khóa</Badge>

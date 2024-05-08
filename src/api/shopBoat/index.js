@@ -235,15 +235,14 @@ const getTotalPageOrderItem = async (idShop, page, token) => {
   }
 }
 
-const getOrderItemByOrderProductId = (orderProductId, token) => {
+const getOrderItemByOrderProductId = (idShop, orderProductId, token) => {
   try {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     };
-    const response = instance.get(`/merchant/getOrderItemByOrderProductId/${orderProductId}`, config);
-
+    const response = instance.get(`/merchant/getOrderItemByOrderProductId/${idShop}/${orderProductId}`, config);
     return response;
   }
   catch (error) {

@@ -12,6 +12,11 @@ import { setUserDefault } from "redux/slices/userSlice";
 import { signoutService } from "api/auth";
 import { successToast } from "utilities/toast";
 import { resetListOderProduct } from "redux/slices/listOrderProductSlice";
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 
 const MarketNavbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,6 +25,15 @@ const MarketNavbar = () => {
   // console.log("token>>>>", token);
   const [isSignedIn, setIsSignedIn] = useState(true);
   const dispatch = useDispatch();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
 
 
@@ -38,9 +52,13 @@ const MarketNavbar = () => {
   };
 
   const handleLogin = () => {
-
     navigate("/signin");
   };
+
+  const handleNavigateToEditProfile = () => {
+    navigate("/marketplace/edit-profile")
+    handleClose()
+  }
 
   const handleSignOut = async () => {
 
@@ -49,6 +67,7 @@ const MarketNavbar = () => {
       console.log("token1>>>>", token);
       console.log("response", response);
       successToast("Đăng xuất thành công");
+      handleClose();
       dispatch(setUserDefault());
       dispatch(resetListOderProduct());
       navigate("/marketplace");
@@ -107,14 +126,29 @@ const MarketNavbar = () => {
         </div>
         <div className="login-item">
           {isSignedIn ? (
-            <div className="item-login">
-              <span className="text-base font-medium mr-2">
-                {username}
-              </span>
-              <span
-                className="text-base font-medium"
-                onClick={() => { handleSignOut(); }}
-              >Đăng xuất</span>
+            <div>
+              <Button
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+                style={{ color: "#7DB249 !important" }}
+              >
+                {username}&nbsp; <AccountCircleIcon />
+              </Button>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  'aria-labelledby': 'basic-button',
+                }}
+              >
+                <MenuItem onClick={handleNavigateToEditProfile}>Trang cá nhân</MenuItem>
+                <MenuItem onClick={handleSignOut}>Đăng xuất</MenuItem>
+              </Menu>
             </div>
           ) : (
             <div className="login" onClick={() => handleLogin()}>

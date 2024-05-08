@@ -25,13 +25,12 @@ const DetailModal = ({ order }) => {
   const handleClose = () => setOpen(false);
   const accessToken = localStorage.getItem("accessToken");
   const [orderItems, setOrderItems] = React.useState([]);
+  const idShopBoat = localStorage.getItem("shopBoatId");
 
   useEffect(() => {
     const getOrderItem = async (orderProductId) => {
       try {
-        // console.log("orderProductId>>>>>>", orderProductId);
-        const response = await getOrderItemByOrderProductId(orderProductId, accessToken);
-        // console.log("response getOrderItemByOrderProductId>>>>>>", response);
+        const response = await getOrderItemByOrderProductId(idShopBoat, orderProductId, accessToken);
         setOrderItems(response.data);
       } catch (err) {
         console.log(err);

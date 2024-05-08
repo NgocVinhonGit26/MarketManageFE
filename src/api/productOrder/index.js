@@ -44,7 +44,7 @@ const updateOrderStatus = (orderId, status, token) => {
     };
     let formData = new FormData();
     formData.append("status", status);
-    const response = instance.post(`/merchant/updateStatusOrderProductById/${orderId}`, formData, config);
+    const response = instance.post(`/merchant/updateStatusOrderItemById/${orderId}`, formData, config);
     return response;
   } catch (error) {
     console.log(error);

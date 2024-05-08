@@ -48,10 +48,10 @@ const Shops = () => {
     setShopBoats(newData);
   };
 
-  const onSearch = async (data) => {
+  const onSearch = async (page, data) => {
     try {
-      const response = await getAllShopBoats(pageSearch - 1, data, accessToken);
-      const total = await getTotalPages(pageSearch - 1, data, accessToken);
+      const response = await getAllShopBoats(page - 1, data, accessToken);
+      const total = await getTotalPages(page - 1, data, accessToken);
       setTotal(total.data);
       setShopBoats(response.data);
     } catch (error) {
@@ -67,6 +67,9 @@ const Shops = () => {
           setIsSearching={setIsSearching}
           onSearch={onSearch}
           fetchShopBoats={fetchShopBoats}
+          pageSearch={pageSearch}
+          setPageSearch={setPageSearch}
+          setPage={setPage}
         />
       </Grid>
       <Grid item xs={12}>
@@ -84,7 +87,16 @@ const Shops = () => {
           count={total}
           color="primary"
           size="large"
-          onChange={(e, value) => setPage(value)}
+          onChange={(e, value) => {
+            if (isSearching) {
+              // console.log("vheheh")
+              setPageSearch(value);
+            }
+            else {
+              // console.log("vhuhuhu")
+              setPage(value);
+            }
+          }}
         />
       </Grid>
     </DashboardLayout>

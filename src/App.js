@@ -42,6 +42,8 @@ import CartProduct from "components/Market/CartProduct";
 import Chart from "components/dashboard/Chart";
 import Dashboard from "components/dashboard/Dashboard";
 import Reports from "components/Merchant/Reports";
+import EditProfile from "components/Market/EditProfile";
+import Users from "components/Admin/Users";
 
 function App() {
   const [cookies] = useCookies(["access_token"]);
@@ -65,6 +67,7 @@ function App() {
       <Routes>
         {/* Admin */}
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/users" element={<Users />} />
         <Route path="/admin/shops" element={<Shops />} />
         <Route path="/admin/tours" element={<Tours />} />
         <Route path="/admin/tour-orders" element={<TourOrders />} />
@@ -96,6 +99,7 @@ function App() {
         />
         <Route path="/marketplace/product/:slug" element={<DetailProduct />} />
         <Route path="/marketplace/cart" element={<CartProduct />} />
+        <Route path="/marketplace/edit-profile" element={<EditProfile />} />
 
         {/* Auth */}
         <Route path="/signin" element={<SignIn />} />

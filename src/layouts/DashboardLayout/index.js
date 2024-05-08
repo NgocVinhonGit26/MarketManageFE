@@ -35,6 +35,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import TourIcon from "@mui/icons-material/Tour";
 import HomeIcon from '@mui/icons-material/Home';
 
+
 import { signoutService } from "api/auth";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useLayoutEffect } from "react";
@@ -120,6 +121,12 @@ const AdminListItems = ({ handleLogout, handleRedirectToHomepage }) => {
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
+      </ListItemButton>
+      <ListItemButton component={RouterLink} to="/admin/users">
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText primary="Users" />
       </ListItemButton>
       <ListItemButton component={RouterLink} to="/admin/shops">
         <ListItemIcon>

@@ -32,9 +32,14 @@ const getProductBySlug = (slug) => {
   }
 };
 
-const searchProduct = (page, query = {}) => {
+const searchProduct = (page, query = {}, idShop, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
-  let url = `/product/searchProduct/${page}?`;
+  let url = `/merchant/searchProduct/${page}/${idShop}?`;
   if (query.name) {
     url += "&name=" + query.name;
   }
@@ -54,6 +59,35 @@ const searchProduct = (page, query = {}) => {
     url += "&sale=" + query.sale;
   }
 
+
+  try {
+    const response = instance.get(url, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const searchProductForUser = (page, query = {}) => {
+  let url = `/product/searchProductForUser/${page}?`;
+  if (query.name) {
+    url += "&name=" + query.name;
+  }
+  if (query.priceFrom) {
+    url += "&priceFrom=" + query.priceFrom;
+  }
+  if (query.priceTo) {
+    url += "&priceTo=" + query.priceTo;
+  }
+  if (query.countInStock) {
+    url += "&countInStock=" + query.countInStock;
+  }
+  if (query.category) {
+    url += "&category=" + query.category;
+  }
+  if (query.sale) {
+    url += "&sale=" + query.sale;
+  }
 
   try {
     const response = instance.get(url);
@@ -61,10 +95,16 @@ const searchProduct = (page, query = {}) => {
   } catch (error) {
     console.log(error);
   }
-};
+}
 
-const getTotalPageProduct = (page, query = {}) => {
-  let url = `/product/getTotalPage/${page}?`;
+const getTotalPageProduct = (page, query = {}, idShop, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  let url = `/merchant/getTotalPage/${page}/${idShop}?`;
   if (query.name) {
     url += "&name=" + query.name;
   }
@@ -86,7 +126,7 @@ const getTotalPageProduct = (page, query = {}) => {
 
 
   try {
-    const response = instance.get(url);
+    const response = instance.get(url, config);
     return response
   } catch (error) {
     console.log(error);
@@ -114,6 +154,7 @@ export {
   getAllProductOrderByCategory,
   getProductBySlug,
   searchProduct,
+  searchProductForUser,
   getTotalPageProduct,
   getProductByCategory,
 };

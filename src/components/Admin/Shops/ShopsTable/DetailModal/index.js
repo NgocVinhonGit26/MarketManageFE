@@ -60,7 +60,7 @@ export default function DetailModal({ shopBoat }) {
             <img
               src={shopBoat?.avatar}
               alt="Shop Avatar"
-              style={{ width: "100%" }}
+              style={{ width: "90%" }}
             />
           </div>
           <div className="d-flex justify-content-between">

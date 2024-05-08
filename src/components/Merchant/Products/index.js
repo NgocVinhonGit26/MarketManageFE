@@ -23,6 +23,7 @@ const MerchantProducts = () => {
   const [shopBoatId, setShopBoatId] = useState(null);
   const [categories, setCategories] = useState([]);
   const accessToken = localStorage.getItem("accessToken");
+  const idShop = localStorage.getItem("shopBoatId");
 
   // useLayoutEffect(() => {
   //   const checkRole = async () => {
@@ -47,9 +48,8 @@ const MerchantProducts = () => {
   //   checkRole();
   // }, [cookies.access_token, navigate]);
   const fetchProducts = async (formData = {}) => {
-
-    const response = await searchProduct(page - 1, accessToken, formData);
-    const totalPages = await getTotalPageProduct(page - 1, accessToken, formData);
+    const response = await searchProduct(page - 1, formData, idShop, accessToken);
+    const totalPages = await getTotalPageProduct(page - 1, formData, idShop, accessToken);
     console.log("response searchProduct:", response)
     console.log("totalPages:", totalPages)
     setProducts(response.data);

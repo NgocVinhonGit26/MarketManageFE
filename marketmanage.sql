@@ -4,12 +4,20 @@ USE MarketManage;
 		CREATE TABLE User (
 		id INT AUTO_INCREMENT PRIMARY KEY,
 		name VARCHAR(255) NOT NULL,
+        avatar varchar(255) NOT NULL,
 		address VARCHAR(255),
 		phone_number VARCHAR(11),
 		username VARCHAR(255) NOT NULL,
 		password VARCHAR(255) NOT NULL,
 		role VARCHAR(255) NOT NULL
 		);
+        
+       --  ALTER TABLE User
+--  ADD COLUMN isdeleted boolean NOT NULL AFTER role;
+
+
+
+
 
 INSERT INTO User (name, address, phone_number,username, password, role) VALUES 
 ('admin', '123 Main Street, Anytown, USA', '123456789','joe.john@gaml.com', 'admin','ADMIN'),
@@ -148,6 +156,10 @@ CREATE TABLE Tour (
 		FOREIGN KEY (user_id) REFERENCES user(id)
 	);
     
+    select * from user where id IN (
+    select user_id from order_tour
+    );
+    
     UPDATE order_tour SET status = 3 WHERE id = 18;
     
     DELIMITER $$
@@ -201,6 +213,11 @@ VALUES
 ('Muối Tôm Tây Ninh', 'muoi-tom-tay-ninh', 'Mô tả sản phẩm Muối Tôm Tây Ninh', 5.00, 0.00, 100, 'https://chonoicairang.net/wp-content/uploads/2020/04/muoi-ot-tom-nhu-y-cho-noi-cai-rang-1536x2048.jpg', 'túi', 'Nông Sản Chế Biến', 2, NOW(), NOW()),
 ('Cá Ba Sa', 'ca-ba-sa', 'Mô tả sản phẩm Cá Ba Sa', 8.00, 0.00, 30, 'https://www.chothitngon.vn/plugins/responsive_filemanager/source/hai-san/ca-sa-pa.jpg', 'kg', 'Nông Sản Chế Biến', 2, NOW(), NOW());
 
+INSERT INTO Product (name, slug, description, price, sale, count_in_stock ,image, unit, category, shop_boat_id, created_at, updated_at)
+VALUES
+('Bưởi da xanh', 'buoi-da-xanh', 'Mô tả sản phẩm Bưởi', 5.50, 0.00, 100, 'https://chonoicairang.net/wp-content/uploads/2020/04/buoidaxanh.jpg', 'kg','Hoa Quả', 9, NOW(), NOW()),
+('Gạo Ngọc Rồng', 'gao-ngoc-rong', 'Mô tả sản phẩm Gạo', 14, 0.00, 150, 'https://chonoicairang.net/wp-content/uploads/2020/04/gaohuuco.jpg', 'túi','Nông Sản Chế Biến', 9, NOW(), NOW()),
+('Sanck Phồng Tôm', 'snack-phong-tom', 'Mô tả sản phẩm Sanck Phồng Tôm', 5, 0.00, 120, 'https://vietnamwholesale.asia/wp-content/uploads/2020/12/vietnam-oishi-cheese-snack-45g-510x510-1.jpg', 'gói','Bánh Kẹo', 9, NOW(), NOW());
 CREATE TABLE order_product (
     id INT AUTO_INCREMENT PRIMARY KEY,
     status VARCHAR(255) NOT NULL ,
@@ -235,6 +252,10 @@ CREATE TABLE order_item (
 	FOREIGN KEY (shop_boat_id) REFERENCES ShopBoat(id)
 );
 -- status: pending, accepted, cancelled, delivering,completed
+
+
+SELECT CURDATE();
+
 
 
 

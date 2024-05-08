@@ -65,7 +65,7 @@ export default function Chart({ value }) {
         createData('T12', 0),
     ]);
 
-    // console.log("dataHour: ", dataHour);
+    console.log("dataHour: ", dataHour);
     console.log("dataDay: ", dataDay);
     const updateData = (categoryTime, totalOrders, totalPrices) => {
         console.log("he;ollo updateData")
@@ -129,6 +129,7 @@ export default function Chart({ value }) {
         if (value === 2) {
             try {
                 const response = await getTotalOrderItemByShopBoatIdInDayOfWeek(idShop, accessToken);
+                console.log("responseDayOfWeek: ", idShop);
                 console.log("responseDayOfWeek: ", response);
                 if (response) {
                     response.data.forEach((item) => {

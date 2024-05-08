@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -17,6 +17,8 @@ import IconButton from "@mui/material/IconButton";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import Tooltip from "@mui/material/Tooltip";
+import { getOrderItemByOrderProductId } from "api/shopBoat";
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -39,17 +41,46 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function OrdersTable({ orders, updateData }) {
 
   const accessToken = localStorage.getItem("accessToken");
-  const handleChaneStatus = async (orderId, status) => {
+  const idShopBoat = localStorage.getItem("shopBoatId");
+  const [orderItems, setOrderItems] = React.useState([]);
+  const [status, setStatus] = React.useState("pending");
+
+
+  const getOrderItem = async (orderProductId, status) => {
     try {
-      const response = await updateOrderStatus(orderId, status, accessToken);
-      // console.log("response updateOrderStatus>>>>>>", response);
-      if (response?.status === 200) {
-        updateData(response.data);
-      }
+      console.log("orderProductId>>>>>>", orderProductId);
+      const response = await getOrderItemByOrderProductId(idShopBoat, orderProductId, accessToken);
+      setOrderItems(response.data);
+      setStatus(status);
     } catch (err) {
       console.log(err);
     }
-  };
+  }
+
+  useEffect(() => {
+    const handleChaneStatus = async (orderId) => {
+      try {
+        console.log("huhuhuhhuksls: ", orderItems);
+        const response = await updateOrderStatus(orderId, status, accessToken);
+        console.log("response updateOrderStatus>>>>>>", response);
+        // if (response?.status === 200) {
+        //   updateData(response.data);
+        // }
+
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    if (orderItems.length > 0) {
+      orderItems.map((item) => {
+        handleChaneStatus(item.id);
+      });
+    }
+  }, [orderItems, status]);
+
+
+
   useEffect(() => {
     console.log("orders>>>>>>", orders);
   }, [orders]);
@@ -104,19 +135,19 @@ export default function OrdersTable({ orders, updateData }) {
               </StyledTableCell>
               <StyledTableCell align="center">{order.total}</StyledTableCell>
               <StyledTableCell align="center">
-                {order.status === "pending" ? (
+                {status === "pending" ? (
                   <Badge pill bg="warning">
                     Chờ xác nhận
                   </Badge>
-                ) : order.status === "accepted" ? (
+                ) : status === "accepted" ? (
                   <Badge pill bg="success">
                     Đã xác nhận
                   </Badge>
-                ) : order.status === "cancelled" ? (
+                ) : status === "cancelled" ? (
                   <Badge pill bg="danger">
                     Đã hủy
                   </Badge>
-                ) : order.status === "delivering" ? (
+                ) : status === "delivering" ? (
                   <Badge pill bg="info">
                     Đang giao hàng
                   </Badge>
@@ -130,11 +161,12 @@ export default function OrdersTable({ orders, updateData }) {
                 <DetailModal order={order} />
               </StyledTableCell>
               <StyledTableCell align="center">
-                {order.status === "pending" && (
+                {status === "pending" && (
                   <div className="flex">
                     <Tooltip title="Xác nhận">
                       <IconButton
-                        onClick={() => handleChaneStatus(order.id, "accepted")}
+                        onClick={() => getOrderItem(order.id, "accepted")}
+                        // onClick={() => getOrderItem(order.id)}
                         color="success"
                       >
                         <CheckIcon />
@@ -142,9 +174,8 @@ export default function OrdersTable({ orders, updateData }) {
                     </Tooltip>
                     <Tooltip title="Hủy">
                       <IconButton
-                        onClick={() =>
-                          handleChaneStatus(order.id, "cancelled")
-                        }
+                        onClick={() => getOrderItem(order.id, "cancelled")}
+                        // onClick={() => getOrderItem(order.id)}
                         color="error"
                       >
                         <CloseIcon />
@@ -153,12 +184,11 @@ export default function OrdersTable({ orders, updateData }) {
                   </div>
                 )}
                 {
-                  order.status === "accepted" && (
+                  status === "accepted" && (
                     <Tooltip title="Giao hàng">
                       <IconButton
-                        onClick={() =>
-                          handleChaneStatus(order.id, "delivering")
-                        }
+                        onClick={() => getOrderItem(order.id, "delivering")}
+                        // onClick={() => getOrderItem(order.id)}
                         color="info"
                       >
                         <CheckIcon />
@@ -168,12 +198,11 @@ export default function OrdersTable({ orders, updateData }) {
                 }
 
                 {
-                  order.status === "delivering" && (
+                  status === "delivering" && (
                     <Tooltip title="Đã hoàn thành">
                       <IconButton
-                        onClick={() =>
-                          handleChaneStatus(order.id, "completed")
-                        }
+                        onClick={() => getOrderItem(order.id, "completed")}
+                        // onClick={() => getOrderItem(order.id)}
                         color="primary"
                       >
                         <CheckIcon />

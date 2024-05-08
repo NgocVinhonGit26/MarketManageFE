@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Col, Row } from "react-bootstrap";
 
 function SearchForm(props) {
-  const { setIsSearching, onSearch, fetchShopBoats } = props;
+  const { setIsSearching, onSearch, fetchShopBoats, pageSearch, setPageSearch, setPage } = props;
   const [formData, setFormData] = useState({
     name: "",
     code: "",
@@ -39,9 +39,11 @@ function SearchForm(props) {
       // nameOwner: "",
       status: "",
     });
-
     setIsSearching(false);
+    setPageSearch(1)
+    setPage(1)
     fetchShopBoats([])
+
   };
 
   const handleSubmit = (event) => {
@@ -49,8 +51,12 @@ function SearchForm(props) {
     if (!isFormDataEmpty()) {
       setIsSearching(true);
     }
-    onSearch(formData);
+    onSearch(pageSearch, formData);
   };
+
+  useEffect(() => {
+    onSearch(pageSearch, formData);
+  }, [pageSearch]);
 
 
   return (

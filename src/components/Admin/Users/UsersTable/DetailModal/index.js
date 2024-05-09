@@ -70,7 +70,7 @@ export default function DetailModal({ user }) {
                                     <td>
                                         <strong>Mã số</strong>
                                     </td>
-                                    <td>{user?.code || "Chưa có"}</td>
+                                    <td>{user?.id || "Chưa có"}</td>
                                 </tr>
                                 <tr>
                                     <td>

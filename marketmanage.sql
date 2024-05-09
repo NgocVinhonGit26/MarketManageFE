@@ -9,7 +9,8 @@ USE MarketManage;
 		phone_number VARCHAR(11),
 		username VARCHAR(255) NOT NULL,
 		password VARCHAR(255) NOT NULL,
-		role VARCHAR(255) NOT NULL
+		role VARCHAR(255) NOT NULL,
+        isdeleted boolean NOT NULL
 		);
         
        --  ALTER TABLE User

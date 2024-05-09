@@ -7,6 +7,7 @@ const getAllUsers = async (page, queryCondition = {}, token) => {
             'Authorization': `Bearer ${token}`
         }
     }
+    console.log("accessToken:>>>123 ", config);
     if (queryCondition.name) {
         url += `&name=${queryCondition.name}`;
     }
@@ -62,8 +63,25 @@ const getTotalPageUser = async (page, queryCondition = {}, token) => {
     }
 }
 
+const deleteUser = async (id, token) => {
+    try {
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        console.log("accessToken:>>> ", config);
+        const response = await instance.post(`/admin/deleteUserById/${id}`, {}, config);
+        return response;
+    } catch (error) {
+        console.log("error:>>> ", error);
+        throw error;
+    }
+}
+
 
 export {
     getAllUsers,
-    getTotalPageUser
+    getTotalPageUser,
+    deleteUser
 }

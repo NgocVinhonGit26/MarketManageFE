@@ -172,6 +172,7 @@ const updateShopBoatStatus = async (id, data, token) => {
         'Authorization': `Bearer ${token}`
       }
     }
+    console.log("accessToken:>>> ", config);
     const response = await instance.post(`/admin/updateStatusById/${id}`, data, config);
     return response;
   }

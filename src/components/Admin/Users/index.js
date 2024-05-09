@@ -40,22 +40,16 @@ const Users = () => {
 
 
 
-    const updateData = (data) => {
-        const newData = users.map((user) => {
-            if (user.id === data.id) {
-                return data;
-            }
-            return user;
-        });
+    const updateData = (id) => {
+        const newData = users.filter((user) => user.id !== id);
         setUsers(newData);
     };
+
 
     const onSearch = async (page, data) => {
         try {
             const response = await getAllUsers(page - 1, data, accessToken);
             const total = await getTotalPageUser(page - 1, data, accessToken);
-            console.log("dhdhhd 1", response)
-            console.log("dhdhhd 2", total)
             setTotal(total);
             setUsers(response);
         } catch (error) {

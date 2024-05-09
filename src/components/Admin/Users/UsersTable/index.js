@@ -13,7 +13,11 @@ import IconButton from "@mui/material/IconButton";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import Tooltip from "@mui/material/Tooltip";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteUser } from "api/user";
+
 const DetailModal = React.lazy(() => import("./DetailModal"));
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -33,20 +37,20 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function UsersTable({ users, updateData }) {
-    const handleChangeStatus = async (id, status, data) => {
-        console.log("check onClick")
-        try {
-            const accessToken = localStorage.getItem("accessToken");
-            const response = await updateShopBoatStatus(id, {
-                ...data,
-                status: status,
 
-            }, accessToken);
-            console.log("response update status shopbooat:>>> ", response);
+    const accessToken = localStorage.getItem("accessToken");
+    const id = parseInt(localStorage.getItem("id"), 10);
+
+    const handleChangeStatus = async (id) => {
+        console.log("check onClick ", id)
+        try {
+            const response = await deleteUser(id, accessToken);
+            console.log("response delete user:>>> ", response);
             // console.log(updateData);
 
             if (response?.status === 200) {
-                updateData(response.data);
+                updateData(id);
+                // console.log("delete success: ", response.data)
             }
         } catch (error) {
             console.log(error);
@@ -121,37 +125,16 @@ export default function UsersTable({ users, updateData }) {
                                 <DetailModal user={row} />
                             </StyledTableCell>
                             <StyledTableCell align="center">
-                                {row.status === 1 ? (
-                                    <Tooltip title="Khóa">
+                                {row.id === id ? <> </> :
+                                    <Tooltip title="Xóa tài khoản">
                                         <IconButton
-                                            aria-label="Khóa"
+                                            aria-label="Xóa tài khoản"
                                             color="error"
-                                            onClick={() => handleChangeStatus(row.id, 2, row)}
+                                            onClick={() => handleChangeStatus(row.id)}
                                         >
-                                            <LockIcon />
+                                            <DeleteIcon />
                                         </IconButton>
-                                    </Tooltip>
-                                ) : row.status === 0 ? (
-                                    <Tooltip title="Kích hoạt">
-                                        <IconButton
-                                            aria-label="Kích hoạt"
-                                            color="success"
-                                            onClick={() => handleChangeStatus(row.id, 1, row)}
-                                        >
-                                            <LockOpenIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                ) : (
-                                    <Tooltip title="Mở khóa">
-                                        <IconButton
-                                            aria-label="Mở khóa"
-                                            color="success"
-                                            onClick={() => handleChangeStatus(row.id, 1, row)}
-                                        >
-                                            <LockOpenIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                )}
+                                    </Tooltip>}
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}

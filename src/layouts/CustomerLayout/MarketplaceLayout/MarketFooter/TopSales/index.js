@@ -9,28 +9,28 @@ const TopSales = () => {
       name: "Bánh Pía Can Xại Đặc sản Sóc Trăng",
       price: 75000,
       sale: 65000,
-      img: "https://chonoicairang.net/wp-content/uploads/2020/04/banh-pia-can-xai-soc-trang-2-100x100.jpg",
+      img: "https://res.cloudinary.com/dkcetq9et/image/upload/v1715280846/banh-pia-can-xai-soc-trang-2-100x100_pmvzw2.jpg",
     },
     {
       id: 2,
       name: "Sầu riêng Ri 6",
       price: 100000,
       sale: 95000,
-      img: "https://chonoicairang.net/wp-content/uploads/2020/04/framesaurieng.jpg",
+      img: "https://res.cloudinary.com/dkcetq9et/image/upload/v1715280191/framesaurieng_e8imc5.jpg",
     },
     {
       id: 3,
       name: "Muối Tôm Như Ý – Mặn Mòi Vị Muối Tây Ninh",
       price: 17000,
       sale: 15000,
-      img: "https://chonoicairang.net/wp-content/uploads/2020/04/muoi-ot-tom-nhu-y-cho-noi-cai-rang-100x100.jpg",
+      img: "https://res.cloudinary.com/dkcetq9et/image/upload/v1715280870/muoi-ot-tom-nhu-y-cho-noi-cai-rang-100x100_rw601l.jpg",
     },
     {
       id: 4,
       name: "Gạo hữu cơ - Hạt Ngọc Rồng",
       price: 150000,
       sale: 140000,
-      img: "https://chonoicairang.net/wp-content/uploads/2020/04/gaohuuco.jpg",
+      img: "https://res.cloudinary.com/dkcetq9et/image/upload/v1715280237/gaohuuco_r8cfha.jpg",
     },
   ]);
   return (

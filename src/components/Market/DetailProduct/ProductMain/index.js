@@ -24,8 +24,11 @@ const ProductMain = (props) => {
   const [lastOrderProductId, setLastOrderProductId] = React.useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [itemId, setItemId] = React.useState(0);
+
 
   const [item, setItem] = React.useState({
+    id: 0,
     status: "pending",
     productId: 0,
     productName: "",
@@ -36,6 +39,16 @@ const ProductMain = (props) => {
     price: 0,
     sale: 0,
   });
+
+  useEffect(() => {
+    const idOrderItemFromLocalStorage = localStorage.getItem("idOrderItem")
+    if (idOrderItemFromLocalStorage) {
+      setItem(prevState => ({
+        ...prevState,
+        id: parseInt(idOrderItemFromLocalStorage)
+      }))
+    }
+  }, [])
 
   const creatNewCart = async () => {
     if (localStorage.getItem("hadCart") === "false") {
@@ -100,11 +113,12 @@ const ProductMain = (props) => {
       setItem(prevState => {
         return {
           ...prevState,
+          id: prevState.id + 1,
           productId: product.id,
           orderProductId: lastOrderProductId, // cart ID
         };
       });
-
+      localStorage.setItem("idOrderItem", item.id + 1)
       console.log("dcm item ahehe", item);
       dispatch(addOrderProduct(item))
       // dispatch(resetListOderProduct())
@@ -118,16 +132,6 @@ const ProductMain = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // Gọi các hàm async ở đây
-      // Ví dụ: 
-      // await setQuantity(quantity);
-      // const response2 = await insertOrderItem(item)
-      // console.log("response: insertOrderItem", response2)
-      // dispatch(addOrderProduct(item))
-      // navigate("/marketplace/cart")
-      // const response = await getLastOrderProduct(localStorage.getItem("id"))
-      // console.log("response: getLastOrderProduct", response.data)
-      // localStorage.setItem("orderProductId", response.data)
       await creatNewCart();
     };
 
@@ -214,7 +218,7 @@ const ProductMain = (props) => {
           <br />
           <div className="product-main__content__right_tel">
             <img
-              src="https://chonoicairang.net/wp-content/uploads/2020/05/banner-si-ngang.jpg"
+              src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715278803/banner-si-ngang_hb59rq.jpg"
               alt=""
             />
           </div>

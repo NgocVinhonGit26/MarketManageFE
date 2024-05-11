@@ -31,19 +31,19 @@ const MenuImg = () => {
           >
             <SwiperSlide>
               <img
-                src="https://chonoicairang.net/wp-content/uploads/2020/04/cncrtest@0.5x.png"
+                src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715278859/cncrtest_0.5x_fdegdp.png"
                 alt="slide-1"
               />
             </SwiperSlide>
             <SwiperSlide>
               <img
-                src="https://chonoicairang.net/wp-content/uploads/2020/04/srr6@0.5x.png"
+                src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715278941/srr6_0.5x_t47hxx.png"
                 alt="slide-2"
               />
             </SwiperSlide>
             <SwiperSlide>
               <img
-                src="https://chonoicairang.net/wp-content/uploads/2020/04/cam-xoan.png"
+                src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715278970/cam-xoan_j7p9di.png"
                 alt="slide-3"
               />
             </SwiperSlide>
@@ -52,13 +52,13 @@ const MenuImg = () => {
         <div className="imgs-top-right">
           <div className="img-top-right">
             <img
-              src="https://chonoicairang.net/wp-content/uploads/2020/04/nong-san-sach@0.5x.png"
+              src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715278995/nong-san-sach_0.5x_znhssl.png"
               alt="img-1"
             />
           </div>
           <div className="img-top-right">
             <img
-              src="https://chonoicairang.net/wp-content/uploads/2020/04/nong-san-che-bien.png"
+              src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715279018/nong-san-che-bien_kjapiw.png"
               alt="img-2"
             />
           </div>
@@ -67,19 +67,19 @@ const MenuImg = () => {
       <div className="menu-bottom">
         <div className="img-bottom">
           <img
-            src="https://chonoicairang.net/wp-content/uploads/2020/04/cho-noi-online.png"
+            src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715279058/cho-noi-online_pfsoga.png"
             alt="img-1"
           />
         </div>
         <div className="img-bottom">
           <img
-            src="https://chonoicairang.net/wp-content/uploads/2020/04/mat-hang-khac-1.png"
+            src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715279082/mat-hang-khac-1_i2rkgy.png"
             alt="img-2"
           />
         </div>
         <div className="img-bottom">
           <img
-            src="https://chonoicairang.net/wp-content/uploads/2020/04/thu-cong-my-nghe@0.5x.png"
+            src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715279106/thu-cong-my-nghe_0.5x_zspxgb.png"
             alt="img-3"
           />
         </div>

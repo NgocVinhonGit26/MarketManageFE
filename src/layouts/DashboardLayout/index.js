@@ -258,6 +258,7 @@ export default function DashboardLayout({ children, layoutRole }) {
       const response = await signoutService(token);
       if (response?.status === 200) {
         dispatch(setUserDefault());
+        localStorage.removeItem("accessToken");
         successToast("Đăng xuất thành công !")
         navigate("/signin");
       }

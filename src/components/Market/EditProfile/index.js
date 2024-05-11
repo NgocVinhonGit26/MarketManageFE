@@ -71,6 +71,7 @@ export default function EditProfile() {
             console.log("token1>>>>", token);
             console.log("response", response);
             successToast("Đăng xuất thành công");
+            localStorage.removeItem("accessToken");
             dispatch(setUserDefault());
             dispatch(resetListOderProduct());
             navigate("/marketplace");

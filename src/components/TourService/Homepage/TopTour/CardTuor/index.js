@@ -6,6 +6,10 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import "./style.scss";
 import { Link } from "react-router-dom";
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import PlaceIcon from '@mui/icons-material/Place';
+import ConnectingAirportsIcon from '@mui/icons-material/ConnectingAirports';
+import TimelapseIcon from '@mui/icons-material/Timelapse';
 
 const CardTour = ({ tour }) => {
   return (
@@ -21,7 +25,7 @@ const CardTour = ({ tour }) => {
           height="140"
           image={
             tour?.image ||
-            "https://r2.nucuoimekong.com/wp-content/uploads/tour-mien-tay-2-ngay-1-dem-gia-re.jpg"
+            "https://res.cloudinary.com/dkcetq9et/image/upload/v1715279235/tour-mien-tay-2-ngay-1-dem-gia-re_jwfrtx.jpg"
           }
           alt="green iguana"
         />
@@ -63,10 +67,7 @@ const CardTour = ({ tour }) => {
             <div className="detail-infor">
               <div className="title-infor">
                 <div className="icon-infor">
-                  <img
-                    src="https://r2.nucuoimekong.com/wp-content/uploads/tour-mien-tay-2-ngay-1-dem-gia-re.jpg"
-                    alt=""
-                  />
+                  <AccessTimeIcon color="success" />
                 </div>
                 <div className="text-infor">Thời gian khởi hành:</div>
               </div>
@@ -75,10 +76,7 @@ const CardTour = ({ tour }) => {
             <div className="detail-infor">
               <div className="title-infor">
                 <div className="icon-infor">
-                  <img
-                    src="https://r2.nucuoimekong.com/wp-content/uploads/tour-mien-tay-2-ngay-1-dem-gia-re.jpg"
-                    alt=""
-                  />
+                  <PlaceIcon color="success" />
                 </div>
                 <div className="text-infor">Địa điểm khởi hành:</div>
               </div>
@@ -87,10 +85,7 @@ const CardTour = ({ tour }) => {
             <div className="detail-infor">
               <div className="title-infor">
                 <div className="icon-infor">
-                  <img
-                    src="https://r2.nucuoimekong.com/wp-content/uploads/tour-mien-tay-2-ngay-1-dem-gia-re.jpg"
-                    alt=""
-                  />
+                  <TimelapseIcon color="success" />
                 </div>
                 <div className="text-infor">Thời gian tour:</div>
               </div>
@@ -99,10 +94,7 @@ const CardTour = ({ tour }) => {
             <div className="detail-infor">
               <div className="title-infor">
                 <div className="icon-infor">
-                  <img
-                    src="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/phuong-tien.png"
-                    alt=""
-                  />
+                  <ConnectingAirportsIcon color="success" />
                 </div>
                 <div className="text-infor">Phương tiện di chuyển:</div>
               </div>

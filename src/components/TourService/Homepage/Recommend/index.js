@@ -23,25 +23,25 @@ const Recommend = () => {
             id: 1,
             adress: 'Cần Thơ',
             liked: 501,
-            img: 'https://innoviet.com/upload/2018/04/can-tho-1512635131.jpg'
+            img: 'https://res.cloudinary.com/dkcetq9et/image/upload/v1715280035/can-tho-1512635131_ac5a73.jpg'
         },
         {
             id: 2,
             adress: 'Côn Đảo',
             liked: 301,
-            img: 'https://r2.nucuoimekong.com/wp-content/uploads/dinh-tinh-yeu-o-con-dao.jpg'
+            img: 'https://res.cloudinary.com/dkcetq9et/image/upload/v1715280059/dinh-tinh-yeu-o-con-dao_owoyyg.jpg'
         },
         {
             id: 3,
             adress: 'Phú Quốc',
             liked: 401,
-            img: 'https://r2.nucuoimekong.com/wp-content/uploads/phu-quoc.jpg'
+            img: 'https://res.cloudinary.com/dkcetq9et/image/upload/v1715280082/phu-quoc_mnzdpz.jpg'
         },
         {
             id: 4,
             adress: 'Miền Tây',
             liked: 601,
-            img: 'https://r2.nucuoimekong.com/wp-content/uploads/mua-nuoc-noi.jpg'
+            img: 'https://res.cloudinary.com/dkcetq9et/image/upload/v1715280110/mua-nuoc-noi_dnzlu4.jpg'
         },
     ])
 

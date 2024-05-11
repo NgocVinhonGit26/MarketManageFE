@@ -6,7 +6,7 @@ const Article = () => {
       <div className="article">
         <div className="article-infor">
           <div className="article__img">
-            <img src="https://chonoicairang.net/wp-content/uploads/2020/04/tham-quan-cho-noi-cai-rang-bang-ghe-xuong-720x536.jpg" />
+            <img src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715278368/tham-quan-cho-noi-cai-rang-bang-ghe-xuong-720x536_ncmkkt.jpg" />
           </div>
           <div className="article__content">
             <div className="article__content--name">

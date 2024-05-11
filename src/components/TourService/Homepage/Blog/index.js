@@ -22,42 +22,42 @@ const Blog = () => {
         {
             id: 1,
             title: 'Kinh nghiệm du lịch Kiên Giang - Top 13 điểm đến hấp dẫn (2024)',
-            img: 'https://r2.nucuoimekong.com/wp-content/uploads/du-lich-kien-giang.jpg',
+            img: 'https://res.cloudinary.com/dkcetq9et/image/upload/v1715280525/du-lich-kien-giang_ttbz7i.jpg',
         },
         {
             id: 2,
             title: 'Chợ nổi Cái Răng Cần Thơ – Đặc sản sông nước miền Tây (2024)',
-            img: 'https://r2.nucuoimekong.com/wp-content/uploads/nguoi-dan-cho-noi-moi-mua-trai-cay-1.jpg',
+            img: 'https://res.cloudinary.com/dkcetq9et/image/upload/v1715280543/nguoi-dan-cho-noi-moi-mua-trai-cay-1_jnuiq9.jpg',
         },
         {
             id: 3,
             title: 'Vườn quốc gia Côn Đảo - Kinh nghiệm khám phá từ A đến Z',
-            img: 'https://r2.nucuoimekong.com/wp-content/uploads/vuon-quoc-gia-con-dao-cover.png',
+            img: 'https://res.cloudinary.com/dkcetq9et/image/upload/v1715280578/vuon-quoc-gia-con-dao-cover_mz1xvs.png',
         },
         {
             id: 4,
             title: 'Bánh mì Hội An | Top 12 quán ăn ngon nức tiếng',
-            img: 'https://r2.nucuoimekong.com/wp-content/uploads/banh-mi-hoi-an-1.jpg',
+            img: 'https://res.cloudinary.com/dkcetq9et/image/upload/v1715280627/banh-mi-hoi-an-1_tl1p8n.jpg',
         },
         {
             id: 5,
             title: 'Món ngon miền Nam – Top 25+ đặc sản ngon nức tiếng miền Nam',
-            img: 'https://r2.nucuoimekong.com/wp-content/uploads/mon-ngon-mien-nam.jpg',
+            img: 'https://res.cloudinary.com/dkcetq9et/image/upload/v1715280657/mon-ngon-mien-nam_mrjac4.jpg',
         },
         {
             id: 6,
             title: 'Đặc sản Bến Tre - Top 11 Đặc sản xứ dừa ngon ngất ngây (2024)',
-            img: 'https://r2.nucuoimekong.com/wp-content/uploads/dac-san-ben-tre-600x338.jpg',
+            img: 'https://res.cloudinary.com/dkcetq9et/image/upload/v1715280680/dac-san-ben-tre-600x338_mx5szw.jpg',
         },
         {
             id: 7,
             title: 'Kinh nghiệm khám phá Mũi Cá Mập Côn Đảo (2024)',
-            img: 'https://r2.nucuoimekong.com/wp-content/uploads/mui-ca-map.jpg',
+            img: 'https://res.cloudinary.com/dkcetq9et/image/upload/v1715280701/mui-ca-map_llvupi.jpg',
         },
         {
             id: 8,
             title: 'Nhà hàng Côn Đảo - Top 15 nhà hàng với nhiều món ngon hấp dẫn',
-            img: 'https://r2.nucuoimekong.com/wp-content/uploads/nha-hang-con-dao.jpg',
+            img: 'https://res.cloudinary.com/dkcetq9et/image/upload/v1715280721/nha-hang-con-dao_srvlrj.jpg',
         },
 
 

@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { successToast } from 'utilities/toast';
 import { resetListOderProduct } from 'redux/slices/listOrderProductSlice';
 import { insertOrderItem } from 'api/productOrder';
+import { errorToast } from 'utilities/toast';
 
 function createData(name, price) {
     return { name, price };
@@ -40,6 +41,12 @@ const CartProductTotal = ({ totalPrice }) => {
     ];
 
     const handleAddOrderProduct = async () => {
+        if (localStorage.getItem("accessToken") === null) {
+            navigate("/signin")
+            errorToast("Vui lòng đăng nhập để đặt hàng")
+            return
+        }
+
         let isSuccessful = false;
         if (listOrderProduct.length === 0) {
             return;

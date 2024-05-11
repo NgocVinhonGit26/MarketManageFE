@@ -16,7 +16,7 @@ const getAllProductOrderByCategory = (token) => {
     },
   };
   try {
-    const response = instance.get(`/product/getAllProductOrderByCategory`, config);
+    const response = instance.get(`/product/getAllProductOrderByCategory`);
     return response;
   } catch (error) {
     console.log(error);
@@ -69,30 +69,30 @@ const searchProduct = (page, query = {}, idShop, token) => {
 };
 
 const searchProductForUser = (page, query = {}) => {
-  let url = `/product/searchProductForUser/${page}?`;
+  let url = `/product/searchProductByName/${page}?`;
   if (query.name) {
     url += "&name=" + query.name;
   }
-  if (query.priceFrom) {
-    url += "&priceFrom=" + query.priceFrom;
-  }
-  if (query.priceTo) {
-    url += "&priceTo=" + query.priceTo;
-  }
-  if (query.countInStock) {
-    url += "&countInStock=" + query.countInStock;
-  }
-  if (query.category) {
-    url += "&category=" + query.category;
-  }
-  if (query.sale) {
-    url += "&sale=" + query.sale;
-  }
+
 
   try {
     const response = instance.get(url);
     return response;
   } catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalPageProductForUser = (page, query = {}) => {
+  let url = `/product/getTotalPageSearchProductByName/${page}?`;
+  if (query.name) {
+    url += "&name=" + query.name;
+  }
+  try {
+    const response = instance.get(url);
+    return response;
+  }
+  catch (error) {
     console.log(error);
   }
 }
@@ -155,6 +155,7 @@ export {
   getProductBySlug,
   searchProduct,
   searchProductForUser,
+  getTotalPageProductForUser,
   getTotalPageProduct,
   getProductByCategory,
 };

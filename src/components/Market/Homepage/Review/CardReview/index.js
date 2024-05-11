@@ -8,7 +8,7 @@ const CardReview = ({ item }) => {
     <div className="container-cardreview cursor-pointer">
       <div className="card-review">
         <div className="card-review__img">
-          <img src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=2000" />
+          <img src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715279164/businessman-character-avatar-isolated_24877-60111_qj8ddn.jpg" />
         </div>
         <div className="card-review__content">
           <div className="card-review__star-rating">

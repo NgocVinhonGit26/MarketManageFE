@@ -63,7 +63,7 @@ const MarketFooter = () => {
                 </Typography>
                 <Typography variant="body2" color="#f5f5f5">
                   <img
-                    src="https://chonoicairang.net/wp-content/uploads/2020/04/chonoicairang.net_.png"
+                    src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715279670/chonoicairang.net__saaks6.png"
                     alt="logo"
                     style={{ maxHeight: "90px" }}
                   />

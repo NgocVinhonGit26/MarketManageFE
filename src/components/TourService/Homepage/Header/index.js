@@ -44,21 +44,21 @@ const HeaderTour = () => {
                 className="dmm1"
                 style={{
                   backgroundImage:
-                    "url('https://r2.nucuoimekong.com/wp-content/uploads/coverweb1.png')",
+                    "url('https://res.cloudinary.com/dkcetq9et/image/upload/v1715279904/coverweb1_urjzqr.png')",
                 }}
               ></SwiperSlide>
               <SwiperSlide
                 className="dmm1"
                 style={{
                   backgroundImage:
-                    "url('https://r2.nucuoimekong.com/wp-content/uploads/coverweb3.png')",
+                    "url('https://res.cloudinary.com/dkcetq9et/image/upload/v1715279934/coverweb3_jmbs1p.png')",
                 }}
               ></SwiperSlide>
               <SwiperSlide
                 className="dmm1"
                 style={{
                   backgroundImage:
-                    "url('https://r2.nucuoimekong.com/wp-content/uploads/coverweb2.png')",
+                    "url('https://res.cloudinary.com/dkcetq9et/image/upload/v1715279960/coverweb2_pbqnrx.png')",
                 }}
               ></SwiperSlide>
 

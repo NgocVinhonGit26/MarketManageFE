@@ -81,7 +81,7 @@ const CartProductTable = ({ listOrderProduct, setTotalPrice }) => {
 
     const handleDeleteProduct = (row) => {
         alert("Xóa sản phẩm khỏi giỏ hàng");
-        dispatch(removeOrderProduct(row.productId))
+        dispatch(removeOrderProduct(row.id))
     }
     return (
         <div className='Container-OrderTourTable'>

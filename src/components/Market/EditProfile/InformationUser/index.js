@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import Form from "react-bootstrap/Form";
 
 export default function InformationUser() {
     return (
@@ -14,7 +15,16 @@ export default function InformationUser() {
             noValidate
             autoComplete="off"
         >
-            <div>
+            <Form.Group>
+                <Form.Label>Ảnh</Form.Label>
+                <Form.Control
+                    type="file"
+                    name="avatar"
+                // value={avatar}
+                // onChange={(e) => setImage(e.target.files[0])}
+                />
+            </Form.Group>
+            <div style={{ marginTop: "5px" }}>
                 <TextField
                     required
                     id="outlined-required"

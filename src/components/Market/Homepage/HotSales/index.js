@@ -11,28 +11,28 @@ const HotSales = () => {
       name: "Sầu Riêng Ri 6",
       price: 100000,
       sale: 95000,
-      img: "https://chonoicairang.net/wp-content/uploads/2020/04/framesaurieng.jpg",
+      img: "https://res.cloudinary.com/dkcetq9et/image/upload/v1715280191/framesaurieng_e8imc5.jpg",
     },
     {
       id: 2,
       name: "Gạo Hữu Cơ - Hạt Ngọc Rồng",
       price: 150000,
       sale: 140000,
-      img: "https://chonoicairang.net/wp-content/uploads/2020/04/gaohuuco.jpg",
+      img: "https://res.cloudinary.com/dkcetq9et/image/upload/v1715280237/gaohuuco_r8cfha.jpg",
     },
     {
       id: 3,
       name: "Cá Thác Lác Rút Xương Hậu Giang",
       price: 200000,
       sale: 170000,
-      img: "https://chonoicairang.net/wp-content/uploads/2020/04/ca-thac-lac.jpg",
+      img: "https://res.cloudinary.com/dkcetq9et/image/upload/v1715280258/ca-thac-lac_ih7wfa.jpg",
     },
     {
       id: 4,
       name: "Bưởi Da Xanh Loại 1",
       price: 55000,
       sale: 45000,
-      img: "https://chonoicairang.net/wp-content/uploads/2020/04/buoidaxanh.jpg",
+      img: "https://res.cloudinary.com/dkcetq9et/image/upload/v1715280278/buoidaxanh_vtbboh.jpg",
     },
   ]);
 

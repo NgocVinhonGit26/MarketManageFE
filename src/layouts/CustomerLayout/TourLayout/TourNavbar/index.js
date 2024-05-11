@@ -27,7 +27,7 @@ const TourNavbar = () => {
             <img
               width="60"
               height="70"
-              src="https://nucuoimekong.com/wp-content/uploads/Logo-Nu-Cuoi-Me-Kong-2023-2x.png"
+              src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715279799/Logo-Nu-Cuoi-Me-Kong-2023-2x_ycczvs.png"
               alt="logo"
             />
           </Link>

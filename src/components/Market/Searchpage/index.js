@@ -17,6 +17,7 @@ import Pagination from "@mui/material/Pagination";
 import { getCategoryBySlug } from "api/category";
 import { getTotalPageProduct } from "api/product";
 import { searchProductForUser } from "api/product";
+import { getTotalPageProductForUser } from "api/product";
 
 const Searchpage = () => {
   const [cost, setCost] = React.useState([20000, 500000]);
@@ -62,11 +63,11 @@ const Searchpage = () => {
   const accessToken = localStorage.getItem("accessToken");
   const fetchProducts = async () => {
     try {
-      const response = await searchProductForUser(page - 1, {});
-      // const totalPages = await getTotalPageProduct(page - 1, {});
-      console.log("searchProduct reposne", response);
-      setProducts(response.data.content);
-      setTotalPages(response.data.totalPages);
+      const response = await searchProductForUser(page - 1, { name });
+      const totalPages = await getTotalPageProductForUser(page - 1, { name });
+      // console.log("searchProduct reposne", totalPages);
+      setProducts(response.data);
+      setTotalPages(totalPages.data);
     } catch (error) {
       console.log(error);
     }

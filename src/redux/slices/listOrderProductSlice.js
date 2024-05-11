@@ -19,7 +19,7 @@ const listOrderProductSlice = createSlice({
         },
         //removeOrder
         removeOrderProduct: (state, action) => {
-            state.listProduct = state.listProduct.filter((item) => item.productId !== action.payload);
+            state.listProduct = state.listProduct.filter((item) => item.id !== action.payload);
         }
     },
 });

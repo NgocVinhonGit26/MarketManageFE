@@ -7,7 +7,7 @@ const Contact = () => {
         <div className="service">
           <div className="service-logo">
             <img
-              src="https://chonoicairang.net/wp-content/uploads/2020/04/icons8-guarantee-1.svg"
+              src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715278586/Screenshot_2024-05-10_011606_qaeofq.png"
               alt="service-logo"
             />
           </div>
@@ -18,7 +18,7 @@ const Contact = () => {
         <div className="service">
           <div className="service-logo">
             <img
-              src="https://chonoicairang.net/wp-content/uploads/2020/04/icons8-easy.svg"
+              src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715278703/Screenshot_2024-05-10_011712_tzdwxm.png"
               alt="service-logo"
             />
           </div>
@@ -29,7 +29,7 @@ const Contact = () => {
         <div className="service">
           <div className="service-logo">
             <img
-              src="https://chonoicairang.net/wp-content/uploads/2020/04/icons8-last_24_hours.svg"
+              src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715278704/Screenshot_2024-05-10_011743_wz1doh.png"
               alt="service-logo"
             />
           </div>
@@ -40,7 +40,7 @@ const Contact = () => {
         <div className="service">
           <div className="service-logo">
             <img
-              src="https://chonoicairang.net/wp-content/uploads/2020/04/icons8-shipped.svg"
+              src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715278704/Screenshot_2024-05-10_011807_kqtvgk.png"
               alt="service-logo"
             />
           </div>
@@ -52,7 +52,7 @@ const Contact = () => {
       <div className="contact">
         <div className="contact-img">
           <img
-            src="https://chonoicairang.net/wp-content/uploads/2020/05/banner-si-ngang.jpg"
+            src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715278803/banner-si-ngang_hb59rq.jpg"
             alt="contact-img"
           />
         </div>

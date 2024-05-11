@@ -44,6 +44,7 @@ import Dashboard from "components/dashboard/Dashboard";
 import Reports from "components/Merchant/Reports";
 import EditProfile from "components/Market/EditProfile";
 import Users from "components/Admin/Users";
+import Blog from "components/TourService/Blog";
 
 function App() {
   const [cookies] = useCookies(["access_token"]);
@@ -84,6 +85,7 @@ function App() {
         <Route path="/tour/search/:name" element={<TourSearchPage />} />
         <Route path="/tour/search" element={<TourSearchPage />} />
         <Route path="/tour/cart" element={<OrderTour />} />
+        <Route path="/tour/blog" element={<Blog />} />
 
         {/* Marketplace */}
         <Route path="/" element={<Navigate to="/marketplace" />} />

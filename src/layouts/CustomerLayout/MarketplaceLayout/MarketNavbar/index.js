@@ -70,6 +70,7 @@ const MarketNavbar = () => {
       handleClose();
       dispatch(setUserDefault());
       dispatch(resetListOderProduct());
+      localStorage.removeItem("accessToken");
       navigate("/marketplace");
     }
     catch (error) {
@@ -94,7 +95,7 @@ const MarketNavbar = () => {
           style={{ cursor: "pointer", marginRight: "50px" }}
         >
           <img
-            src="https://chonoicairang.net/wp-content/uploads/2020/04/chonoicairang.net_.png"
+            src="https://res.cloudinary.com/dkcetq9et/image/upload/v1715279765/chonoicairang.net__ikgznu.png"
             alt="logo"
           />
         </Link>

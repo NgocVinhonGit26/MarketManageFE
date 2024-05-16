@@ -190,13 +190,18 @@ CREATE TABLE Product (
     unit VARCHAR(255) NOT NULL DEFAULT 'unit',
     category varchar(255) NOT NULL,
     shop_boat_id INT NOT NULL,
-    -- deleted BOOLEAN DEFAULT false,
-    -- deletedBy VARCHAR(255),
-    -- deletedAt TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_at TIMESTAMP ,
+    updated_at TIMESTAMP ,
+    video_infor VARCHAR(255),
     FOREIGN KEY (shop_boat_id) REFERENCES ShopBoat(id)
 );
+-- ALTER TABLE Product
+-- DROP COLUMN videoInfor;
+
+-- ALTER TABLE Product
+-- ADD COLUMN video_infor VARCHAR(255);
+
+
 
 INSERT INTO Product (name, slug, description, price, sale, count_in_stock ,image, unit, category, shop_boat_id, created_at, updated_at)
 VALUES

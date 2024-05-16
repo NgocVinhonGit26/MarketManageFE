@@ -48,9 +48,15 @@ const deleteProduct = async (id) => {
   }
 };
 
-const createProduct = async (data) => {
+const createNewProduct = async (data, token) => {
+
   try {
-    const response = await instance.post(`products`, data);
+    const config = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+    const response = await instance.post(`/merchant/createNewProduct`, data, config);
     return response;
   } catch (error) {
     console.log(error);
@@ -439,7 +445,7 @@ export {
   updateProduct,
   deleteProduct,
   getShopBoatByIdUser,
-  createProduct,
+  createNewProduct,
   updateShopBoat,
   getAllShopBoats,
   getTotalPages,

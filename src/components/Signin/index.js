@@ -75,6 +75,9 @@ export default function SignIn() {
           role: res.data.role,
           name: res.data.name,
           id: res.data.id,
+          avatar: res.data.avatar,
+          email: res.data.email,
+          phone: res.data.phone,
         };
         // console.log("payload>>>>>>>>>", payload);
         dispatch(setUser(payload));

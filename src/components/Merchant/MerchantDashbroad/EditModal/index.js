@@ -28,14 +28,12 @@ export default function EditModal({ shopBoat, setShopBoat }) {
   const handleClose = () => setOpen(false);
   const [id, setId] = React.useState(shopBoat?.id || 0);
   const [name, setName] = React.useState(shopBoat?.name || "");
-  const [description, setDescription] = React.useState(
-    shopBoat?.description || ""
-  );
+  const [description, setDescription] = React.useState(shopBoat?.description || "");
   const [avatar, setAvatar] = React.useState(shopBoat?.avatar || "");
   const [type, setType] = React.useState(shopBoat?.type || "");
 
   const [image, setImage] = React.useState("");
-
+  const accessToken = localStorage.getItem("accessToken");
   // Thêm useEffect ở đây
   React.useEffect(() => {
     if (avatar !== "") {
@@ -43,7 +41,7 @@ export default function EditModal({ shopBoat, setShopBoat }) {
     }
   }, [avatar]);
 
-  const accessToken = localStorage.getItem("accessToken");
+
 
   const handleSubmit = async () => {
     const data = {
@@ -52,6 +50,7 @@ export default function EditModal({ shopBoat, setShopBoat }) {
       avatar,
       type,
     };
+
     try {
       const response = await updateShopBoatById(id, data, accessToken);
       // console.log("check >>>>", response.data);
@@ -63,10 +62,16 @@ export default function EditModal({ shopBoat, setShopBoat }) {
   };
 
   const handleImageUpload = () => {
+    if (image === "") {
+      handleSubmit();
+      return;
+    }
+
     const dataImg = new FormData();
     dataImg.append("file", image);
     dataImg.append("upload_preset", "cspmjsnn");
     dataImg.append("cloud_name", "dkcetq9et");
+
 
     fetch("https://api.cloudinary.com/v1_1/dkcetq9et/image/upload", {
       method: "post",
@@ -75,14 +80,10 @@ export default function EditModal({ shopBoat, setShopBoat }) {
       .then((response) => response.json())
       .then((dataImg) => {
         setAvatar(dataImg.url);
-        // console.log("dataImg.url: ", dataImg.url);
-        // console.log("avatar: >>>>>>>>>>", avatar);
-        // handleSubmit();
       })
       .catch((err) => {
         console.log(err);
       });
-
   };
 
   React.useEffect(() => {
@@ -90,6 +91,7 @@ export default function EditModal({ shopBoat, setShopBoat }) {
     setDescription(shopBoat?.description || "");
     setType(shopBoat?.type || "");
     setAvatar(shopBoat?.avatar || "");
+    console.log("shopBoat effec", shopBoat);
   }, [shopBoat]);
 
   return (
@@ -147,10 +149,10 @@ export default function EditModal({ shopBoat, setShopBoat }) {
                     type="file"
                     name="avatar"
                     // value={avatar}
+                    accept=".png, .jpg, .jpeg"
                     onChange={(e) => setImage(e.target.files[0])}
                   />
                 </Form.Group>
-
                 <Button
                   variant="primary"
                   onClick={handleImageUpload}

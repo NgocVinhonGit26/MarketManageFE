@@ -3,121 +3,21 @@ import Button from "react-bootstrap/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Form from "react-bootstrap/Form";
-import { getListCategories } from "api/category";
 import Select from "react-select";
 import PropTypes from "prop-types";
 import makeAnimated from "react-select/animated";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { createProduct } from "api/shopBoat";
-import DeleteIcon from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { createNewProduct } from "api/shopBoat";
 import * as React from "react";
-import { v4 as uuidv4 } from "uuid";
-import { uploadImage, deleteImage } from "api/image";
 
 const animatedComponents = makeAnimated();
 AddModal.propTypes = {
   updateData: PropTypes.func.isRequired,
 };
 
-function AddInformationModal({ addInformation }) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-    resetForm();
-  };
-
-  const resetForm = () => {
-    setFieldName("");
-    setValue("");
-  };
-
-  const [fieldName, setFieldName] = useState("");
-  const [value, setValue] = useState("");
-
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    pt: 2,
-    px: 4,
-    pb: 3,
-  };
-
-  const handleSave = () => {
-    addInformation({ key: fieldName, value: value });
-    handleClose();
-  };
-
-  return (
-    <React.Fragment>
-      <IconButton
-        aria-label="add"
-        size="small"
-        sx={{
-          mr: 0.5,
-        }}
-        onClick={handleOpen}
-      >
-        <AddCircleOutlineIcon />
-      </IconButton>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Box sx={{ ...style, width: 300 }}>
-          <Form.Group controlId="fieldName" className="mb-3">
-            <Form.Label>Field Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Field Name"
-              value={fieldName}
-              onChange={(e) => setFieldName(e.target.value)}
-            />
-          </Form.Group>
-
-          <Form.Group controlId="value" className="mb-3">
-            <Form.Label>Value</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Value"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
-          </Form.Group>
-          <div className="flex justify-end">
-            <Button
-              onClick={handleSave}
-              className="mr-2"
-              variant="success"
-              disabled={fieldName === "" || value === ""}
-            >
-              Add
-            </Button>
-            <Button onClick={handleClose} variant="primary">
-              Cancel
-            </Button>
-          </div>
-        </Box>
-      </Modal>
-    </React.Fragment>
-  );
-}
-
 const defaultImage =
-  "https://researchcoach.co.uk/wp-content/plugins/accelerated-mobile-pages/images/SD-default-image.png";
+  "https://res.cloudinary.com/dkcetq9et/image/upload/v1715826332/avatar-768x768_gpx1pc.jpg";
 
 function AddModal({ updateData, addProduct }) {
   const [open, setOpen] = useState(false);
@@ -128,16 +28,30 @@ function AddModal({ updateData, addProduct }) {
   const handleClose = async () => {
     setOpen(false);
   };
-  const [listCategory, setListCategory] = useState([]);
-  const [selectedCategories, setSelectedCategory] = useState([]);
+
+  const shopBoatId = localStorage.getItem("shopBoatId");
+  const accessToken = localStorage.getItem("accessToken");
+
+  const [listCategory, setListCategory] = useState([
+    { value: 'hoaqua', label: 'Hoa Quả' },
+    { value: 'banhkeo', label: 'Bánh Kẹo' },
+    { value: 'NSchebien', label: 'Nông Sản Chế Biến' }
+  ]);
+  const [selectedCategories, setSelectedCategory] = useState('');
   const [name, setName] = useState("");
+  const [slug, setSlug] = useState("");
   const [price, setPrice] = useState(0);
   const [sale, setSale] = useState(0);
   const [unit, setUnit] = useState("");
   const [countInStock, setCountInStock] = useState(0);
   const [description, setDescription] = useState("");
-  const [information, setInformation] = useState([]);
+  const [videoInfor, setVideoInfor] = useState('');
   const [image, setImage] = useState(defaultImage);
+
+  const [img, setImg] = useState('');
+
+
+
 
   // useEffect(() => {
   //   const fetchCategories = async () => {
@@ -167,36 +81,77 @@ function AddModal({ updateData, addProduct }) {
     maxHeight: "80vh",
   };
 
+  const removeVietnameseTones = (str) => {
+    str = str.replace(/á|à|ả|ã|ạ|â|ấ|ầ|ẩ|ẫ|ậ|ă|ắ|ằ|ẳ|ẵ|ặ/g, "a");
+    str = str.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/g, "e");
+    str = str.replace(/i|í|ì|ỉ|ĩ|ị/g, "i");
+    str = str.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/g, "o");
+    str = str.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/g, "u");
+    str = str.replace(/ý|ỳ|ỷ|ỹ|ỵ/g, "y");
+    str = str.replace(/đ/g, "d");
+    str = str.replace(/Á|À|Ả|Ã|Ạ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ|Ă|Ắ|Ằ|Ẳ|Ẵ|Ặ/g, "A");
+    str = str.replace(/É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ/g, "E");
+    str = str.replace(/I|Í|Ì|Ỉ|Ĩ|Ị/g, "I");
+    str = str.replace(/Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ/g, "O");
+    str = str.replace(/Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự/g, "U");
+    str = str.replace(/Ý|Ỳ|Ỷ|Ỹ|Ỵ/g, "Y");
+    str = str.replace(/Đ/g, "D");
+    str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền, sắc, hỏi, ngã, nặng
+    str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
+    return str;
+  }
+
+
+  useEffect(() => {
+    const generateSlug = (name) => {
+      const nameWithoutTones = removeVietnameseTones(name);
+      return nameWithoutTones
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')  // Replace spaces and non-alphanumeric characters with hyphens
+        .replace(/^-+|-+$/g, '')     // Remove leading and trailing hyphens
+
+    };
+
+    setSlug(generateSlug(name));
+  }, [name]);
+
   const resetForm = () => {
     setName("");
+    setSlug("");
     setPrice(0);
     setSale(0);
     setUnit("");
     setCountInStock(0);
     setDescription("");
     setSelectedCategory([]);
-    setInformation([]);
+    setVideoInfor('');
     setImage(defaultImage);
   };
 
   const handleSave = async () => {
-    const data = new FormData();
-    data.append("name", name);
-    data.append("price", price);
-    data.append("sale", sale);
-    data.append("unit", unit);
-    data.append("countInStock", countInStock);
-    data.append("description", description);
-    data.append(
-      "categories",
-      selectedCategories.map((category) => category.value)
-    );
-    data.append("information", JSON.stringify(information));
-    data.append("image", image);
+    let data = {
+      name: name,
+      slug: slug,
+      description: description,
+      price: Number(price),
+      sale: Number(sale),
+      countInStock: Number(countInStock),
+      image: image,
+      unit: unit,
+      category: selectedCategories,
+      shopBoatId: Number(shopBoatId),
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      videoInfor: videoInfor
+    }
+
+    console.log("data >>>>", data);
+
     try {
-      const response = await createProduct(data);
+      const response = await createNewProduct(data, accessToken);
+      console.log("check >>>>", response);
       if (response?.status === 200) {
-        addProduct(response.data.data);
+        addProduct(response.data);
         resetForm();
         handleClose();
       }
@@ -204,40 +159,34 @@ function AddModal({ updateData, addProduct }) {
       console.log(error);
     }
   };
-
-  const handleDeleteInformation = (index) => {
-    let newInformation = information.filter((info, i) => i !== index);
-    setInformation(newInformation);
-  };
-
-  const handleAddInformation = (information) => {
-    setInformation((newInformation) => [...newInformation, information]);
-  };
-
   const handleImageUpload = async (event) => {
-    const selectedFile = event.target.files[0]; // Lấy tệp được chọn (chỉ lấy tệp đầu tiên nếu người dùng chọn nhiều tệp)
-
-    if (selectedFile) {
-      // Kiểm tra xem người dùng đã chọn một tệp hợp lệ hay không
-      const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
-      if (allowedTypes.includes(selectedFile.type)) {
-        // Tệp hợp lệ, bạn có thể tiếp tục xử lý tệp ở đây
-        let data = new FormData();
-        //append image to files
-        data.append("image", selectedFile);
-        data.append("model", "Product");
-        const res = await uploadImage(data);
-        if (res?.status === 200) {
-          setImage(res.data.url);
-        }
-
-        // Trong trường hợp bạn muốn gửi tệp lên máy chủ, bạn có thể sử dụng XMLHttpRequest, Fetch API, hoặc các thư viện khác để thực hiện tải lên.
-      } else {
-        // Tệp không hợp lệ, hiển thị thông báo hoặc thực hiện xử lý khác theo nhu cầu của bạn.
-        console.error("Invalid file type. Please select a valid image file.");
-      }
+    if (img === '') {
+      handleSave();
+      return
     }
+
+    const dataImg = new FormData();
+    dataImg.append("file", img);
+    dataImg.append("upload_preset", "cspmjsnn");
+    dataImg.append("cloud_name", "dkcetq9et");
+
+    fetch("https://api.cloudinary.com/v1_1/dkcetq9et/image/upload", {
+      method: "post",
+      body: dataImg,
+    })
+      .then((response) => response.json())
+      .then((dataImg) => {
+        setImage(dataImg.url);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  useEffect(() => {
+    if (name === '') return
+    handleSave();
+  }, [image]);
 
   return (
     <>
@@ -246,23 +195,23 @@ function AddModal({ updateData, addProduct }) {
       </Button>
       <Modal
         open={open}
-        onClose={async () => {
-          if (image !== defaultImage) {
-            await deleteImage(image);
-          }
-          handleClose();
-        }}
+        // onClose={async () => {
+        //   if (image !== defaultImage) {
+        //     await deleteImage(image);
+        //   }
+        //   handleClose();
+        // }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
           <div className="relative">
             <h2 className="text-center font-bold text-2xl mb-4 border-b-2 pb-2">
-              Edit Product
+              Thêm sản phẩm mới
             </h2>
             <div className="flex absolute right-0 bottom-2">
-              <Button variant="success mr-2" onClick={handleSave}>
-                Save
+              <Button variant="success mr-2" onClick={handleImageUpload}>
+                Lưu
               </Button>
               <Button variant="danger" onClick={handleClose}>
                 Cancel
@@ -276,29 +225,29 @@ function AddModal({ updateData, addProduct }) {
               </div>
               <div className="flex col-span-1 flex-col">
                 <Form.Group className="mb-3 w-full" controlId="name">
-                  <Form.Label className="font-medium">Name</Form.Label>
+                  <Form.Label className="font-medium">Tên sản phẩm</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Enter name"
+                    placeholder="Nhập tên sản phẩm"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
                 </Form.Group>
                 <div className="flex gap-4">
                   <Form.Group className="mb-3" controlId="price">
-                    <Form.Label>Price</Form.Label>
+                    <Form.Label>Đơn giá</Form.Label>
                     <Form.Control
                       type="number"
-                      placeholder="Enter price"
+                      placeholder="Nhập giá"
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
                     />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="discount">
-                    <Form.Label>Discount</Form.Label>
+                    <Form.Label>Giảm giá</Form.Label>
                     <Form.Control
                       type="number"
-                      placeholder="Enter discount percentage"
+                      placeholder="Nhập phần trăm giảm giá"
                       value={sale}
                       onChange={(e) => setSale(e.target.value)}
                     />
@@ -306,84 +255,63 @@ function AddModal({ updateData, addProduct }) {
                 </div>
                 <div className="flex gap-4">
                   <Form.Group className="mb-3" controlId="stock">
-                    <Form.Label>Stock Quantity</Form.Label>
+                    <Form.Label>Hàng trong kho</Form.Label>
                     <Form.Control
                       type="number"
-                      placeholder="Enter stock quantity"
+                      placeholder="Nhập số lượng trong kho"
                       value={countInStock}
                       onChange={(e) => setCountInStock(e.target.value)}
                     />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="unit">
-                    <Form.Label>Unit</Form.Label>
+                    <Form.Label>Đơn vị</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter unit"
+                      placeholder="Nhập đơn vị"
                       value={unit}
                       onChange={(e) => setUnit(e.target.value)}
                     />
                   </Form.Group>
                 </div>
                 <Form.Group className="mb-3" controlId="image">
-                  <Form.Label>Image URL</Form.Label>
+                  <Form.Label>Cập nhật ảnh</Form.Label>
                   <Form.Control
                     type="file"
                     placeholder="Enter image URL"
                     accept=".png, .jpg, .jpeg"
-                    onChange={handleImageUpload}
+                    onChange={(e) => setImg(e.target.files[0])}
                   />
                 </Form.Group>
               </div>
             </div>
 
             <Form.Group className="mb-3" controlId="category">
-              <Form.Label>Category</Form.Label>
+              <Form.Label>Nhãn sản phẩm</Form.Label>
               <Select
-                isMulti
+                // isMulti
                 options={listCategory}
                 value={selectedCategories}
-                closeMenuOnSelect={false}
+                // closeMenuOnSelect={false}
                 components={animatedComponents}
-                onChange={(value) => setSelectedCategory([...value])}
+                onChange={(value) => setSelectedCategory(value.label)}
               />
             </Form.Group>
             <Form.Group className="mb-3 w-full" controlId="name">
-              <div className="flex justify-between">
-                <Form.Label className="font-medium mb-[1px]">
-                  Information
-                </Form.Label>
-                <AddInformationModal addInformation={handleAddInformation} />
-              </div>
-
-              <div className="flex flex-col">
-                {information.map((info, index) => (
-                  <div
-                    className="flex gap-4 border border-gray-300 p-2 border-b-0 mt-[-1px] relative"
-                    key={uuidv4()}
-                  >
-                    <span className="min-w-[200px] font-semibold">
-                      {info.key}
-                    </span>
-                    <span className="text-gray-400">{info.value}</span>
-                    <IconButton
-                      aria-label="delete"
-                      size="small"
-                      sx={{
-                        position: "absolute",
-                        top: "1px",
-                        right: "2px",
-                      }}
-                      onClick={() => handleDeleteInformation(index)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </div>
-                ))}
-              </div>
+              {/* <div className="flex justify-between"> */}
+              <Form.Label className="font-medium mb-[1px]">
+                Thông tin bổ sung
+              </Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Nhập url video"
+                value={videoInfor}
+                onChange={(e) => setVideoInfor(e.target.value)}
+              />
+              {/* </div> */}
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="description">
-              <Form.Label>Description</Form.Label>
+              <Form.Label>Mô tả sản phẩm</Form.Label>
               <CKEditor
                 editor={ClassicEditor}
                 data={description}

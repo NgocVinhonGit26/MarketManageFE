@@ -1,5 +1,5 @@
 import MarketplaceLayout from "layouts/CustomerLayout/MarketplaceLayout";
-import * as React from 'react';
+import React, { useEffect, useLayoutEffect } from "react";
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -15,6 +15,7 @@ import { successToast } from "utilities/toast";
 import { setUserDefault } from "redux/slices/userSlice";
 import { resetListOderProduct } from "redux/slices/listOrderProductSlice";
 import InformationUser from "./InformationUser";
+import { getUserById } from "api/user";
 
 
 
@@ -57,10 +58,27 @@ export default function EditProfile() {
     const [value, setValue] = React.useState(0);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [userInfor, setUserInfor] = React.useState(null);//[name, setName] = React.useState(useSelector((state) => state.user.name));
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    useLayoutEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const id = localStorage.getItem("id");
+                const accessToken = localStorage.getItem("accessToken");
+                const response = await getUserById(id, accessToken);
+                console.log("response AAA", response);
+                setUserInfor(response);
+            }
+            catch (error) {
+                console.log("error", error);
+            }
+        }
+        fetchUser();
+    }, [])
 
     const token = useSelector((state) => state.user.token);
 
@@ -113,21 +131,35 @@ export default function EditProfile() {
                         aria-label="Vertical tabs example"
                         sx={{ borderRight: 1, borderColor: 'text.primary', color: "success.main" }}
                     >
-                        <Tab label="Tài khoản" {...a11yProps(0)} />
-                        <Tab label="Đơn hàng" {...a11yProps(1)} />
-                        <Tab label="Địa chỉ" {...a11yProps(2)} />
-                        <Tab label="Đăng xuất" {...a11yProps(3)} />
+                        <Tab label="Tổng quan" {...a11yProps(0)} />
+                        <Tab label="Tài khoản" {...a11yProps(1)} />
+                        <Tab label="Đơn hàng" {...a11yProps(2)} />
+                        <Tab label="Địa chỉ" {...a11yProps(3)} />
+                        <Tab label="Đăng xuất" {...a11yProps(4)} />
                     </Tabs>
                     <TabPanel value={value} index={0}>
-                        <InformationUser />
+                        <div>
+                            <h2 style={{ color: "#7DB249" }}>LIÊN HỆ</h2>
+                            <p>Chúng tôi luôn sẵn sàng phục vụ và hỗ trợ quý khách cũng như quý đối tác gần xa.</p>
+                            <p>Xin vui lòng lựa chọn phương thức liên hệ thuận tiện nhất.</p>
+                            <p>Zalo/hotline: 0867630856</p>
+                            <p>Email: vinh.pn194719@sis.hust.edu.vn</p>
+                            <p>Trụ sở công ty: Số 1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội</p>
+                        </div>
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        <BillsTable></BillsTable>
+                        <InformationUser
+                            userInfor={userInfor}
+                            setUserInfor={setUserInfor}
+                        />
                     </TabPanel>
                     <TabPanel value={value} index={2}>
-                        <Address></Address>
+                        <BillsTable></BillsTable>
                     </TabPanel>
                     <TabPanel value={value} index={3}>
+                        <Address></Address>
+                    </TabPanel>
+                    <TabPanel value={value} index={4}>
                         <h2>Bạn có muốn đăng xuất không?</h2>
                         <button onClick={handleSignOut} style={{ backgroundColor: "#f50057", color: "white", padding: "10px 20px", border: "none", borderRadius: "5px" }}>Đăng xuất</button>
                     </TabPanel>

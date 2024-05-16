@@ -16,12 +16,15 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack'
 
 
 const MarketNavbar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const username = useSelector((state) => state.user.name);
   const token = useSelector((state) => state.user.token);
+  const avatar = useSelector((state) => state.user.avatar);
   // console.log("token>>>>", token);
   const [isSignedIn, setIsSignedIn] = useState(true);
   const dispatch = useDispatch();
@@ -136,7 +139,13 @@ const MarketNavbar = () => {
                 onClick={handleClick}
                 style={{ color: "#7DB249 !important" }}
               >
-                {username}&nbsp; <AccountCircleIcon />
+                {username}&nbsp;
+                <Stack direction="row" spacing={2}>
+                  <Avatar
+                    // sizes="30"
+                    alt={username} src={avatar}
+                  />
+                </Stack>
               </Button>
               <Menu
                 id="basic-menu"

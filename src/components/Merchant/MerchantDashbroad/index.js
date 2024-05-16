@@ -9,7 +9,6 @@ import Skeleton from "@mui/material/Skeleton";
 import { getShopBoatByIdUser } from "api/shopBoat";
 
 const MerchantDashboard = () => {
-  // const [cookies] = useCookies(["access_token"]);
   const [shopBoat, setShopBoat] = React.useState(null);
 
   useLayoutEffect(() => {
@@ -19,7 +18,7 @@ const MerchantDashboard = () => {
         const id = localStorage.getItem("id");
         const accessToken = localStorage.getItem("accessToken");
         const response = await getShopBoatByIdUser(id, accessToken);
-        console.log(response);
+        // console.log(response);
         setShopBoat(response.data);
         localStorage.setItem("shopBoatId", response.data.id);
       } catch (error) {

@@ -270,11 +270,11 @@ function EditModal({ product, updateData }) {
         <Box sx={style}>
           <div className="relative">
             <h2 className="text-center font-bold text-2xl mb-4 border-b-2 pb-2">
-              Edit Product
+              Chỉnh sửa sản phẩm
             </h2>
             <div className="flex absolute right-0 bottom-2">
               <Button variant="success mr-2" onClick={handleSave}>
-                Save
+                Lưu
               </Button>
               <Button variant="danger" onClick={handleClose}>
                 Cancel
@@ -288,7 +288,7 @@ function EditModal({ product, updateData }) {
               </div>
               <div className="flex col-span-1 flex-col">
                 <Form.Group className="mb-3 w-full" controlId="name">
-                  <Form.Label className="font-medium">Name</Form.Label>
+                  <Form.Label className="font-medium">Tên</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="Enter name"
@@ -298,7 +298,7 @@ function EditModal({ product, updateData }) {
                 </Form.Group>
                 <div className="flex gap-4">
                   <Form.Group className="mb-3" controlId="price">
-                    <Form.Label>Price</Form.Label>
+                    <Form.Label>Đơn giá</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="Enter price"
@@ -307,7 +307,7 @@ function EditModal({ product, updateData }) {
                     />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="discount">
-                    <Form.Label>Discount</Form.Label>
+                    <Form.Label>Giảm giá</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="Enter discount percentage"
@@ -318,7 +318,7 @@ function EditModal({ product, updateData }) {
                 </div>
                 <div className="flex gap-4">
                   <Form.Group className="mb-3" controlId="stock">
-                    <Form.Label>Stock Quantity</Form.Label>
+                    <Form.Label>Hàng trong kho</Form.Label>
                     <Form.Control
                       type="number"
                       placeholder="Enter stock quantity"
@@ -327,7 +327,7 @@ function EditModal({ product, updateData }) {
                     />
                   </Form.Group>
                   <Form.Group className="mb-3" controlId="unit">
-                    <Form.Label>Unit</Form.Label>
+                    <Form.Label>Đơn vị</Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="Enter unit"
@@ -337,7 +337,7 @@ function EditModal({ product, updateData }) {
                   </Form.Group>
                 </div>
                 <Form.Group className="mb-3" controlId="image">
-                  <Form.Label>Image URL</Form.Label>
+                  <Form.Label>Cập nhật ảnh</Form.Label>
                   <Form.Control
                     type="file"
                     placeholder="Enter image URL"
@@ -349,7 +349,7 @@ function EditModal({ product, updateData }) {
             </div>
 
             <Form.Group className="mb-3" controlId="category">
-              <Form.Label>Category</Form.Label>
+              <Form.Label>Nhãn sản phẩm</Form.Label>
               <Select
                 isMulti
                 options={listCategory}
@@ -362,7 +362,7 @@ function EditModal({ product, updateData }) {
             <Form.Group className="mb-3 w-full" controlId="name">
               <div className="flex justify-between">
                 <Form.Label className="font-medium mb-[1px]">
-                  Information
+                  Thông tin
                 </Form.Label>
                 <AddInformationModal addInformation={handleAddInformation} />
               </div>
@@ -395,7 +395,7 @@ function EditModal({ product, updateData }) {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="description">
-              <Form.Label>Description</Form.Label>
+              <Form.Label>Mô tả sản phẩm</Form.Label>
               <CKEditor
                 editor={ClassicEditor}
                 data={description}

@@ -32,8 +32,8 @@ const Information = (props) => {
     <div className="container-informatio">
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableBody>
-            {information.map((row) => (
+          <TableBody sx={{ display: "flex", justifyContent: 'center' }}>
+            {/* {information.map((row) => (
               <TableRow
                 key={row.key}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -43,7 +43,8 @@ const Information = (props) => {
                 </TableCell>
                 <TableCell align="left">{row.value}</TableCell>
               </TableRow>
-            ))}
+            ))} */}
+            <iframe width="90%" height="315" src="https://www.youtube.com/embed/muFRYA8YR9U?si=CLCQZUdVBSA6Hvei" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           </TableBody>
         </Table>
       </TableContainer>

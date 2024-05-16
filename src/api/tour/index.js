@@ -27,7 +27,7 @@ const getListTour = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    const response = await instance.get("/tour/getAllTour", config);
+    const response = await instance.get("/tour/getAllTour");
     return response.data;
   } catch (error) {
     throw error;

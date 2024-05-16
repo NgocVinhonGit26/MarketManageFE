@@ -1,5 +1,29 @@
 import instance from "api/axios";
 
+const getUserById = async (id, token) => {
+    try {
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        const response = await instance.get(`/user/getUserById/${id}`, config);
+        return {
+            id: response.data.id,
+            name: response.data.name,
+            avatar: response.data.avatar,
+            phone: response.data.phoneNumber,
+            username: response.data.username,
+            address: response.data.address,
+            isdeleted: response.data.isdeleted,
+            role: response.data.role
+        };
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
 const getAllUsers = async (page, queryCondition = {}, token) => {
     let url = `/admin/searchUser/${page}?`;
     const config = {
@@ -79,9 +103,46 @@ const deleteUser = async (id, token) => {
     }
 }
 
+const updateUserById = async (id, data = {}, token) => {
+    try {
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        let url = `/user/updateUserById/${id}?`;
+        if (data.name) {
+            url += `&name=${data.name}`;
+        }
+        if (data.avatar) {
+            url += `&avatar=${data.avatar}`;
+        }
+        if (data.phone) {
+            url += `&phone_number=${data.phone}`;
+        }
+        const response = await instance.post(url, data, config);
+        return {
+            id: response.data.id,
+            name: response.data.name,
+            avatar: response.data.avatar,
+            phone: response.data.phoneNumber,
+            username: response.data.username,
+            address: response.data.address,
+            isdeleted: response.data.isdeleted,
+            role: response.data.role
+        };;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+
 
 export {
+    getUserById,
     getAllUsers,
     getTotalPageUser,
-    deleteUser
+    deleteUser,
+    updateUserById
 }

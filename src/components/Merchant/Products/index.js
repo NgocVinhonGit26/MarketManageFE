@@ -70,7 +70,7 @@ const MerchantProducts = () => {
 
   const updateData = (updatedProduct) => {
     let newProducts = products.map((product) => {
-      if (product._id === updatedProduct._id) {
+      if (product.id === updatedProduct.id) {
         return updatedProduct;
       }
       return product;
@@ -82,7 +82,7 @@ const MerchantProducts = () => {
     try {
       const response = await deleteProduct(id);
       if (response) {
-        let newProducts = products.filter((product) => product._id !== id);
+        let newProducts = products.filter((product) => product.id !== id);
         setProducts(newProducts);
       }
     } catch (err) {

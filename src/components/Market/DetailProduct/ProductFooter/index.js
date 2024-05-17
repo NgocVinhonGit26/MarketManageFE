@@ -34,7 +34,7 @@ const ProductFooter = (props) => {
             <Description description={product.description} />
           </TabPanel>
           <TabPanel value="2">
-            <Information information={product.information} />
+            <Information videoInfor={product.videoInfor} />
           </TabPanel>
           <TabPanel value="3">
             <Review />

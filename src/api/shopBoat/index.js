@@ -30,9 +30,14 @@ const getShopBoatProducts = async (id, page = 1, limit = 10, formData = {}) => {
   }
 };
 
-const updateProduct = async (id, data) => {
+const updateProductById = async (id, data, token) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
   try {
-    const response = await instance.put(`/products/${id}`, data);
+    const response = await instance.post(`/merchant/updateProductById/${id}`, data, config);
     return response;
   } catch (error) {
     console.log(error);
@@ -442,7 +447,7 @@ const getTotalOrderItemByShopBoatIdInMonthOfYear = async (idShop, token) => {
 
 export {
   getShopBoatProducts,
-  updateProduct,
+  updateProductById,
   deleteProduct,
   getShopBoatByIdUser,
   createNewProduct,

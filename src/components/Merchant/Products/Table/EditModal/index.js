@@ -11,13 +11,13 @@ import PropTypes from "prop-types";
 import makeAnimated from "react-select/animated";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { updateProduct } from "api/shopBoat";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
 import { uploadImage, deleteImage } from "api/image";
+import { updateProductById } from "api/shopBoat";
 
 const animatedComponents = makeAnimated();
 EditModal.propTypes = {
@@ -32,93 +32,93 @@ EditModal.propTypes = {
   updateData: PropTypes.func.isRequired,
 };
 
-function AddInformationModal({ addInformation }) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+// function AddInformationModal({ addInformation }) {
+//   const [open, setOpen] = React.useState(false);
+//   const handleOpen = () => {
+//     setOpen(true);
+//   };
+//   const handleClose = () => {
+//     setOpen(false);
+//   };
 
-  const [fieldName, setFieldName] = useState("");
-  const [value, setValue] = useState("");
+//   const [fieldName, setFieldName] = useState("");
+//   const [value, setValue] = useState("");
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    pt: 2,
-    px: 4,
-    pb: 3,
-  };
+//   const style = {
+//     position: "absolute",
+//     top: "50%",
+//     left: "50%",
+//     transform: "translate(-50%, -50%)",
+//     width: 400,
+//     bgcolor: "background.paper",
+//     border: "2px solid #000",
+//     boxShadow: 24,
+//     pt: 2,
+//     px: 4,
+//     pb: 3,
+//   };
 
-  const handleSave = () => {
-    addInformation({ key: fieldName, value: value });
-    handleClose();
-  };
+//   const handleSave = () => {
+//     addInformation({ key: fieldName, value: value });
+//     handleClose();
+//   };
 
-  return (
-    <React.Fragment>
-      <IconButton
-        aria-label="add"
-        size="small"
-        sx={{
-          mr: 0.5,
-        }}
-        onClick={handleOpen}
-      >
-        <AddCircleOutlineIcon />
-      </IconButton>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Box sx={{ ...style, width: 300 }}>
-          <Form.Group controlId="fieldName" className="mb-3">
-            <Form.Label>Field Name</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Field Name"
-              value={fieldName}
-              onChange={(e) => setFieldName(e.target.value)}
-            />
-          </Form.Group>
+//   return (
+//     <React.Fragment>
+//       <IconButton
+//         aria-label="add"
+//         size="small"
+//         sx={{
+//           mr: 0.5,
+//         }}
+//         onClick={handleOpen}
+//       >
+//         <AddCircleOutlineIcon />
+//       </IconButton>
+//       <Modal
+//         open={open}
+//         onClose={handleClose}
+//         aria-labelledby="child-modal-title"
+//         aria-describedby="child-modal-description"
+//       >
+//         <Box sx={{ ...style, width: 300 }}>
+//           <Form.Group controlId="fieldName" className="mb-3">
+//             <Form.Label>Field Name</Form.Label>
+//             <Form.Control
+//               type="text"
+//               placeholder="Enter Field Name"
+//               value={fieldName}
+//               onChange={(e) => setFieldName(e.target.value)}
+//             />
+//           </Form.Group>
 
-          <Form.Group controlId="value" className="mb-3">
-            <Form.Label>Value</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Value"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-            />
-          </Form.Group>
-          <div className="flex justify-end">
-            <Button
-              onClick={handleSave}
-              className="mr-2"
-              variant="success"
-              disabled={fieldName === "" || value === ""}
-            >
-              Add
-            </Button>
-            <Button onClick={handleClose} variant="primary">
-              Cancel
-            </Button>
-          </div>
-        </Box>
-      </Modal>
-    </React.Fragment>
-  );
-}
+//           <Form.Group controlId="value" className="mb-3">
+//             <Form.Label>Value</Form.Label>
+//             <Form.Control
+//               type="text"
+//               placeholder="Enter Value"
+//               value={value}
+//               onChange={(e) => setValue(e.target.value)}
+//             />
+//           </Form.Group>
+//           <div className="flex justify-end">
+//             <Button
+//               onClick={handleSave}
+//               className="mr-2"
+//               variant="success"
+//               disabled={fieldName === "" || value === ""}
+//             >
+//               Add
+//             </Button>
+//             <Button onClick={handleClose} variant="primary">
+//               Cancel
+//             </Button>
+//           </div>
+//         </Box>
+//       </Modal>
+//     </React.Fragment>
+//   );
+// }
 
 function EditModal({ product, updateData }) {
   const [open, setOpen] = useState(false);
@@ -127,16 +127,27 @@ function EditModal({ product, updateData }) {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
-  const [listCategory, setListCategory] = useState([]);
-  const [selectedCategories, setSelectedCategory] = useState([]);
+
+  const accessToken = localStorage.getItem("accessToken");
+
+  const [listCategory, setListCategory] = useState([
+    { value: 'hoaqua', label: 'Hoa Quả' },
+    { value: 'banhkeo', label: 'Bánh Kẹo' },
+    { value: 'NSchebien', label: 'Nông Sản Chế Biến' }
+  ]);
+
+  const [selectedCategories, setSelectedCategory] = useState(product.category);
   const [name, setName] = useState(product.name);
+  const [slug, setSlug] = useState(product.slug);
   const [price, setPrice] = useState(product.price);
   const [sale, setSale] = useState(product.sale);
   const [unit, setUnit] = useState(product.unit);
   const [countInStock, setCountInStock] = useState(product.countInStock);
   const [description, setDescription] = useState(product.description);
-  const [information, setInformation] = useState(product.information);
+  const [videoInfor, setVideoInfor] = useState(product.videoInfor);
   const [image, setImage] = useState(product.image);
+
+  const [img, setImg] = useState('');
 
   // useEffect(() => {
   //   const fetchCategories = async () => {
@@ -174,8 +185,41 @@ function EditModal({ product, updateData }) {
     maxHeight: "80vh",
   };
 
+  const removeVietnameseTones = (str) => {
+    str = str.replace(/á|à|ả|ã|ạ|â|ấ|ầ|ẩ|ẫ|ậ|ă|ắ|ằ|ẳ|ẵ|ặ/g, "a");
+    str = str.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/g, "e");
+    str = str.replace(/i|í|ì|ỉ|ĩ|ị/g, "i");
+    str = str.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/g, "o");
+    str = str.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/g, "u");
+    str = str.replace(/ý|ỳ|ỷ|ỹ|ỵ/g, "y");
+    str = str.replace(/đ/g, "d");
+    str = str.replace(/Á|À|Ả|Ã|Ạ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ|Ă|Ắ|Ằ|Ẳ|Ẵ|Ặ/g, "A");
+    str = str.replace(/É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ/g, "E");
+    str = str.replace(/I|Í|Ì|Ỉ|Ĩ|Ị/g, "I");
+    str = str.replace(/Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ/g, "O");
+    str = str.replace(/Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự/g, "U");
+    str = str.replace(/Ý|Ỳ|Ỷ|Ỹ|Ỵ/g, "Y");
+    str = str.replace(/Đ/g, "D");
+    str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền, sắc, hỏi, ngã, nặng
+    str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
+    return str;
+  }
+
+  useEffect(() => {
+    const generateSlug = (name) => {
+      let nameWithoutTones = removeVietnameseTones(name);
+      return nameWithoutTones
+        .toLowerCase()
+        .replace(/ /g, "-")
+        .replace(/[^a-zA-Z0-9-]/g, "");
+    };
+
+    setSlug(generateSlug(name));
+  }, [name]);
+
   const resetForm = (updatedProduct) => {
     setName(updatedProduct.name);
+
     setPrice(updatedProduct.price);
     setSale(updatedProduct.sale);
     setUnit(updatedProduct.unit);
@@ -186,35 +230,31 @@ function EditModal({ product, updateData }) {
     //     return { value: category.slug, label: category.name };
     //   })
     // );
-    setInformation(updatedProduct.information);
+    setVideoInfor(updatedProduct.videoInfor);
     setImage(updatedProduct.image);
   };
 
   const handleSave = async () => {
-    const data = new FormData();
-    data.append("name", name);
-    data.append("price", price);
-    data.append("sale", sale);
-    data.append("unit", unit);
-    data.append("countInStock", countInStock);
-    data.append("description", description);
-    // data.append(
-    //   "categories",
-    //   selectedCategories.map((category) => category.value)
-    // );
-    data.append("information", JSON.stringify(information));
-
-    if (image !== product.image) {
-      data.append("image", image);
+    let data = {
+      name: name,
+      slug: slug,
+      description: description,
+      price: Number(price),
+      sale: Number(sale),
+      countInStock: Number(countInStock),
+      image: image,
+      unit: unit,
+      category: selectedCategories,
+      updated_at: new Date().toISOString(),
+      videoInfor: videoInfor,
     }
     try {
-      const response = await updateProduct(product._id, data);
+      const response = await updateProductById(product.id, data, accessToken);
+      console.log("response updateProductById: ", response);
       if (response.status === 200) {
-        if (image !== product.image) {
-          await deleteImage(product.image);
-        }
-        updateData(response.data.data);
-        resetForm(response.data.data);
+
+        updateData(response.data);
+        resetForm(response.data);
         handleClose();
       }
     } catch (error) {
@@ -222,39 +262,36 @@ function EditModal({ product, updateData }) {
     }
   };
 
-  const handleDeleteInformation = (index) => {
-    let newInformation = information.filter((info, i) => i !== index);
-    setInformation(newInformation);
-  };
 
-  const handleAddInformation = (information) => {
-    setInformation((newInformation) => [...newInformation, information]);
-  };
 
   const handleImageUpload = async (event) => {
-    const selectedFile = event.target.files[0]; // Lấy tệp được chọn (chỉ lấy tệp đầu tiên nếu người dùng chọn nhiều tệp)
-
-    if (selectedFile) {
-      // Kiểm tra xem người dùng đã chọn một tệp hợp lệ hay không
-      const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
-      if (allowedTypes.includes(selectedFile.type)) {
-        // Tệp hợp lệ, bạn có thể tiếp tục xử lý tệp ở đây
-        let data = new FormData();
-        //append image to files
-        data.append("image", selectedFile);
-        data.append("model", "Product");
-        const res = await uploadImage(data);
-        if (res?.status === 200) {
-          setImage(res.data.url);
-        }
-
-        // Trong trường hợp bạn muốn gửi tệp lên máy chủ, bạn có thể sử dụng XMLHttpRequest, Fetch API, hoặc các thư viện khác để thực hiện tải lên.
-      } else {
-        // Tệp không hợp lệ, hiển thị thông báo hoặc thực hiện xử lý khác theo nhu cầu của bạn.
-        console.error("Invalid file type. Please select a valid image file.");
-      }
+    if (img === '') {
+      handleSave();
+      return
     }
+
+    const dataImg = new FormData();
+    dataImg.append("file", img);
+    dataImg.append("upload_preset", "cspmjsnn");
+    dataImg.append("cloud_name", "dkcetq9et");
+
+    fetch("https://api.cloudinary.com/v1_1/dkcetq9et/image/upload", {
+      method: "post",
+      body: dataImg,
+    })
+      .then((response) => response.json())
+      .then((dataImg) => {
+        setImage(dataImg.url);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  useEffect(() => {
+    if (name === '') return
+    handleSave();
+  }, [image]);
 
   return (
     <>
@@ -273,7 +310,7 @@ function EditModal({ product, updateData }) {
               Chỉnh sửa sản phẩm
             </h2>
             <div className="flex absolute right-0 bottom-2">
-              <Button variant="success mr-2" onClick={handleSave}>
+              <Button variant="success mr-2" onClick={handleImageUpload}>
                 Lưu
               </Button>
               <Button variant="danger" onClick={handleClose}>
@@ -342,7 +379,7 @@ function EditModal({ product, updateData }) {
                     type="file"
                     placeholder="Enter image URL"
                     accept=".png, .jpg, .jpeg"
-                    onChange={handleImageUpload}
+                    onChange={(e) => { setImg(e.target.files[0]) }}
                   />
                 </Form.Group>
               </div>
@@ -351,47 +388,26 @@ function EditModal({ product, updateData }) {
             <Form.Group className="mb-3" controlId="category">
               <Form.Label>Nhãn sản phẩm</Form.Label>
               <Select
-                isMulti
+                // isMulti
                 options={listCategory}
                 value={selectedCategories}
-                closeMenuOnSelect={false}
+                // closeMenuOnSelect={false}
                 components={animatedComponents}
-                onChange={(value) => setSelectedCategory([...value])}
+                onChange={(value) => setSelectedCategory(value.label)}
               />
             </Form.Group>
             <Form.Group className="mb-3 w-full" controlId="name">
-              <div className="flex justify-between">
-                <Form.Label className="font-medium mb-[1px]">
-                  Thông tin
-                </Form.Label>
-                <AddInformationModal addInformation={handleAddInformation} />
-              </div>
-
-              <div className="flex flex-col">
-                {/* {information.map((info, index) => (
-                  <div
-                    className="flex gap-4 border border-gray-300 p-2 border-b-0 mt-[-1px] relative"
-                    key={uuidv4()}
-                  >
-                    <span className="min-w-[200px] font-semibold">
-                      {info.key}
-                    </span>
-                    <span className="text-gray-400">{info.value}</span>
-                    <IconButton
-                      aria-label="delete"
-                      size="small"
-                      sx={{
-                        position: "absolute",
-                        top: "1px",
-                        right: "2px",
-                      }}
-                      onClick={() => handleDeleteInformation(index)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </div>
-                ))} */}
-              </div>
+              {/* <div className="flex justify-between"> */}
+              <Form.Label className="font-medium mb-[1px]">
+                Thông tin bổ sung
+              </Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Nhập url video"
+                value={videoInfor}
+                onChange={(e) => setVideoInfor(e.target.value)}
+              />
+              {/* </div> */}
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="description">

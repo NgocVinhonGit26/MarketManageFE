@@ -12,7 +12,7 @@ const createData = (name, calories, fat, carbs, protein) => {
 };
 
 const Information = (props) => {
-  const { information } = props;
+  const { videoInfor } = props;
   const rows = [
     createData("KHỐI LƯỢNG", "250 – 300 gam/quả"),
     createData("NGUỒN GỐC/ XUẤT XỨ", "Vĩnh Long, Lai Vung"),
@@ -44,7 +44,7 @@ const Information = (props) => {
                 <TableCell align="left">{row.value}</TableCell>
               </TableRow>
             ))} */}
-            <iframe width="90%" height="315" src="https://www.youtube.com/embed/muFRYA8YR9U?si=CLCQZUdVBSA6Hvei" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <iframe width="90%" height="315" src={videoInfor} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           </TableBody>
         </Table>
       </TableContainer>

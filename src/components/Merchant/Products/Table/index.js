@@ -56,28 +56,28 @@ export default function ProductsTable({
         <TableHead>
           <TableRow>
             <StyledTableCell>
-              <span className="font-bold">Image</span>
+              <span className="font-bold">Ảnh</span>
             </StyledTableCell>
             <StyledTableCell>
-              <span className="font-bold">Product</span>
+              <span className="font-bold">Sản phẩm</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Price</span>
+              <span className="font-bold">Đơn giá</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Sale</span>
+              <span className="font-bold">Giảm giá</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Stock</span>
+              <span className="font-bold">Tồn kho</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Unit</span>
+              <span className="font-bold">Đơn vị</span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Categories</span>
+              <span className="font-bold">Nhãn dán </span>
             </StyledTableCell>
             <StyledTableCell align="center">
-              <span className="font-bold">Actions</span>
+              <span className="font-bold">Thao tác</span>
             </StyledTableCell>
           </TableRow>
         </TableHead>
@@ -113,7 +113,7 @@ export default function ProductsTable({
                   product.countInStock
                 ) : (
                   <Badge pill bg="danger">
-                    Out of Stock
+                    Hết hàng
                   </Badge>
                 )}
               </StyledTableCell>
@@ -132,7 +132,7 @@ export default function ProductsTable({
                   variant="danger"
                   onClick={() => handleDeleteProduct(product._id)}
                 >
-                  Delete
+                  Xóa
                 </Button>
               </StyledTableCell>
             </StyledTableRow>

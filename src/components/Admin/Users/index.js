@@ -57,6 +57,15 @@ const Users = () => {
         }
     };
 
+    const handleChangePage = (event, value) => {
+        if (isSearching) {
+            setPageSearch(value);
+        }
+        else {
+            setPage(value);
+        }
+    };
+
     return (
         <DashboardLayout layoutRole={0}>
             <h1>Quản lý người dùng</h1>
@@ -85,16 +94,7 @@ const Users = () => {
                     count={total}
                     color="primary"
                     size="large"
-                    onChange={(e, value) => {
-                        if (isSearching) {
-                            // console.log("vheheh")
-                            setPageSearch(value);
-                        }
-                        else {
-                            // console.log("vhuhuhu")
-                            setPage(value);
-                        }
-                    }}
+                    onChange={handleChangePage}
                 />
             </Grid>
         </DashboardLayout>

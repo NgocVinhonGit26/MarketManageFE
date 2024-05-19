@@ -8,12 +8,19 @@ import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
+import { address } from 'utilities/address';
+
 export default function Address() {
     const [age, setAge] = React.useState('');
 
     const handleChange = (event) => {
         setAge(event.target.value);
     };
+
+    const [city, setCity] = React.useState(address.getCities()[0] || '');
+    const [district, setDistrict] = React.useState(address.getDistricts(city)[0] || '');
+    const [ward, setWard] = React.useState(address.getWards(city, district)[0] || '');
+
 
     return (
         <Box sx={{ minWidth: 120 }}>
@@ -35,13 +42,27 @@ export default function Address() {
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={age}
+                    value={city}
                     label="Tỉnh/Thành phố"
-                    onChange={handleChange}
+                    onChange={(event) => {
+                        setCity(event.target.value);
+                        setDistrict(
+                            address.getDistricts(event.target.value)[0]
+                        )
+                        setWard(
+                            address.getWards(event.target.value, address.getDistricts(event.target.value)[0])[0]
+                        )
+                    }
+                    }
                 >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {address.getCities().map((city) => {
+                        return (
+                            <MenuItem key={city} value={city}>
+                                {city}
+                            </MenuItem>
+                        );
+                    })}
+
                 </Select>
             </FormControl>
             <FormControl fullWidth sx={{ marginBottom: 5 }}>
@@ -49,13 +70,24 @@ export default function Address() {
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={age}
+                    value={district}
                     label="Quận/Huyện"
-                    onChange={handleChange}
+                    onChange={(event) => {
+                        setDistrict(event.target.value);
+                        setWard(
+                            address.getWards(city, event.target.value)[0]
+                        )
+                    }
+                    }
                 >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {address.getDistricts(city).map((district) => {
+                        return (
+                            <MenuItem key={district} value={district}>
+                                {district}
+                            </MenuItem>
+                        );
+                    }
+                    )}
                 </Select>
             </FormControl>
             <FormControl fullWidth sx={{ marginBottom: 5 }}>
@@ -63,13 +95,21 @@ export default function Address() {
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={age}
+                    value={ward}
                     label="Phường/Xã"
-                    onChange={handleChange}
+                    onChange={(event) => {
+                        setWard(event.target.value);
+                    }
+                    }
                 >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    {address.getWards(city, district).map((ward) => {
+                        return (
+                            <MenuItem key={ward} value={ward}>
+                                {ward}
+                            </MenuItem>
+                        );
+                    }
+                    )}
                 </Select>
             </FormControl>
             <Button variant="contained" color="success">

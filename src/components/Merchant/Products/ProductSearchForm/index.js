@@ -1,22 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { v4 as uuidv4 } from "uuid";
 import AddModal from "../AddModal";
 
 const ProductSearchForm = ({
+  setIsSearching,
   onSearch,
+  fetchProducts,
+  pageSearch,
+  setPageSearch,
+  setPage,
   categories,
   updateData,
   addProduct,
 }) => {
+
+  const [listCategory, setListCategory] = useState([
+    { value: 'Hoa Quả', label: 'Hoa Quả' },
+    { value: 'Bánh Kẹo', label: 'Bánh Kẹo' },
+    { value: 'Nông Sản Chế Biến', label: 'Nông Sản Chế Biến' }
+  ]);
+
   const [formData, setFormData] = useState({
     name: "",
-    priceMin: "",
-    priceMax: "",
-    inStock: false,
-    category_id: "all",
-    discount: 0,
+    priceFrom: "",
+    priceTo: "",
+    countInStock: false,
+    category: "",
+    sale: 0,
   });
+
+  const isFormDataEmpty = () => {
+    for (const key in formData) {
+      if (formData[key] !== "") {
+        return false; // trar ve false neu co 1 key nao do co gia tri
+      }
+    }
+    return true; // tra ve true neu tat ca key deu rong
+  }
 
   const handleInputChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -28,19 +49,31 @@ const ProductSearchForm = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!isFormDataEmpty()) {
+      setIsSearching(true);
+    }
     // Gửi các giá trị tìm kiếm đến hàm xử lý tìm kiếm
-    onSearch(formData);
+    onSearch(pageSearch, formData);
   };
+
+  useEffect(() => {
+    // console.log("pageSearch", pageSearch);
+    onSearch(pageSearch, formData);
+  }, [pageSearch]);
 
   const clearForm = () => {
     setFormData({
       name: "",
-      priceMin: "",
-      priceMax: "",
-      inStock: false,
-      category: "all",
-      discount: 0,
+      priceFrom: "",
+      priceTo: "",
+      countInStock: false,
+      category: "",
+      sale: 0,
     });
+    setIsSearching(false);
+    setPageSearch(1);
+    setPage(1);
+    fetchProducts([]);
   };
 
   return (
@@ -58,34 +91,34 @@ const ProductSearchForm = ({
           </Form.Group>
         </Col>
         <Col>
-          <Form.Group controlId="priceMin">
+          <Form.Group controlId="priceFrom">
             <Form.Label>Giá tối thiểu</Form.Label>
             <Form.Control
               type="number"
-              name="priceMin"
-              value={formData.priceMin}
+              name="priceFrom"
+              value={formData.priceFrom}
               onChange={handleInputChange}
             />
           </Form.Group>
         </Col>
         <Col>
-          <Form.Group controlId="priceMax">
+          <Form.Group controlId="priceTo">
             <Form.Label>Giá tối đa</Form.Label>
             <Form.Control
               type="number"
-              name="priceMax"
-              value={formData.priceMax}
+              name="priceTo"
+              value={formData.priceTo}
               onChange={handleInputChange}
             />
           </Form.Group>
         </Col>
         <Col className="d-flex align-items-end">
-          <Form.Group controlId="inStock">
+          <Form.Group controlId="countInStock">
             <Form.Check
               type="checkbox"
-              name="inStock"
+              name="countInStock"
               label="Còn hàng"
-              checked={formData.inStock}
+              checked={formData.countInStock}
               onChange={handleInputChange}
             />
           </Form.Group>
@@ -98,16 +131,11 @@ const ProductSearchForm = ({
             <Form.Control
               as="select"
               name="category"
-              value={formData.category_id}
-              onChange={(event) => {
-                setFormData({
-                  ...formData,
-                  category_id: event.target.value,
-                });
-              }}
+              value={formData.category}
+              onChange={handleInputChange}
             >
-              <option value="all">Tất cả</option>
-              {categories?.map((category) => {
+              <option value="">Tất cả</option>
+              {listCategory?.map((category) => {
                 return (
                   <option key={uuidv4()} value={category.value}>
                     {category.label}
@@ -118,12 +146,12 @@ const ProductSearchForm = ({
           </Form.Group>
         </Col>
         <Col>
-          <Form.Group controlId="discount">
+          <Form.Group controlId="sale">
             <Form.Label>Giảm giá từ</Form.Label>
             <Form.Control
               type="number"
-              name="discount"
-              value={formData.discount}
+              name="sale"
+              value={formData.sale}
               onChange={handleInputChange}
             />
           </Form.Group>

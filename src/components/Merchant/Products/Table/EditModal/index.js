@@ -250,7 +250,7 @@ function EditModal({ product, updateData }) {
     }
     try {
       const response = await updateProductById(product.id, data, accessToken);
-      console.log("response updateProductById: ", response);
+      // console.log("response updateProductById: ", response);
       if (response.status === 200) {
 
         updateData(response.data);
@@ -296,7 +296,7 @@ function EditModal({ product, updateData }) {
   return (
     <>
       <Button variant="info text-white" onClick={handleShow}>
-        Edit
+        Sửa
       </Button>
       <Modal
         open={open}

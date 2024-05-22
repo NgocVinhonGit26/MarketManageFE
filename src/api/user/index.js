@@ -137,6 +137,35 @@ const updateUserById = async (id, data = {}, token) => {
     }
 }
 
+const getOrderProductByCustomer = (userId, token) => {
+    try {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        const response = instance.get(`/user/getOrderProductByCustomer/${userId}`, config);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const getOrderItemByOrderProductId = (orderProductId, token) => {
+    try {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        const response = instance.get(`/user/getOrderItemByOrderProductId/${orderProductId}`, config);
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 
 
 export {
@@ -144,5 +173,7 @@ export {
     getAllUsers,
     getTotalPageUser,
     deleteUser,
-    updateUserById
+    updateUserById,
+    getOrderProductByCustomer,
+    getOrderItemByOrderProductId
 }

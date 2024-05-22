@@ -49,25 +49,25 @@ export const mainListItems = (
 export const secondaryListItems = (
   <React.Fragment>
     <ListSubheader component="div" inset>
-      Saved reports
+      Doanh thu thuyền buôn
     </ListSubheader>
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Tháng này" />
     </ListItemButton>
-    <ListItemButton>
+    {/* <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Last quarter" />
-    </ListItemButton>
+    </ListItemButton> */}
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
+      <ListItemText primary="Trong năm" />
     </ListItemButton>
   </React.Fragment>
 );

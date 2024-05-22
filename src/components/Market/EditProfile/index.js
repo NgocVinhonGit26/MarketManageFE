@@ -70,7 +70,7 @@ export default function EditProfile() {
                 const id = localStorage.getItem("id");
                 const accessToken = localStorage.getItem("accessToken");
                 const response = await getUserById(id, accessToken);
-                console.log("response AAA", response);
+                // console.log("response AAA", response);
                 setUserInfor(response);
             }
             catch (error) {

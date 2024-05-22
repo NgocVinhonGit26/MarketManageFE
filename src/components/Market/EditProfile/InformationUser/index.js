@@ -36,7 +36,7 @@ export default function InformationUser({ userInfor, setUserInfor }) {
         };
         try {
             const response = await updateUserById(id, data, accessToken)
-            console.log("response updateUserById", response)
+            // console.log("response updateUserById", response)
             // successToast("Cập nhật thông tin thành công")
             setUserInfor(response)
             const payload = {
@@ -115,6 +115,7 @@ export default function InformationUser({ userInfor, setUserInfor }) {
                     type="file"
                     name="avatar"
                     // value={avatar}
+                    accept=".png, .jpg, .jpeg"
                     onChange={(e) => setImage(e.target.files[0])}
                 />
             </Form.Group>

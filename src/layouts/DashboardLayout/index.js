@@ -146,7 +146,7 @@ const AdminListItems = ({ handleLogout, handleRedirectToHomepage }) => {
         </ListItemIcon>
         <ListItemText primary="Tour" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton component={RouterLink} to="/admin/reports">
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
@@ -337,7 +337,7 @@ export default function DashboardLayout({ children, layoutRole }) {
               />
             )}
             <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
+            {layoutRole === 0 ? secondaryListItems : null}
           </List>
         </Drawer>
         <Box

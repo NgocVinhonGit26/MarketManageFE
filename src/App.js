@@ -45,6 +45,8 @@ import Reports from "components/Merchant/Reports";
 import EditProfile from "components/Market/EditProfile";
 import Users from "components/Admin/Users";
 import Blog from "components/TourService/Blog";
+import ReportAdmin from "components/Admin/ReportsTour";
+import ReportShopBoatByMonth from "components/Admin/ReportRevenueSB/ReportShopBoatByMonth";
 
 function App() {
   const [cookies] = useCookies(["access_token"]);
@@ -72,6 +74,9 @@ function App() {
         <Route path="/admin/shops" element={<Shops />} />
         <Route path="/admin/tours" element={<Tours />} />
         <Route path="/admin/tour-orders" element={<TourOrders />} />
+        <Route path="/admin/reports" element={<ReportAdmin />} />
+        <Route path="/admin/reportSBByMonth" element={<ReportShopBoatByMonth />} />
+
 
         {/* Merchant */}
         <Route path="/merchant" element={<MerchantDashbroad />} />

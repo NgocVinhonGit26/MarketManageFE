@@ -9,57 +9,42 @@ import Paper from '@mui/material/Paper';
 import { TableVirtuoso } from 'react-virtuoso';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import { useEffect, useState } from 'react';
+import { getOrderProductByCustomer } from 'api/user';
+import BillDetail from './BillDetail';
 
-const sample = [
-    ['Frozen yoghurt', 159, 6.0, 24, 4.0],
-    ['Ice cream sandwich', 237, 9.0, 37, 4.3],
-    ['Eclair', 262, 16.0, 24, 6.0],
-    ['Cupcake', 305, 3.7, 67, 4.3],
-    ['Gingerbread', 356, 16.0, 49, 3.9],
-];
-
-function createData(id, dessert, calories, fat, carbs, protein) {
-    return { id, dessert, calories, fat, carbs, protein };
+function createData(id, donhang, ngay, trangthai, tong, thaotac) {
+    return { id, donhang, ngay, trangthai, tong, thaotac };
 }
 
 const columns = [
     {
         width: 120,
         label: 'Đơn hàng',
-        dataKey: 'dessert',
-
+        dataKey: 'donhang',
     },
     {
         width: 120,
         label: 'Ngày',
-        dataKey: 'calories',
-
+        dataKey: 'ngay',
     },
     {
         width: 120,
         label: 'Trạng thái',
-        dataKey: 'fat',
-
+        dataKey: 'trangthai',
     },
     {
         width: 120,
         label: 'Tổng',
-        dataKey: 'carbs',
-
+        dataKey: 'tong',
     },
     {
         width: 140,
         label: 'Thao tác',
-        dataKey: 'protein',
+        dataKey: 'thaotac',
         numeric: true,
     },
 ];
-
-const rows = Array.from({ length: 10 }, (_, index) => {
-    const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-    // const randomSelection = sample[0];
-    return createData(index, ...randomSelection);
-});
 
 const VirtuosoTableComponents = {
     Scroller: React.forwardRef((props, ref) => (
@@ -93,38 +78,95 @@ function fixedHeaderContent() {
     );
 }
 
-function rowContent(_index, row) {
-    return (
-        <React.Fragment>
-            {columns.map((column) => (
-                column.dataKey === 'protein' ? (
-                    <TableCell key={column.dataKey} align="right">
-                        <Button variant="contained" color="success">
-                            Xem
-                        </Button>
-                    </TableCell>
-                ) : (
-                    <TableCell
-                        key={column.dataKey}
-                        align={column.numeric || false ? 'right' : 'left'}
-                    >
-                        {row[column.dataKey]}
-                    </TableCell>
-                )
-            ))}
-        </React.Fragment>
-    );
-}
-
 export default function BillsTable() {
+    const idUser = localStorage.getItem('id');
+    const accessToken = localStorage.getItem('accessToken');
+    const [dataLength, setDataLength] = useState(0);
+    const [data, setData] = useState([]);
+    const [isShowDetail, setIsShowDetail] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+
+    function rowContent(index, row) {
+        return (
+            <React.Fragment>
+                {columns.map((column) => (
+                    column.dataKey === 'thaotac' ? (
+                        <TableCell key={column.dataKey} align="right">
+                            <Button variant="contained" color="success"
+                                onClick={() => {
+                                    setIsShowDetail(true);
+                                    setSelectedRow(data[index]);
+                                }}
+                            >
+                                Xem
+                            </Button>
+                        </TableCell>
+                    ) : (
+                        <TableCell
+                            key={column.dataKey}
+                            align={column.numeric || false ? 'right' : 'left'}
+                        >
+                            {row[column.dataKey]}
+                        </TableCell>
+                    )
+                ))}
+            </React.Fragment>
+        );
+    }
+
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp);
+        return date.toLocaleDateString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const newOrder = [0, 5, 1, 3, 2, 4, 6];
+            try {
+                const response = await getOrderProductByCustomer(Number(idUser), accessToken);
+                const reorderedArray = response.data.map(subArray => {
+                    return newOrder.map(index => {
+                        const value = subArray[index];
+                        if (typeof value === 'number' && value.toString().length === 13) {
+                            return formatDate(value);
+                        } else if (value === 'pending') {
+                            return 'Đang xử lý';
+                        } else if (value === 'completed') {
+                            return 'Hoàn thành';
+                        }
+                        return value;
+                    });
+                });
+                setDataLength(response.data.length);
+                setData(reorderedArray);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchData();
+    }, []);
+
+    const rows = Array.from({ length: dataLength }, (_, index) => {
+        const selection = data[index];
+        return createData(index, ...selection);
+    });
+
     return (
-        <Paper style={{ height: 400, width: '100%' }}>
-            <TableVirtuoso
-                data={rows}
-                components={VirtuosoTableComponents}
-                fixedHeaderContent={fixedHeaderContent}
-                itemContent={rowContent}
-            />
-        </Paper>
+        isShowDetail ? (
+            <BillDetail data={selectedRow} />
+        ) : (
+            <Paper style={{ height: 400, width: '100%' }}>
+                <TableVirtuoso
+                    data={rows}
+                    components={VirtuosoTableComponents}
+                    fixedHeaderContent={fixedHeaderContent}
+                    itemContent={rowContent}
+                />
+            </Paper>
+        )
     );
 }

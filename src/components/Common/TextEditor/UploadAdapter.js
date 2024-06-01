@@ -1,41 +1,41 @@
-import axios from "axios";
-
-export default class UploadAdapter {
-  constructor(loader, url) {
-    this.url = url;
+class UploadAdapter {
+  constructor(loader) {
     this.loader = loader;
-    this.loader.file.then((pic) => (this.file = pic));
-
-    this.upload();
+    this.url = "https://api.cloudinary.com/v1_1/dkcetq9et/image/upload";
   }
 
-  // Starts the upload process.
   upload() {
-    const fd = new FormData();
-    fd.append("image", this.file); // your image
-    fd.append("model", "ckeditor");
-    // ...
+    return this.loader.file.then(
+      (file) =>
+        new Promise((resolve, reject) => {
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("upload_preset", "cspmjsnn"); // Thay thế bằng upload preset của bạn
+          formData.append("cloud_name", "dkcetq9et");
 
-    return new Promise((resolve, reject) => {
-      axios
-        .post(this.url, fd, {
-          onUploadProgress: (e) => {
-            console.log(
-              // show upload process
-              Math.round((e.loaded / e.total) * 100) + " %"
-            );
-          },
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          fetch(this.url, {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((result) => {
+              if (result.error) {
+                return reject(result.error.message);
+              }
+              resolve({
+                default: result.secure_url,
+              });
+            })
+            .catch((error) => {
+              reject(error);
+            });
         })
-        .then((response) => {
-          resolve(response);
-        })
-        .catch((error) => {
-          //reject("Server Error");
-          console.log("Server Error : ", error);
-        });
-    });
+    );
+  }
+
+  abort() {
+    // Handle the abort
   }
 }
+
+

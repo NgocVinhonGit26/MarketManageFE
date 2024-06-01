@@ -7,7 +7,7 @@ import { uploadImage, deleteImage } from "api/image";
 import TourInformation from "./TourInformation";
 import { addTour } from "api/tour";
 import { successToast, errorToast } from "utilities/toast";
-import StatTimePicker from "../Table/EditModal/StatTimePicker";
+
 
 const style = {
   position: "absolute",
@@ -163,10 +163,7 @@ const AddModal = ({ setTours }) => {
                   </Form.Group>
                   <Form.Group controlId="startTime" className="mb-3">
                     <Form.Label>Thời Gian Bắt Đầu</Form.Label>
-                    <StatTimePicker
-                      tourData={tourData}
-                      setTourData={setTourData}
-                    />
+
                   </Form.Group>
                 </Col>
               </Row>

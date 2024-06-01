@@ -35,14 +35,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 export default function TourOrdersTable({ tourOrders, setTourOrders, updateData }) {
+
+  const accessToken = localStorage.getItem("accessToken");
+
   const handleChangeStatus = async (id, status, orderTour) => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
-      const response = await changeStatus(id, {
-        ...orderTour,
-        status: status,
-      }, accessToken);
-      console.log(response);
+      const response = await changeStatus(id,
+        {
+          ...orderTour,
+          status: status,
+        }, accessToken);
+
       if (response?.status === 200) {
         updateData(response.data);
       }

@@ -4,9 +4,9 @@ import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import DashboardLayout from "layouts/DashboardLayout";
 import './style.scss'
-import { getTotalPriceOrderItemByShopBoatIdInMonth } from "api/productOrder";
+import { getTotalPriceOrderItemByShopBoatIdInYear } from "api/productOrder";
 
-export default function ReportShopBoatByMonth() {
+export default function ReportShopBoatByYear() {
     const [datas, setDatas] = useState([]);
     const accsessToken = localStorage.getItem("accessToken");
 
@@ -38,7 +38,7 @@ export default function ReportShopBoatByMonth() {
     useEffect(() => {
         const fetchTotalPriceOrderItemByShopBoatIdInMonth = async () => {
             try {
-                const response = await getTotalPriceOrderItemByShopBoatIdInMonth(accsessToken);
+                const response = await getTotalPriceOrderItemByShopBoatIdInYear(accsessToken);
                 const transformedData = createData(response.data);
                 setDatas(transformedData);
             }
@@ -105,7 +105,7 @@ export default function ReportShopBoatByMonth() {
                         plugins: {
                             title: {
                                 display: true,
-                                text: "Tổng doanh thu của các thuyền buôn trong tháng 5/2024",
+                                text: "Tổng doanh thu của các thuyền buôn trong năm 2024",
                             }
                         }
                     }}

@@ -13,7 +13,7 @@ const CardTour = () => {
         <CardMedia
           component="img"
           height="140"
-          image="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/cho-noi-cai-rang-2-600x338.jpg"
+          // image="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/cho-noi-cai-rang-2-600x338.jpg"
           alt="green iguana"
         />
         <CardContent>
@@ -62,10 +62,10 @@ const CardTour = () => {
             <div className="detail-infor">
               <div className="title-infor">
                 <div className="icon-infor">
-                  <img
+                  {/* <img
                     src="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/dia-diem.png"
                     alt=""
-                  />
+                  /> */}
                 </div>
                 <div className="text-infor">Địa điểm khởi hành:</div>
               </div>
@@ -74,10 +74,10 @@ const CardTour = () => {
             <div className="detail-infor">
               <div className="title-infor">
                 <div className="icon-infor">
-                  <img
+                  {/* <img
                     src="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/thoi-gian-tour.png"
                     alt=""
-                  />
+                  /> */}
                 </div>
                 <div className="text-infor">Thời gian tour:</div>
               </div>
@@ -86,10 +86,10 @@ const CardTour = () => {
             <div className="detail-infor">
               <div className="title-infor">
                 <div className="icon-infor">
-                  <img
+                  {/* <img
                     src="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/phuong-tien.png"
                     alt=""
-                  />
+                  /> */}
                 </div>
                 <div className="text-infor">Phương tiện di chuyển:</div>
               </div>

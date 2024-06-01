@@ -51,7 +51,7 @@ export default function OrderTable(props) {
     tourName: "",
     price: 0,
     userId: userId,
-    createAt: "",
+    createdAt: new Date().toISOString().slice(0, 19).replace("T", " "),
   });
 
   React.useEffect(() => {
@@ -76,7 +76,7 @@ export default function OrderTable(props) {
       tourId: tour.id,
       tourName: tour.name,
       price: tour.price,
-      createAt: new Date().toISOString(),
+      createdAt: new Date().toISOString().slice(0, 19).replace("T", " "),
     });
   };
   const handleReduce = () => {
@@ -89,19 +89,17 @@ export default function OrderTable(props) {
         tourId: tour.id,
         tourName: tour.name,
         price: tour.price,
-        createAt: new Date().toISOString(),
+        createdAt: new Date().toISOString().slice(0, 19).replace("T", " "),
       });
     }
   };
 
   const handleDatePickerChange = (newDate) => {
-    console.log("khien bon chim lon phai cam mom")
+    const formattedDate = new Date(newDate).toISOString().slice(0, 19).replace("T", " ");
     setOrder(prevOrder => ({
       ...prevOrder,
-      startTime: newDate.toISOString(), // Chuyển đổi ngày thành chuỗi ISO
+      startTime: formattedDate,
     }));
-
-    console.log("update time ", order)
   };
 
   const handleAddOrder = async () => {
@@ -157,10 +155,10 @@ export default function OrderTable(props) {
               <div className="detail-infor">
                 <div className="title-infor">
                   <div className="icon-infor">
-                    <img
+                    {/* <img
                       src="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/thoi-gian.png"
                       alt=""
-                    />
+                    /> */}
                   </div>
                   <div className="text-infor">Dự kiến khởi hành:</div>
                 </div>
@@ -169,10 +167,10 @@ export default function OrderTable(props) {
               <div className="detail-infor">
                 <div className="title-infor">
                   <div className="icon-infor">
-                    <img
+                    {/* <img
                       src="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/dia-diem.png"
                       alt=""
-                    />
+                    /> */}
                   </div>
                   <div className="text-infor">Địa điểm khởi hành:</div>
                 </div>
@@ -181,10 +179,10 @@ export default function OrderTable(props) {
               <div className="detail-infor">
                 <div className="title-infor">
                   <div className="icon-infor">
-                    <img
+                    {/* <img
                       src="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/thoi-gian-tour.png"
                       alt=""
-                    />
+                    /> */}
                   </div>
                   <div className="text-infor">Thời gian tour:</div>
                 </div>
@@ -193,10 +191,10 @@ export default function OrderTable(props) {
               <div className="detail-infor">
                 <div className="title-infor">
                   <div className="icon-infor">
-                    <img
+                    {/* <img
                       src="https://s3.nucuoimekong.com/ncmk/wp-content/uploads/phuong-tien.png"
                       alt=""
-                    />
+                    /> */}
                   </div>
                   <div className="text-infor">Phương tiện di chuyển:</div>
                 </div>

@@ -63,10 +63,10 @@ export default function Chart({ value }) {
         createData('T12', 0),
     ]);
 
-    console.log("dataHour: ", dataHour);
-    console.log("dataDay: ", dataDay);
+    // console.log("dataHour: ", dataHour);
+    // console.log("dataDay: ", dataDay);
     const updateData = (categoryTime, totalOrders, totalPrices) => {
-        console.log("he;ollo updateData")
+        // console.log("he;ollo updateData")
         if (value === 1) {
             setDataHour((prev) => {
                 return prev.map((item) => {
@@ -207,7 +207,7 @@ export default function Chart({ value }) {
                                 ...theme.typography.body1,
                             }}
                         >
-                            Doanh thu ($)
+                            Doanh thu (₫)
                         </Label>
                     </YAxis>
                     <Line

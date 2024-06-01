@@ -7,9 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import PropTypes from "prop-types";
 import Badge from "react-bootstrap/Badge";
-import Button from "react-bootstrap/Button";
 import moment from "moment";
 import { updateOrderStatus } from "api/productOrder";
 import DetailModal from "./DetailModal";
@@ -46,38 +44,45 @@ export default function OrdersTable({ orders, updateData }) {
   const [status, setStatus] = React.useState("pending");
 
 
-  const getOrderItem = async (orderProductId, status) => {
+  // const getOrderItem = async (orderProductId, status) => {
+  //   try {
+  //     const response = await getOrderItemByOrderProductId(idShopBoat, orderProductId, accessToken);
+  //     setOrderItems(response.data);
+  //     setStatus(status);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+
+
+  const handleChaneStatus = async (orderProductId, status) => {
     try {
-      console.log("orderProductId>>>>>>", orderProductId);
-      const response = await getOrderItemByOrderProductId(idShopBoat, orderProductId, accessToken);
-      setOrderItems(response.data);
-      setStatus(status);
+
+      const response = await updateOrderStatus(status, orderProductId, idShopBoat, accessToken);
+      console.log("response>>>>>", response);
+      if (response?.status === 200) {
+        const newOrder = orders.map((order) => {
+          if (order.id === orderProductId) {
+            order.statusOrderItems = status;
+          }
+          return order;
+        });
+        console.log("newOrder>>>>>", newOrder);
+        updateData(newOrder);
+
+      }
+
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
-  useEffect(() => {
-    const handleChaneStatus = async (orderId) => {
-      try {
-        console.log("huhuhuhhuksls: ", orderItems);
-        const response = await updateOrderStatus(orderId, status, accessToken);
-        console.log("response updateOrderStatus>>>>>>", response);
-        // if (response?.status === 200) {
-        //   updateData(response.data);
-        // }
+  // if (orderItems.length > 0) {
+  //   orderItems.map((item) => {
+  //     handleChaneStatus(item.id);
+  //   });
+  // }
 
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    if (orderItems.length > 0) {
-      orderItems.map((item) => {
-        handleChaneStatus(item.id);
-      });
-    }
-  }, [orderItems, status]);
 
 
 
@@ -135,19 +140,19 @@ export default function OrdersTable({ orders, updateData }) {
               </StyledTableCell>
               <StyledTableCell align="center">{order.total}</StyledTableCell>
               <StyledTableCell align="center">
-                {status === "pending" ? (
+                {order.statusOrderItems === "pending" ? (
                   <Badge pill bg="warning">
                     Chờ xác nhận
                   </Badge>
-                ) : status === "accepted" ? (
+                ) : order.statusOrderItems === "accepted" ? (
                   <Badge pill bg="success">
                     Đã xác nhận
                   </Badge>
-                ) : status === "cancelled" ? (
+                ) : order.statusOrderItems === "cancelled" ? (
                   <Badge pill bg="danger">
                     Đã hủy
                   </Badge>
-                ) : status === "delivering" ? (
+                ) : order.statusOrderItems === "delivering" ? (
                   <Badge pill bg="info">
                     Đang giao hàng
                   </Badge>
@@ -161,12 +166,11 @@ export default function OrdersTable({ orders, updateData }) {
                 <DetailModal order={order} />
               </StyledTableCell>
               <StyledTableCell align="center">
-                {status === "pending" && (
+                {order.statusOrderItems === "pending" && (
                   <div className="flex">
                     <Tooltip title="Xác nhận">
                       <IconButton
-                        onClick={() => getOrderItem(order.id, "accepted")}
-                        // onClick={() => getOrderItem(order.id)}
+                        onClick={() => handleChaneStatus(order.id, "accepted")}
                         color="success"
                       >
                         <CheckIcon />
@@ -174,8 +178,7 @@ export default function OrdersTable({ orders, updateData }) {
                     </Tooltip>
                     <Tooltip title="Hủy">
                       <IconButton
-                        onClick={() => getOrderItem(order.id, "cancelled")}
-                        // onClick={() => getOrderItem(order.id)}
+                        onClick={() => handleChaneStatus(order.id, "cancelled")}
                         color="error"
                       >
                         <CloseIcon />
@@ -184,11 +187,10 @@ export default function OrdersTable({ orders, updateData }) {
                   </div>
                 )}
                 {
-                  status === "accepted" && (
+                  order.statusOrderItems === "accepted" && (
                     <Tooltip title="Giao hàng">
                       <IconButton
-                        onClick={() => getOrderItem(order.id, "delivering")}
-                        // onClick={() => getOrderItem(order.id)}
+                        onClick={() => handleChaneStatus(order.id, "delivering")}
                         color="info"
                       >
                         <CheckIcon />
@@ -198,11 +200,10 @@ export default function OrdersTable({ orders, updateData }) {
                 }
 
                 {
-                  status === "delivering" && (
+                  order.statusOrderItems === "delivering" && (
                     <Tooltip title="Đã hoàn thành">
                       <IconButton
-                        onClick={() => getOrderItem(order.id, "completed")}
-                        // onClick={() => getOrderItem(order.id)}
+                        onClick={() => handleChaneStatus(order.id, "completed")}
                         color="primary"
                       >
                         <CheckIcon />

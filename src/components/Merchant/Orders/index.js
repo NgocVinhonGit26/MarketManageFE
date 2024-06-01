@@ -9,12 +9,10 @@ import SearchForm from "./SearchForm";
 import { getShopBoatByIdUser } from "api/shopBoat";
 
 import { getAllListOrderItem } from "api/shopBoat";
-import { getTotalPageOrderItem } from "api/shopBoat";
 import { getAllListOrderProduct } from "api/shopBoat";
 import { getTotalPageOrderProduct } from "api/shopBoat";
 
 const Orders = () => {
-  const [cookies, setCookie] = useCookies(["access_token"]);
   const [shopBoatId, setShopBoatId] = useState(null);
   const limit = 5;
   const navigate = useNavigate();
@@ -34,7 +32,6 @@ const Orders = () => {
         }
         const fetchShopBoat = async (id) => {
           const response = await getShopBoatByIdUser(id, accessToken);
-          console.log("getShopBoatByIdUser>>> ", response);
           if (response) {
             const shopBoatId = response.data.id;
             setShopBoatId(shopBoatId);
@@ -54,9 +51,7 @@ const Orders = () => {
       const fetchOrders = async () => {
         try {
           const response = await getAllListOrderProduct(shopBoatId, page - 1, accessToken);
-          console.log("getAllListOrderProduct>>> ", response);
           const totalPage = await getTotalPageOrderProduct(shopBoatId, page - 1, accessToken);
-          console.log("getTotalPageOrderProduct>>> ", totalPage);
           if (response?.status === 200) {
             setOrders(response.data);
             setTotal(totalPage.data);

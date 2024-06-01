@@ -2,12 +2,11 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import Modal from "@mui/material/Modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { uploadImage, deleteImage } from "api/image";
 import TourInformation from "./TourInformation";
-import { updateTour } from "api/tour";
+import { updateTourById } from "api/tour";
 import { successToast, errorToast } from "utilities/toast";
-import StartTimePicker from "./StatTimePicker";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
@@ -30,16 +29,20 @@ const EditModal = ({ tour, setTours }) => {
     setOpen(false);
     resetForm(tour);
   };
+  const [image, setImage] = React.useState("");
+  const accessToken = localStorage.getItem("accessToken");
+
   const [tourData, setTourData] = useState({
     name: tour.name || "",
-    avatar: tour.avatar || "",
+    slug: tour.slug || "",
     startTime: tour.startTime || "",
-    // scheduleType: tour.scheduleType || "daily",
-    tourDuration: tour.tourDuration || "",
     startLocation: tour.startLocation || "",
-    transport: tour.transport || "",
+    tourDuration: tour.tourDuration || "",
+    description: tour.description || "",
     price: tour.price || 0,
-    tourInformation: tour.tourInformation || [],
+    avatar: tour.avatar || "",
+    transport: tour.transport || "",
+    tourInformation: tour.tourInformation || "",
   });
 
   const handleInputChange = (event) => {
@@ -50,14 +53,21 @@ const EditModal = ({ tour, setTours }) => {
     });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  useEffect(() => {
+    if (tourData.avatar !== "") {
+      handleSubmit();
+    }
+  }, [tourData.avatar]);
+
+  const handleSubmit = async () => {
+    // event.preventDefault();
     //console.log("Dữ liệu tour:", tourData);
 
     try {
-      const res = await updateTour(tour.id, tourData);
-      if (res?.code === 200) {
-        successToast("Cập nhật tour thành công");
+      const res = await updateTourById(tour.id, tourData, accessToken);
+      // console.log("update tour", res);
+      if (res?.status === 200) {
+        // successToast("Cập nhật tour thành công");
         setTours((prev) =>
           prev.map((item) => (item.id === tour.id ? res.data : item))
         );
@@ -70,48 +80,52 @@ const EditModal = ({ tour, setTours }) => {
     }
   };
 
-  const handleImageUpload = async (event) => {
-    const selectedFile = event.target.files[0]; // Lấy tệp được chọn (chỉ lấy tệp đầu tiên nếu người dùng chọn nhiều tệp)
-
-    if (selectedFile) {
-      // Kiểm tra xem người dùng đã chọn một tệp hợp lệ hay không
-      const allowedTypes = ["image/png", "image/jpeg", "image/jpg"];
-      if (allowedTypes.includes(selectedFile.type)) {
-        // Tệp hợp lệ, bạn có thể tiếp tục xử lý tệp ở đây
-        let data = new FormData();
-        //append image to files
-        data.append("image", selectedFile);
-        data.append("model", "Product");
-        const res = await uploadImage(data);
-        if (res?.status === 200) {
-          setTourData({
-            ...tourData,
-            image: res.data.url,
-          });
-        }
-
-        // Trong trường hợp bạn muốn gửi tệp lên máy chủ, bạn có thể sử dụng XMLHttpRequest, Fetch API, hoặc các thư viện khác để thực hiện tải lên.
-      } else {
-        // Tệp không hợp lệ, hiển thị thông báo hoặc thực hiện xử lý khác theo nhu cầu của bạn.
-        console.error("Invalid file type. Please select a valid image file.");
-      }
+  const handleImageUpload = async () => {
+    if (image === "") {
+      handleSubmit();
+      return;
     }
+
+    const dataImg = new FormData();
+    dataImg.append("file", image);
+    dataImg.append("upload_preset", "cspmjsnn");
+    dataImg.append("cloud_name", "dkcetq9et");
+
+
+    fetch("https://api.cloudinary.com/v1_1/dkcetq9et/image/upload", {
+      method: "post",
+      body: dataImg,
+    })
+      .then((response) => response.json())
+      .then((dataImg) => {
+        setTourData({
+          ...tourData,
+          avatar: dataImg.url,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+
 
   const resetForm = (data = {}) => {
     setTourData({
       name: data?.name || "",
-      avatar: data?.avatar || "",
+      slug: data?.slug || "",
       startTime: data?.startTime || "",
-      // scheduleType: data?.scheduleType || "daily",
-      tourTime: data?.tourTime || "",
       startLocation: data?.startLocation || "",
-      transport: data?.transport || "",
-      price: data?.price || 0,
-      tourInformation: data?.tourInformation || [],
       tourDuration: data?.tourDuration || "",
+      description: data?.description || "",
+      price: data?.price || 0,
+      avatar: data?.avatar || "",
+      transport: data?.transport || "",
+      tourInformation: data?.tourInformation || "",
     });
   };
+
+
 
   return (
     <div>
@@ -130,11 +144,11 @@ const EditModal = ({ tour, setTours }) => {
           <div>
             <div className="relative">
               <h2 className="text-center font-bold text-2xl mb-4 border-b-2 pb-2">
-                Edit Tour
+                Chỉnh sửa tour du lịch
               </h2>
               <div className="flex absolute right-0 bottom-2">
-                <Button variant="success mr-2" onClick={handleSubmit}>
-                  Save
+                <Button variant="success mr-2" onClick={handleImageUpload}>
+                  Lưu
                 </Button>
                 <Button
                   variant="danger"
@@ -143,12 +157,12 @@ const EditModal = ({ tour, setTours }) => {
                     handleClose();
                   }}
                 >
-                  Cancel
+                  Hủy
                 </Button>
               </div>
             </div>
 
-            <Form onSubmit={handleSubmit}>
+            <Form >
               <Row className="mb-3">
                 <Col>
                   <img src={tourData.avatar} alt="" />
@@ -175,10 +189,18 @@ const EditModal = ({ tour, setTours }) => {
                       required
                     />
                   </Form.Group>
-                  <StartTimePicker
-                    tourData={tourData}
-                    setTourData={setTourData}
-                  />
+                  <Col>
+                    <Form.Group controlId="startLocation">
+                      <Form.Label>Nơi Khởi Hành</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="startLocation"
+                        value={tourData.startLocation}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
                 </Col>
               </Row>
 
@@ -190,22 +212,11 @@ const EditModal = ({ tour, setTours }) => {
                       type="file"
                       placeholder="Enter image URL"
                       accept=".png, .jpg, .jpeg"
-                      onChange={handleImageUpload}
+                      onChange={(e) => setImage(e.target.files[0])}
                     />
                   </Form.Group>
                 </Col>
-                <Col>
-                  <Form.Group controlId="price">
-                    <Form.Label>Giá</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="price"
-                      value={tourData.price}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </Form.Group>
-                </Col>
+
               </Row>
 
               <Row className="mb-3">
@@ -222,12 +233,12 @@ const EditModal = ({ tour, setTours }) => {
                   </Form.Group>
                 </Col>
                 <Col>
-                  <Form.Group controlId="startLocation">
-                    <Form.Label>Nơi Khởi Hành</Form.Label>
+                  <Form.Group controlId="price">
+                    <Form.Label>Giá</Form.Label>
                     <Form.Control
-                      type="text"
-                      name="startLocation"
-                      value={tourData.startLocation}
+                      type="number"
+                      name="price"
+                      value={tourData.price}
                       onChange={handleInputChange}
                       required
                     />

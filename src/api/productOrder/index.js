@@ -35,7 +35,7 @@ const getOrdersOfShop = (shopBoatId, page, limit, searchParams = {}) => {
   }
 };
 
-const updateOrderStatus = (orderId, status, token) => {
+const updateOrderStatus = (status, orderProductId, shopBoatId, token) => {
   try {
     const config = {
       headers: {
@@ -44,7 +44,9 @@ const updateOrderStatus = (orderId, status, token) => {
     };
     let formData = new FormData();
     formData.append("status", status);
-    const response = instance.post(`/merchant/updateStatusOrderItemById/${orderId}`, formData, config);
+    formData.append("orderProductId", orderProductId);
+    formData.append("shopBoatId", shopBoatId);
+    const response = instance.post(`/merchant/updateStatusOrderItemById`, formData, config);
     return response;
   } catch (error) {
     console.log(error);
@@ -80,8 +82,37 @@ const insertOrderItem = (data) => {
 }
 
 
+const getTotalPriceOrderItemByShopBoatIdInMonth = (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
+  try {
+    const response = instance.get(`/admin/getTotalPriceOrderItemByShopBoatIdInMonth`, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
 
+}
+
+const getTotalPriceOrderItemByShopBoatIdInYear = (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const response = instance.get(`/admin/getTotalPriceOrderItemByShopBoatIdInYear`, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+
+}
 
 
 
@@ -90,5 +121,7 @@ export {
   updateOrderStatus,
   createOrderProduct,
   getLastOrderProduct,
-  insertOrderItem
+  insertOrderItem,
+  getTotalPriceOrderItemByShopBoatIdInMonth,
+  getTotalPriceOrderItemByShopBoatIdInYear
 };

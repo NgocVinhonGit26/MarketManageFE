@@ -19,6 +19,10 @@ const TourNavbar = () => {
     navigate("/tour/cart")
   }
 
+  const handleNavigateToMarket = () => {
+    navigate("/marketplace")
+  }
+
   return (
     <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
       <Container>
@@ -83,7 +87,9 @@ const TourNavbar = () => {
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">Homestay</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Khách sạn</NavDropdown.Item>
-              <NavDropdown.Item href="http://localhost:3000/marketplace">
+              <NavDropdown.Item
+                onClick={handleNavigateToMarket}
+              >
                 Marketing Online
               </NavDropdown.Item>
               {/* <NavDropdown.Divider /> */}

@@ -10,6 +10,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { Link as RouterLink } from "react-router-dom";
 
 export const mainListItems = (
   <React.Fragment>
@@ -51,7 +52,7 @@ export const secondaryListItems = (
     <ListSubheader component="div" inset>
       Doanh thu thuyền buôn
     </ListSubheader>
-    <ListItemButton>
+    <ListItemButton component={RouterLink} to="/admin/reportSBByMonth">
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
@@ -63,7 +64,7 @@ export const secondaryListItems = (
       </ListItemIcon>
       <ListItemText primary="Last quarter" />
     </ListItemButton> */}
-    <ListItemButton>
+    <ListItemButton component={RouterLink} to="/admin/reportSBByYear">
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>

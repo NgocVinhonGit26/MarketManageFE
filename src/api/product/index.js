@@ -149,6 +149,8 @@ const getProductByCategory = (page, limit, categorySlug) => {
   }
 };
 
+
+
 export {
   getTop4Products,
   getAllProductOrderByCategory,
@@ -158,4 +160,5 @@ export {
   getTotalPageProductForUser,
   getTotalPageProduct,
   getProductByCategory,
+
 };

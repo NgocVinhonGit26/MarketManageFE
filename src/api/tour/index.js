@@ -43,10 +43,15 @@ const addTour = async (data) => {
   }
 };
 
-const updateTour = async (id, data) => {
+const updateTourById = async (id, data, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   try {
-    const response = await instance.patch(`/tours/${id}`, data);
-    return response.data;
+    const response = await instance.post(`/admin/updateTourById/${id}`, data, config);
+    return response;
   } catch (error) {
     throw error;
   }
@@ -158,7 +163,7 @@ const getTotalPageTour = async (page, token, queryCondition = {}) => {
 
 export {
   getAllTours,
-  updateTour,
+  updateTourById,
   deleteTour,
   addTour,
   getBestSalerToursInHomePage,

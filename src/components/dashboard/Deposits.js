@@ -10,7 +10,7 @@ function preventDefault(event) {
 }
 
 export default function Deposit({ item }) {
-  console.log("item: ", item);
+  // console.log("item: ", item);
   if (!item) return null;
 
   if (item.title === "Số đơn") {

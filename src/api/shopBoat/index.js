@@ -251,7 +251,7 @@ const getOrderItemByOrderProductId = (idShop, orderProductId, token) => {
   try {
     const config = {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`
       },
     };
     const response = instance.get(`/merchant/getOrderItemByOrderProductId/${idShop}/${orderProductId}`, config);

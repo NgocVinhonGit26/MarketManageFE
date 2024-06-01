@@ -32,93 +32,6 @@ EditModal.propTypes = {
   updateData: PropTypes.func.isRequired,
 };
 
-// function AddInformationModal({ addInformation }) {
-//   const [open, setOpen] = React.useState(false);
-//   const handleOpen = () => {
-//     setOpen(true);
-//   };
-//   const handleClose = () => {
-//     setOpen(false);
-//   };
-
-//   const [fieldName, setFieldName] = useState("");
-//   const [value, setValue] = useState("");
-
-//   const style = {
-//     position: "absolute",
-//     top: "50%",
-//     left: "50%",
-//     transform: "translate(-50%, -50%)",
-//     width: 400,
-//     bgcolor: "background.paper",
-//     border: "2px solid #000",
-//     boxShadow: 24,
-//     pt: 2,
-//     px: 4,
-//     pb: 3,
-//   };
-
-//   const handleSave = () => {
-//     addInformation({ key: fieldName, value: value });
-//     handleClose();
-//   };
-
-//   return (
-//     <React.Fragment>
-//       <IconButton
-//         aria-label="add"
-//         size="small"
-//         sx={{
-//           mr: 0.5,
-//         }}
-//         onClick={handleOpen}
-//       >
-//         <AddCircleOutlineIcon />
-//       </IconButton>
-//       <Modal
-//         open={open}
-//         onClose={handleClose}
-//         aria-labelledby="child-modal-title"
-//         aria-describedby="child-modal-description"
-//       >
-//         <Box sx={{ ...style, width: 300 }}>
-//           <Form.Group controlId="fieldName" className="mb-3">
-//             <Form.Label>Field Name</Form.Label>
-//             <Form.Control
-//               type="text"
-//               placeholder="Enter Field Name"
-//               value={fieldName}
-//               onChange={(e) => setFieldName(e.target.value)}
-//             />
-//           </Form.Group>
-
-//           <Form.Group controlId="value" className="mb-3">
-//             <Form.Label>Value</Form.Label>
-//             <Form.Control
-//               type="text"
-//               placeholder="Enter Value"
-//               value={value}
-//               onChange={(e) => setValue(e.target.value)}
-//             />
-//           </Form.Group>
-//           <div className="flex justify-end">
-//             <Button
-//               onClick={handleSave}
-//               className="mr-2"
-//               variant="success"
-//               disabled={fieldName === "" || value === ""}
-//             >
-//               Add
-//             </Button>
-//             <Button onClick={handleClose} variant="primary">
-//               Cancel
-//             </Button>
-//           </div>
-//         </Box>
-//       </Modal>
-//     </React.Fragment>
-//   );
-// }
 
 function EditModal({ product, updateData }) {
   const [open, setOpen] = useState(false);
@@ -149,27 +62,6 @@ function EditModal({ product, updateData }) {
 
   const [img, setImg] = useState('');
 
-  // useEffect(() => {
-  //   const fetchCategories = async () => {
-  //     const response = await getListCategories();
-  //     if (response?.status === 200) {
-  //       let categories = response?.data.data.map((category) => {
-  //         return { value: category.slug, label: category.name };
-  //       });
-  //       setListCategory(categories);
-  //     }
-  //   };
-
-  //   const initSelectedCategories = () => {
-  //     let categories = product.categories.map((category) => {
-  //       return { value: category.id, label: category.name };
-  //     });
-  //     setSelectedCategory(categories);
-  //   };
-
-  //   initSelectedCategories();
-  //   fetchCategories();
-  // }, []);
 
   const style = {
     position: "absolute",
@@ -225,11 +117,6 @@ function EditModal({ product, updateData }) {
     setUnit(updatedProduct.unit);
     setCountInStock(updatedProduct.countInStock);
     setDescription(updatedProduct.description);
-    // setSelectedCategory(
-    //   updatedProduct.categories.map((category) => {
-    //     return { value: category.slug, label: category.name };
-    //   })
-    // );
     setVideoInfor(updatedProduct.videoInfor);
     setImage(updatedProduct.image);
   };

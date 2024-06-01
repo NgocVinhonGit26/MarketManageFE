@@ -12,17 +12,20 @@ import { getTourBySlug } from "api/tour";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import parse from "html-react-parser";
+
+
 const TourDetail = () => {
   const [quantityOder, setQuantityOrder] = useState(0);
   const [tour, setTour] = useState({});
 
   const { slug } = useParams();
+  console.log("get tour by slug", slug);
   useLayoutEffect(() => {
     const fetchTour = async () => {
       try {
         const accessToken = localStorage.getItem("accessToken");
         const res = await getTourBySlug(slug, accessToken);
-        console.log("get tour by slug", res);
+
         setTour(res);
       } catch (error) {
         console.log(error);
@@ -64,6 +67,7 @@ const TourDetail = () => {
     document.documentElement.scrollTop = 0;
   }
 
+
   return (
     <div>
       <TourLayout>
@@ -98,6 +102,9 @@ const TourDetail = () => {
                 <div className="Detail-Description">
                   <div className="Avt-tour">
                     <img src={tour?.avatar} alt="" />
+                  </div>
+                  <div className="Description-tour">
+                    {tour.tourInformation ? parse(tour.tourInformation) : ""}
                   </div>
                 </div>
               </div>

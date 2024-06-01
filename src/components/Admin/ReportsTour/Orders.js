@@ -6,77 +6,159 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import { getTop5TourHighestPriceInToday } from 'api/tourOrder';
+import { getTop5TourHighestPriceInThisWeek } from 'api/tourOrder';
+import { getTop5TourHighestPriceInThisMonth } from 'api/tourOrder';
+import { getTop5TourHighestPriceInThisYear } from 'api/tourOrder';
 
 // Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
+function createData(STT, name, duration, totalOrders, totalPrice,) {
+  return { STT, name, duration, totalOrders, totalPrice };
 }
 
-const rows = [
-  createData(
-    0,
-    '16 Mar, 2019',
-    'Elvis Presley',
-    'Tupelo, MS',
-    'VISA ⠀•••• 3719',
-    312.44,
-  ),
-  createData(
-    1,
-    '16 Mar, 2019',
-    'Paul McCartney',
-    'London, UK',
-    'VISA ⠀•••• 2574',
-    866.99,
-  ),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createData(
-    3,
-    '16 Mar, 2019',
-    'Michael Jackson',
-    'Gary, IN',
-    'AMEX ⠀•••• 2000',
-    654.39,
-  ),
-  createData(
-    4,
-    '15 Mar, 2019',
-    'Bruce Springsteen',
-    'Long Branch, NJ',
-    'VISA ⠀•••• 5919',
-    212.79,
-  ),
-];
+
 
 function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Orders() {
+export default function Orders({ value }) {
+  const [rows, setRows] = React.useState([]);
+  const accessToken = localStorage.getItem('accessToken');
+
+  const fetchTop5TourHighestPriceInToday = async () => {
+    try {
+      const response = await getTop5TourHighestPriceInToday(accessToken);
+      response.data.forEach((item, index) => {
+        setRows((prev) => [
+          ...prev,
+          createData(
+            index + 1,
+            item[0],
+            item[1],
+            item[2],
+            item[3]
+          ),
+        ]);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const fetchTop5TourHighestPriceInThisWeek = async () => {
+    try {
+      const response = await getTop5TourHighestPriceInThisWeek(accessToken);
+      response.data.forEach((item, index) => {
+        setRows((prev) => [
+          ...prev,
+          createData(
+            index + 1,
+            item[0],
+            item[1],
+            item[2],
+            item[3]
+          ),
+        ]);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const fetchTop5TourHighestPriceInThisMonth = async () => {
+    try {
+      const response = await getTop5TourHighestPriceInThisMonth(accessToken);
+      response.data.forEach((item, index) => {
+        setRows((prev) => [
+          ...prev,
+          createData(
+            index + 1,
+            item[0],
+            item[1],
+            item[2],
+            item[3]
+          ),
+        ]);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const fetchTop5TourHighestPriceInThisYear = async () => {
+    try {
+      const response = await getTop5TourHighestPriceInThisYear(accessToken);
+      response.data.forEach((item, index) => {
+        setRows((prev) => [
+          ...prev,
+          createData(
+            index + 1,
+            item[0],
+            item[1],
+            item[2],
+            item[3]
+          ),
+        ]);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  React.useEffect(() => {
+    if (value === 1) {
+      fetchTop5TourHighestPriceInToday();
+    }
+    if (value === 2) {
+      fetchTop5TourHighestPriceInThisWeek();
+    }
+    if (value === 3) {
+      fetchTop5TourHighestPriceInThisMonth();
+    }
+    if (value === 4) {
+      fetchTop5TourHighestPriceInThisYear();
+    }
+    setRows([]);
+    // return
+  }, [value]);
+
+
+
+
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>Top5 doanh thu</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+            <TableCell>STT</TableCell>
+            <TableCell>Tên tour</TableCell>
+            <TableCell >Thời lượng tour</TableCell>
+            <TableCell>Tổng đơn</TableCell>
+            <TableCell>Tổng doanh thu</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+          {rows.length > 0 ? (
+            rows.map((row) => (
+              <TableRow key={row.STT}>
+                <TableCell>#{row.STT}</TableCell>
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.duration}</TableCell>
+                <TableCell>{row.totalOrders}</TableCell>
+                <TableCell>{`${row.totalPrice}₫`}</TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={5} align="center">
+                <h5>Chưa có tour nào được thực hiện thành công 😥</h5>
+              </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
+
       </Table>
       <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
         See more orders

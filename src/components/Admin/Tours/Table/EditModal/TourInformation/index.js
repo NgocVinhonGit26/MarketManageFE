@@ -1,11 +1,4 @@
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { v4 as uuidv4 } from "uuid";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import IconButton from "@mui/material/IconButton";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -28,9 +21,17 @@ const style = {
 };
 
 
-const TourInformation = () => {
+const TourInformation = ({ tourInformation, setTourData }) => {
 
-  const [information, setInformation] = useState('')
+  const [information, setInformation] = useState(tourInformation)
+
+  useEffect(() => {
+    setTourData((prev) => ({
+      ...prev,
+      tourInformation: information,
+    }));
+  }
+    , [information, setTourData]);
 
   return (
     <div className="overflow-y-auto" style={{ height: "500px" }}>

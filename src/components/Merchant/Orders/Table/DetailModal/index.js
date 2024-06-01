@@ -31,6 +31,7 @@ const DetailModal = ({ order }) => {
     const getOrderItem = async (orderProductId) => {
       try {
         const response = await getOrderItemByOrderProductId(idShopBoat, orderProductId, accessToken);
+        // console.log(response.data);
         setOrderItems(response.data);
       } catch (err) {
         console.log(err);
@@ -78,19 +79,19 @@ const DetailModal = ({ order }) => {
                   </p>
                   <p>
                     <span className="font-semibold">Trạng thái:</span>{" "}
-                    {order.status === "pending" ? (
+                    {order.statusOrderItems === "pending" ? (
                       <Badge pill bg="warning">
                         Chờ xác nhận
                       </Badge>
-                    ) : order.status === "accepted" ? (
+                    ) : order.statusOrderItems === "accepted" ? (
                       <Badge pill bg="success">
                         Đã xác nhận
                       </Badge>
-                    ) : order.status === "cancelled" ? (
+                    ) : order.statusOrderItems === "cancelled" ? (
                       <Badge pill bg="danger">
                         Đã hủy
                       </Badge>
-                    ) : order.status === "delivering" ? (
+                    ) : order.statusOrderItems === "delivering" ? (
                       <Badge pill bg="info">
                         Đang giao hàng
                       </Badge>

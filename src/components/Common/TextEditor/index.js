@@ -2,13 +2,13 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import UploadAdapter from "./UploadAdapter";
 import "./style.css";
-const url = "http://localhost:3001/api/upload";
+
 function CustomUploadAdapterPlugin(editor) {
   editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-    // Create new object and pass server url
-    return new UploadAdapter(loader, url);
+    return new UploadAdapter(loader);
   };
 }
+
 const TextEditor = ({ information, setInformation }) => {
   const editorConfiguration = {
     toolbar: [
@@ -34,20 +34,17 @@ const TextEditor = ({ information, setInformation }) => {
       data={information}
       config={editorConfiguration}
       onReady={(editor) => {
-        // You can store the "editor" and use when it is needed.
-        //console.log("Editor is ready to use!", editor);
+        // Khi CKEditor sẵn sàng
       }}
       onChange={(event, editor) => {
         const data = editor.getData();
-        //console.log({ event, editor, data });
-        console.log(data);
         setInformation(data);
       }}
       onBlur={(event, editor) => {
-        //console.log("Blur.", editor);
+        // Khi CKEditor bị mất focus
       }}
       onFocus={(event, editor) => {
-        //console.log("Focus.", editor);
+        // Khi CKEditor nhận được focus
       }}
     />
   );

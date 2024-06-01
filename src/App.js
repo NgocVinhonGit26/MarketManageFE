@@ -47,6 +47,8 @@ import Users from "components/Admin/Users";
 import Blog from "components/TourService/Blog";
 import ReportAdmin from "components/Admin/ReportsTour";
 import ReportShopBoatByMonth from "components/Admin/ReportRevenueSB/ReportShopBoatByMonth";
+import ReportShopBoatByYear from "components/Admin/ReportRevenueSB/ReportShopBoatByYear";
+
 
 function App() {
   const [cookies] = useCookies(["access_token"]);
@@ -76,6 +78,7 @@ function App() {
         <Route path="/admin/tour-orders" element={<TourOrders />} />
         <Route path="/admin/reports" element={<ReportAdmin />} />
         <Route path="/admin/reportSBByMonth" element={<ReportShopBoatByMonth />} />
+        <Route path="/admin/reportSBByYear" element={<ReportShopBoatByYear />} />
 
 
         {/* Merchant */}

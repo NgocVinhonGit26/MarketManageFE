@@ -10,12 +10,21 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PlaceIcon from '@mui/icons-material/Place';
 import ConnectingAirportsIcon from '@mui/icons-material/ConnectingAirports';
 import TimelapseIcon from '@mui/icons-material/Timelapse';
+import { useNavigate } from "react-router-dom";
 
 const CardTour = ({ tour }) => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    // console.log("navigate");
+    navigate(`/tour/detail/${tour?.slug}`);
+  }
+
   return (
     <Card
       sx={{ maxWidth: "100%" }}
       component={Link}
+      // onClick={handleNavigate()}
       to={`/tour/detail/${tour?.slug}`}
       style={{ textDecoration: "none", color: "black" }}
     >

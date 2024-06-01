@@ -57,6 +57,7 @@ const OrderTourTable = ({ totalPrice, setTotalPrice }) => {
     const dispatch = useDispatch();
     // console.log("user current", useSelector((state) => state.user));
     // console.log("orderTour", useSelector((state) => state.orderTour));
+    const name = useSelector((state) => state.user.name);
 
     // const paymentMethod = useSelector((state) => state.orderTour.paymentMethod);
     // const quantity = useSelector((state) => state.orderTour.quantity);
@@ -87,7 +88,7 @@ const OrderTourTable = ({ totalPrice, setTotalPrice }) => {
         <div className='Container-OrderTourTable'>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="caption table">
-                    <caption style={{ fontSize: '15px' }}>Chào bạn Vinh, hãy kiểm tra lại giỏ hàng nhé !</caption>
+                    <caption style={{ fontSize: '15px' }}>Chào bạn {name}, hãy kiểm tra lại giỏ hàng nhé !</caption>
                     <TableHead>
                         <TableRow>
                             <TableCell style={{ fontSize: '16px', fontWeight: 'bold' }}>

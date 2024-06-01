@@ -14,6 +14,14 @@ import Chart from "./Chart";
 import Deposits from "./Deposits";
 import Orders from "./Orders";
 import DashboardLayout from "layouts/DashboardLayout";
+import { getQuantityOrderTourCompleteInToday } from "api/tourOrder";
+import { getQuantityOrderTourCancelInToday } from "api/tourOrder";
+import { getQuantityOrderTourCompleteInThisWeek } from "api/tourOrder";
+import { getQuantityOrderTourCancelInThisWeek } from "api/tourOrder";
+import { getQuantityOrderTourCompleteInThisMonth } from "api/tourOrder";
+import { getQuantityOrderTourCancelInThisMonth } from "api/tourOrder";
+import { getQuantityOrderTourCompleteInThisYear } from "api/tourOrder";
+import { getQuantityOrderTourCancelInThisYear } from "api/tourOrder";
 
 function Copyright(props) {
     return (
@@ -36,12 +44,75 @@ function Copyright(props) {
 
 
 export default function ReportAdmin() {
+    const accessToken = localStorage.getItem("accessToken");
+
+    const updateValue = (orderQuantity, money, cancelOrder) => {
+        setData(prevData => prevData.map(item => {
+            // Kiểm tra nếu title của phần tử là "Số đơn"
+            if (item.title === "Số đơn") {
+                // Trả về một bản sao của phần tử với giá trị value được cập nhật
+                return { ...item, value: orderQuantity };
+            }
+
+            if (item.title === "Doanh thu") {
+                return { ...item, value: money };
+            }
+
+            if (item.title === "Đơn hủy") {
+                return { ...item, value: cancelOrder };
+            }
+            // Nếu không phải phần tử cần cập nhật, trả về phần tử ban đầu
+            return item;
+        }));
+    }
+
+
     const [data, setData] = React.useState([
         { title: "Số đơn", value: 0 },
         { title: "Doanh thu", value: 0 },
-        { title: "Chi phí", value: 0 }
+        { title: "Đơn hủy", value: 0 }
     ]);
 
+    const [profit, setProfit] = React.useState(
+        {
+            title: "Lợi nhuận",
+            value: 0
+        }
+    );
+
+    const [value, setValue] = React.useState(1);
+
+    const handleChange = (event) => {
+        setValue(event.target.value);
+    }
+
+    useEffect(() => {
+        const getTotalOrderTour = async () => {
+            if (value === 1) {
+                const response = await getQuantityOrderTourCompleteInToday(accessToken);
+                // console.log("response: ", response.data[0][0]);
+                const cancelOrder = await getQuantityOrderTourCancelInToday(accessToken);
+                // console.log("cancelOrder: ", cancelOrder);
+                updateValue(response.data[0], response.data[1], cancelOrder.data);
+            }
+            if (value === 2) {
+                const response = await getQuantityOrderTourCompleteInThisWeek(accessToken);
+                const cancelOrder = await getQuantityOrderTourCancelInThisWeek(accessToken);
+                updateValue(response.data[0], response.data[1], cancelOrder.data);
+            }
+            if (value === 3) {
+                const response = await getQuantityOrderTourCompleteInThisMonth(accessToken);
+                const cancelOrder = await getQuantityOrderTourCancelInThisMonth(accessToken);
+                updateValue(response.data[0], response.data[1], cancelOrder.data);
+            }
+            if (value === 4) {
+                const response = await getQuantityOrderTourCompleteInThisYear(accessToken);
+                const cancelOrder = await getQuantityOrderTourCancelInThisYear(accessToken);
+                updateValue(response.data[0], response.data[1], cancelOrder.data);
+            }
+        }
+        getTotalOrderTour();
+    }, [value]);
 
     return (
         <DashboardLayout layoutRole={0}>
@@ -71,7 +142,7 @@ export default function ReportAdmin() {
                                             height: 200,
                                         }}
                                     >
-                                        <Deposits /> {/* Truyền dữ liệu mỗi item, không phải data */}
+                                        <Deposits item={item} /> {/* Truyền dữ liệu mỗi item, không phải data */}
                                     </Paper>
                                 </Grid>
                             ))}
@@ -83,9 +154,9 @@ export default function ReportAdmin() {
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        // value={value}
+                                        value={value}
                                         label="Bộ lọc"
-                                    // onChange={handleChange}
+                                        onChange={handleChange}
 
                                     >
                                         <MenuItem value={1}>Hôm nay</MenuItem>
@@ -110,7 +181,7 @@ export default function ReportAdmin() {
                                         height: 240,
                                     }}
                                 >
-                                    <Chart />
+                                    <Chart value={value} />
                                 </Paper>
                             </Grid>
                             {/* Recent Deposits */}
@@ -123,13 +194,17 @@ export default function ReportAdmin() {
                                         height: 240,
                                     }}
                                 >
-                                    <Deposits />
+                                    <Deposits
+                                        item={profit}
+                                    />
                                 </Paper>
                             </Grid>
                             {/* Recent Orders */}
                             <Grid item xs={12}>
                                 <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                                    <Orders />
+                                    <Orders
+                                        value={value}
+                                    />
                                 </Paper>
                             </Grid>
                         </Grid>

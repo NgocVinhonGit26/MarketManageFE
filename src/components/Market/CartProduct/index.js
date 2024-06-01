@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const CartProduct = () => {
     const listOrderProduct = useSelector((state) => state.listOrderProduct.listProduct);
-    console.log("listOrderProduct>>>>>>>>>>>>>>: ", listOrderProduct)
+    // console.log("listOrderProduct>>>>>>>>>>>>>>: ", listOrderProduct)
     const [totalPrice, setTotalPrice] = useState(0);
 
     return (

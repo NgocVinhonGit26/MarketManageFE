@@ -6,74 +6,156 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Title from './Title';
+import { getTop5ProductByRevenueInToday } from 'api/productOrder';
+import { getTop5ProductByRevenueInThisWeek } from 'api/productOrder';
+import { getTop5ProductByRevenueInThisMonth } from 'api/productOrder';
+import { getTop5ProductByRevenueInThisYear } from 'api/productOrder';
 
 // Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
+function createData(STT, name, image, totalOrders, totalPrice) {
+  return { STT, name, image, totalOrders, totalPrice };
 }
-
-const rows = [
-  createData(
-    0,
-    '16 Mar, 2019',
-    'Elvis Presley',
-    'Tupelo, MS',
-    'VISA ⠀•••• 3719',
-    312.44,
-  ),
-  createData(
-    1,
-    '16 Mar, 2019',
-    'Paul McCartney',
-    'London, UK',
-    'VISA ⠀•••• 2574',
-    866.99,
-  ),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createData(
-    3,
-    '16 Mar, 2019',
-    'Michael Jackson',
-    'Gary, IN',
-    'AMEX ⠀•••• 2000',
-    654.39,
-  ),
-  createData(
-    4,
-    '15 Mar, 2019',
-    'Bruce Springsteen',
-    'Long Branch, NJ',
-    'VISA ⠀•••• 5919',
-    212.79,
-  ),
-];
 
 function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Orders() {
+export default function Orders({ value }) {
+
+  const [rows, setRows] = React.useState([]);
+  const accessToken = localStorage.getItem('accessToken');
+  const idShop = localStorage.getItem("shopBoatId");
+
+  const fetchTop5ProductHighestPriceInToday = async () => {
+    try {
+      const response = await getTop5ProductByRevenueInToday(idShop, accessToken);
+      console.log("dsds: ", response.data);
+      response.data.forEach((item, index) => {
+        setRows((prev) => [
+          ...prev,
+          createData(
+            item[0],
+            item[1],
+            item[2],
+            item[3],
+            item[4]
+          ),
+        ]);
+      });
+
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  const fetchTop5ProductHighestPriceInThisWeek = async () => {
+    try {
+      const response = await getTop5ProductByRevenueInThisWeek(idShop, accessToken);
+      console.log("dsds: ", response.data);
+      response.data.forEach((item, index) => {
+        setRows((prev) => [
+          ...prev,
+          createData(
+            item[0],
+            item[1],
+            item[2],
+            item[3],
+            item[4]
+          ),
+        ]);
+      });
+
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  const fetchTop5ProductHighestPriceInThisMonth = async () => {
+    try {
+      const response = await getTop5ProductByRevenueInThisMonth(idShop, accessToken);
+      console.log("dsds: ", response.data);
+      response.data.forEach((item, index) => {
+        setRows((prev) => [
+          ...prev,
+          createData(
+            item[0],
+            item[1],
+            item[2],
+            item[3],
+            item[4]
+          ),
+        ]);
+      });
+
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  const fetchTop5ProductHighestPriceInThisYear = async () => {
+    try {
+      const response = await getTop5ProductByRevenueInThisYear(idShop, accessToken);
+      console.log("dsds: ", response.data);
+      response.data.forEach((item, index) => {
+        setRows((prev) => [
+          ...prev,
+          createData(
+            item[0],
+            item[1],
+            item[2],
+            item[3],
+            item[4]
+          ),
+        ]);
+      });
+
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  React.useEffect(() => {
+    if (value === 1) {
+      fetchTop5ProductHighestPriceInToday();
+    }
+    if (value === 2) {
+      fetchTop5ProductHighestPriceInThisWeek();
+    }
+    if (value === 3) {
+      fetchTop5ProductHighestPriceInThisMonth();
+    }
+    if (value === 4) {
+      fetchTop5ProductHighestPriceInThisYear();
+    }
+    setRows([]);
+  }, [value]);
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>Top5 sản phẩm bán chạy</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+            <TableCell>STT</TableCell>
+            <TableCell>Tên</TableCell>
+            <TableCell>Ảnh</TableCell>
+            <TableCell>Tổng số lượng</TableCell>
+            <TableCell >Tổng doanh thu</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
+            <TableRow key={row.STT}>
+              <TableCell>#{row.STT}</TableCell>
               <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+              <TableCell>
+                <img src={row.image} alt="product" style={{ width: 50, height: 50 }} />
+              </TableCell>
+              <TableCell>{row.totalOrders}</TableCell>
+              <TableCell>{`${row.totalPrice}₫`}</TableCell>
             </TableRow>
           ))}
         </TableBody>

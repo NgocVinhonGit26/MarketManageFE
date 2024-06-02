@@ -115,6 +115,70 @@ const getTotalPriceOrderItemByShopBoatIdInYear = (token) => {
 }
 
 
+const getTop5ProductByRevenueInToday = (shopBoatId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const response = instance.get(`/merchant/getTop5ProductByRevenueInToday/${shopBoatId}`, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+const getTop5ProductByRevenueInThisWeek = (shopBoatId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const response = instance.get(`/merchant/getTop5ProductByRevenueInThisWeek/${shopBoatId}`, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const getTop5ProductByRevenueInThisMonth = (shopBoatId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const response = instance.get(`/merchant/getTop5ProductByRevenueInThisMonth/${shopBoatId}`, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+const getTop5ProductByRevenueInThisYear = (shopBoatId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const response = instance.get(`/merchant/getTop5ProductByRevenueInThisYear/${shopBoatId}`, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+
 
 export {
   getOrdersOfShop,
@@ -123,5 +187,9 @@ export {
   getLastOrderProduct,
   insertOrderItem,
   getTotalPriceOrderItemByShopBoatIdInMonth,
-  getTotalPriceOrderItemByShopBoatIdInYear
+  getTotalPriceOrderItemByShopBoatIdInYear,
+  getTop5ProductByRevenueInToday,
+  getTop5ProductByRevenueInThisWeek,
+  getTop5ProductByRevenueInThisMonth,
+  getTop5ProductByRevenueInThisYear
 };

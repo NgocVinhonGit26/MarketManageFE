@@ -67,8 +67,6 @@ const MarketNavbar = () => {
 
     try {
       const response = await signoutService(token);
-      console.log("token1>>>>", token);
-      console.log("response", response);
       successToast("Đăng xuất thành công");
       handleClose();
       dispatch(setUserDefault());

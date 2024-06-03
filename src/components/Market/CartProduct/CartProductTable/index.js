@@ -151,7 +151,6 @@ const CartProductTable = ({ listOrderProduct, setTotalPrice }) => {
                             </Button>
                         </TableRow>
                     </TableBody>
-
                 </Table>
             </TableContainer>
         </div>

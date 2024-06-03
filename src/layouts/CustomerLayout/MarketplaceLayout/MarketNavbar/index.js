@@ -155,6 +155,8 @@ const MarketNavbar = () => {
                 }}
               >
                 <MenuItem onClick={handleNavigateToEditProfile}>Trang cá nhân</MenuItem>
+                {localStorage.getItem("role") === "0" && <MenuItem onClick={() => navigate("/admin")}>Trang quản trị</MenuItem>}
+                {localStorage.getItem("role") === "1" && <MenuItem onClick={() => navigate("/merchant")}>Dashboard</MenuItem>}
                 <MenuItem onClick={handleSignOut}>Đăng xuất</MenuItem>
               </Menu>
             </div>

@@ -53,14 +53,14 @@ const ProductMain = (props) => {
   const creatNewCart = async () => {
     if (localStorage.getItem("hadCart") === "false") {
       const hadCart = await createOrderProduct(orderProduct)
-      console.log("response: createOrderProduct", hadCart)
+      // console.log("response: createOrderProduct", hadCart)
       localStorage.setItem("hadCart", true)
     }
     await fetchLastOrderProduct()
   }
   const fetchLastOrderProduct = async () => {
     const response = await getLastOrderProduct(localStorage.getItem("id"))
-    console.log("response: getLastOrderProduct", response.data)
+    // console.log("response: getLastOrderProduct", response.data)
     localStorage.setItem("orderProductId", response.data)
     setLastOrderProductId(response.data)
   }

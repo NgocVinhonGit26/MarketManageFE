@@ -18,17 +18,17 @@ import { successToast } from 'utilities/toast';
 import { resetListOderProduct } from 'redux/slices/listOrderProductSlice';
 import { insertOrderItem } from 'api/productOrder';
 import { errorToast } from 'utilities/toast';
+import { updateTotalOrderProductById } from 'api/productOrder';
 
 function createData(name, price) {
     return { name, price };
 }
 
-const accessToken = localStorage.getItem("accessToken");
-
-
 
 const CartProductTotal = ({ totalPrice }) => {
 
+    const accessToken = localStorage.getItem("accessToken");
+    const orderProductId = localStorage.getItem("orderProductId");
     const listOrderProduct = useSelector((state) => state.listOrderProduct.listProduct);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -39,6 +39,16 @@ const CartProductTotal = ({ totalPrice }) => {
         createData('Tạm tính', totalPrice),
         createData('Tổng', totalPrice),
     ];
+
+    const updateTotalOrderProduct = async () => {
+        try {
+            const res = await updateTotalOrderProductById(totalPrice, orderProductId, accessToken);
+            console.log("res>>>>>>>>>>>>>>: ", res)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
 
     const handleAddOrderProduct = async () => {
         if (localStorage.getItem("accessToken") === null) {
@@ -51,11 +61,14 @@ const CartProductTotal = ({ totalPrice }) => {
         if (listOrderProduct.length === 0) {
             return;
         }
+
+        updateTotalOrderProduct() // update total price of order product
+
         for (const item of listOrderProduct) {
             // item.orderProductId = localStorage.getItem("orderProductId")
             const res = await insertOrderItem(item, accessToken);
             // Xử lý kết quả ở đây nếu cần
-            console.log("res>>>>>>>>>>>>>>: ", item)
+            // console.log("res>>>>>>>>>>>>>>: ", item)
             if (res.status === 200) {
                 isSuccessful = true;
             }
@@ -97,7 +110,6 @@ const CartProductTotal = ({ totalPrice }) => {
                             >
                                 Đặt hàng
                             </Button>
-
                         </TableRow>
                     </TableBody>
                 </Table>

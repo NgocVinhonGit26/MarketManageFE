@@ -178,6 +178,23 @@ const getTop5ProductByRevenueInThisYear = (shopBoatId, token) => {
 
 }
 
+const updateTotalOrderProductById = (total, orderProductId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  let formData = new FormData();
+  formData.append("total", total);
+  formData.append("id", orderProductId);
+  try {
+    const response = instance.post(`/product/updateTotalOrderProductById`, formData, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 
 export {
@@ -191,5 +208,6 @@ export {
   getTop5ProductByRevenueInToday,
   getTop5ProductByRevenueInThisWeek,
   getTop5ProductByRevenueInThisMonth,
-  getTop5ProductByRevenueInThisYear
+  getTop5ProductByRevenueInThisYear,
+  updateTotalOrderProductById
 };

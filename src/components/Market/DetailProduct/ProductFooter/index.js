@@ -11,7 +11,6 @@ import Review from "./Review";
 const ProductFooter = (props) => {
   const { product } = props;
   const [value, setValue] = React.useState("1");
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -37,7 +36,9 @@ const ProductFooter = (props) => {
             <Information videoInfor={product.videoInfor} />
           </TabPanel>
           <TabPanel value="3">
-            <Review />
+            <Review
+              productId={product.id}
+            />
           </TabPanel>
         </TabContext>
       </Box>

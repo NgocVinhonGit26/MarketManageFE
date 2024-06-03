@@ -17,7 +17,7 @@ function createData(id, stutus, productId, orderProductId, shopBoatId, quantity,
 export default function BillDetail({ data }) {
     const [rows, setRows] = React.useState([]);
     const accessToken = localStorage.getItem('accessToken');
-    console.log(data);
+    console.log("BillDetail: ", data);
     React.useEffect(() => {
         const fetchDataBillDetail = async () => {
             try {
@@ -76,7 +76,7 @@ export default function BillDetail({ data }) {
                             <TableCell component="th" scope="row">
                                 <h4><b >Tổng đơn</b></h4>
                             </TableCell>
-                            <TableCell align="right">1259₫</TableCell>
+                            <TableCell align="right">{data[3]}₫</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>

@@ -14,27 +14,37 @@ import { createComment } from 'api/comment';
 
 const Review = ({ productId }) => {
     const avatar = useSelector((state) => state.user.avatar);
+    const uname = useSelector((state) => state.user.name);
     const id = parseInt(localStorage.getItem("id"));
     const accessToken = localStorage.getItem("accessToken");
     const [listComment, setListComment] = React.useState([]);
     const [inputValue, setInputValue] = React.useState("");
+
+    const addHours = (date, hours) => {
+        const result = new Date(date);
+        result.setHours(result.getHours() + hours);
+        return result;
+    };
+
+    const getFormattedDate = (date) => {
+        return date.toISOString().slice(0, 19).replace("T", " ");
+    };
+
     const [newComment, setNewComment] = React.useState({
         content: "",
-        created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
+        created_at: getFormattedDate(addHours(new Date(), 7)),
         user_id: id,
         product_id: productId,
-        likes: 0,
-        dislikes: 0
     });
 
     const createNewComment = async () => {
         // console.log(newComment);
-        if (newComment.content === "") {
+        if (inputValue === "") {
             return;
         }
         try {
             const response = await createComment(newComment, accessToken);
-            setListComment([...listComment, [newComment, avatar]]);
+            setListComment([...listComment, { newComment, likes: 0, dislikes: 0, userName: uname, userAvatar: avatar }]);
             setInputValue("");
         }
         catch (error) {
@@ -75,6 +85,7 @@ const Review = ({ productId }) => {
                         label="Hãy để lại bình luận"
                         variant="standard"
                         onKeyPress={handleKeyPress}
+                        value={inputValue}
                         onChange={(e) => {
                             setInputValue(e.target.value);
                             setNewComment({ ...newComment, content: e.target.value });

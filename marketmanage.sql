@@ -259,18 +259,25 @@ CREATE TABLE order_item (
 );
 -- status: pending, accepted, cancelled, delivering,completed
 
- drop table comments;
+
 CREATE TABLE comments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
     user_id INT NOT NULL,
     content TEXT NOT NULL,
     created_at TIMESTAMP,
-    likes INT NOT NULL,
-    dislikes INT NOT NULL,
     FOREIGN KEY (product_id) REFERENCES Product(id),
     FOREIGN KEY (user_id) REFERENCES User(id)
 );
+ drop table react;
+CREATE TABLE react(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    comment_id INT NOT NULL,
+    user_id INT NOT NULL,
+    type VARCHAR(10),
+    FOREIGN KEY (comment_id) REFERENCES comments(id),
+    FOREIGN KEY (user_id) REFERENCES User(id)
+)
 
 
 

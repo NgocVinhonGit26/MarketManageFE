@@ -4,19 +4,24 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import { addHours, format, parseISO } from 'date-fns';
 
 const CommentBox = ({ listComment }) => {
-    const convertTimestamp = (timestamp) => {
-        const date = new Date(timestamp);
-        const options = {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        };
-        return date.toLocaleString('en-GB', options).replace(',', '');
-    };
+    // const convertTimestamp = (timestamp) => {
+    //     const date = new Date(timestamp);
+    //     const options = {
+    //         year: 'numeric',
+    //         month: '2-digit',
+    //         day: '2-digit',
+    //         hour: '2-digit',
+    //         minute: '2-digit',
+    //         second: '2-digit',
+    //         hour12: false
+    //     };
+    //     return date.toLocaleString('en-GB', options).replace(',', '');
+    // };
+    const formatDate = (date) => {
+        const dateParts = date.split(' ')[0].split('-');
+        const timePart = date.split(' ')[1];
+        return `${timePart} ${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`;
+    }
     return (
         <section >
             <div className="containerpy-5 text-body" >
@@ -33,7 +38,9 @@ const CommentBox = ({ listComment }) => {
                                         <div className="">
                                             <h5>{comment.userName}</h5>
                                             <p className="small">
-                                                {convertTimestamp(comment.created_at)}
+                                                {
+                                                    formatDate(comment.created_at)
+                                                }
                                             </p>
                                             <p>
                                                 {comment.content}

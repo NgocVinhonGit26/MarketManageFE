@@ -20,31 +20,29 @@ const Review = ({ productId }) => {
     const [listComment, setListComment] = React.useState([]);
     const [inputValue, setInputValue] = React.useState("");
 
-    const addHours = (date, hours) => {
-        const result = new Date(date);
-        result.setHours(result.getHours() + hours);
-        return result;
-    };
-
-    const getFormattedDate = (date) => {
-        return date.toISOString().slice(0, 19).replace("T", " ");
-    };
 
     const [newComment, setNewComment] = React.useState({
         content: "",
-        created_at: getFormattedDate(addHours(new Date(), 7)),
+        created_at: new Date().toISOString().slice(0, 19).replace("T", " "),
         user_id: id,
         product_id: productId,
     });
 
     const createNewComment = async () => {
-        // console.log(newComment);
+        console.log(newComment);
         if (inputValue === "") {
             return;
         }
         try {
             const response = await createComment(newComment, accessToken);
-            setListComment([...listComment, { newComment, likes: 0, dislikes: 0, userName: uname, userAvatar: avatar }]);
+            setListComment([...listComment, {
+                ...newComment,
+                likes: 0,
+                dislikes: 0,
+                userName: uname,
+                userAvatar: avatar
+            }]);
+
             setInputValue("");
         }
         catch (error) {
@@ -58,6 +56,9 @@ const Review = ({ productId }) => {
         }
     };
 
+    useEffect(() => {
+        console.log("listComment", listComment);
+    }, [listComment])
 
     useEffect(() => {
         const fetchComment = async () => {

@@ -166,6 +166,24 @@ const getOrderItemByOrderProductId = (orderProductId, token) => {
 }
 
 
+const updateAddressById = async (id, address, token) => {
+    try {
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        let url = `/user/updateAddressById/${id}?address=${address}`;
+        const response = await instance.post(url, {}, config);
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+
+
 
 
 export {
@@ -175,5 +193,6 @@ export {
     deleteUser,
     updateUserById,
     getOrderProductByCustomer,
-    getOrderItemByOrderProductId
+    getOrderItemByOrderProductId,
+    updateAddressById
 }

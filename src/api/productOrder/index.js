@@ -195,6 +195,85 @@ const updateTotalOrderProductById = (total, orderProductId, token) => {
   }
 }
 
+const searchOrderProduct = (shopBoatId, page, data = {}, token) => {
+  let url = `/merchant/searchOrderProduct/${page}/${shopBoatId}?`;
+  if (data.customerName) {
+    url += "&customerName=" + data.customerName;
+  }
+  if (data.customerPhoneNumber) {
+    url += "&customerPhoneNumber=" + data.customerPhoneNumber;
+  }
+  if (data.customerAddress) {
+    url += "&customerAddress=" + data.customerAddress;
+  }
+  if (data.dateFrom) {
+    url += "&dateFrom=" + data.dateFrom;
+  }
+  if (data.dateTo) {
+    url += "&dateTo=" + data.dateTo;
+  }
+  if (data.totalFrom) {
+    url += "&totalFrom=" + data.totalFrom;
+  }
+  if (data.totalTo) {
+    url += "&totalTo=" + data.totalTo;
+  }
+  if (data.status) {
+    url += "&status=" + data.status;
+  }
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  try {
+    const response = instance.get(url, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalPageOrderProducts = (shopBoatId, page, data = {}, token) => {
+  let url = `/merchant/getTotalPageOrderProducts/${page}/${shopBoatId}?`;
+  if (data.customerName) {
+    url += "&customerName=" + data.customerName;
+  }
+  if (data.customerPhoneNumber) {
+    url += "&customerPhoneNumber=" + data.customerPhoneNumber;
+  }
+  if (data.customerAddress) {
+    url += "&customerAddress=" + data.customerAddress;
+  }
+  if (data.dateFrom) {
+    url += "&dateFrom=" + data.dateFrom;
+  }
+  if (data.dateTo) {
+    url += "&dateTo=" + data.dateTo;
+  }
+  if (data.totalFrom) {
+    url += "&totalFrom=" + data.totalFrom;
+  }
+  if (data.totalTo) {
+    url += "&totalTo=" + data.totalTo;
+  }
+  if (data.status) {
+    url += "&status=" + data.status;
+  }
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  try {
+    const response = instance.get(url, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 
 
 export {
@@ -209,5 +288,7 @@ export {
   getTop5ProductByRevenueInThisWeek,
   getTop5ProductByRevenueInThisMonth,
   getTop5ProductByRevenueInThisYear,
-  updateTotalOrderProductById
+  updateTotalOrderProductById,
+  searchOrderProduct,
+  getTotalPageOrderProducts
 };

@@ -59,7 +59,7 @@ export default function OrdersTable({ orders, updateData }) {
     try {
 
       const response = await updateOrderStatus(status, orderProductId, idShopBoat, accessToken);
-      console.log("response>>>>>", response);
+      // console.log("response>>>>>", response);
       if (response?.status === 200) {
         const newOrder = orders.map((order) => {
           if (order.id === orderProductId) {
@@ -67,7 +67,7 @@ export default function OrdersTable({ orders, updateData }) {
           }
           return order;
         });
-        console.log("newOrder>>>>>", newOrder);
+        // console.log("newOrder>>>>>", newOrder);
         updateData(newOrder);
 
       }
@@ -87,7 +87,7 @@ export default function OrdersTable({ orders, updateData }) {
 
 
   useEffect(() => {
-    console.log("orders>>>>>>", orders);
+    // console.log("orders>>>>>>", orders);
   }, [orders]);
 
   return (

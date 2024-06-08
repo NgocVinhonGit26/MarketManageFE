@@ -18,8 +18,6 @@ const MerchantProducts = () => {
   const [page, setPage] = useState(1);
   const [pageSearch, setPageSearch] = useState(1);
   const [total, setTotal] = useState(0);
-  const [cookies, setCookie] = useCookies(["access_token"]);
-  const limit = 5;
   const navigate = useNavigate();
   const [isSearching, setIsSearching] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -59,14 +57,10 @@ const MerchantProducts = () => {
     setTotal(totalPages.data);
   };
   useEffect(() => {
-
     if (!isSearching) {
       fetchProducts();
     }
   }, [page]);
-
-
-
 
 
   const handleChangePage = (event, value) => {

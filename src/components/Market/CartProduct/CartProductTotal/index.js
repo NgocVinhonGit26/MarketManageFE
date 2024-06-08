@@ -43,7 +43,7 @@ const CartProductTotal = ({ totalPrice }) => {
     const updateTotalOrderProduct = async () => {
         try {
             const res = await updateTotalOrderProductById(totalPrice, orderProductId, accessToken);
-            console.log("res>>>>>>>>>>>>>>: ", res)
+            // console.log("res>>>>>>>>>>>>>>: ", res)
         }
         catch (err) {
             console.log(err)

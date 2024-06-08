@@ -11,17 +11,21 @@ import { getShopBoatByIdUser } from "api/shopBoat";
 import { getAllListOrderItem } from "api/shopBoat";
 import { getAllListOrderProduct } from "api/shopBoat";
 import { getTotalPageOrderProduct } from "api/shopBoat";
+import { searchOrderProduct } from "api/productOrder";
+import { getTotalPageOrderProducts } from "api/productOrder";
 
 const Orders = () => {
-  const [shopBoatId, setShopBoatId] = useState(null);
+  const shopBoatId = localStorage.getItem("shopBoatId");
   const limit = 5;
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
+  const [pageSearch, setPageSearch] = useState(1);
   const [total, setTotal] = useState(0);
   const [orders, setOrders] = useState([]);
   const accessToken = localStorage.getItem("accessToken");
   const id = localStorage.getItem("id");
   const role = parseInt(localStorage.getItem("role"), 10);
+  const [isSearching, setIsSearching] = useState(false);
 
 
   useLayoutEffect(() => {
@@ -30,14 +34,14 @@ const Orders = () => {
         if (role !== 1) {
           navigate("/signin");
         }
-        const fetchShopBoat = async (id) => {
-          const response = await getShopBoatByIdUser(id, accessToken);
-          if (response) {
-            const shopBoatId = response.data.id;
-            setShopBoatId(shopBoatId);
-          }
-        };
-        fetchShopBoat(id);
+        // const fetchShopBoat = async (id) => {
+        //   const response = await getShopBoatByIdUser(id, accessToken);
+        //   if (response) {
+        //     const shopBoatId = response.data.id;
+        //     setShopBoatId(shopBoatId);
+        //   }
+        // };
+        // fetchShopBoat(id);
       } else {
         // Nếu không có access_token, chuyển hướng đến trang đăng nhập
         navigate("/signin");
@@ -46,27 +50,33 @@ const Orders = () => {
     checkRole();
   }, [accessToken, navigate]);
 
-  useEffect(() => {
-    if (shopBoatId) {
-      const fetchOrders = async () => {
-        try {
-          const response = await getAllListOrderProduct(shopBoatId, page - 1, accessToken);
-          const totalPage = await getTotalPageOrderProduct(shopBoatId, page - 1, accessToken);
-          if (response?.status === 200) {
-            setOrders(response.data);
-            setTotal(totalPage.data);
-          }
+  const fetchOrders = async () => {
+    try {
+      const response = await searchOrderProduct(shopBoatId, page - 1, {}, accessToken);
+      const totalPage = await getTotalPageOrderProducts(shopBoatId, page - 1, {}, accessToken);
+      // console.group("hdhdh: ", totalPage)
+      if (response?.status === 200) {
+        setOrders(response.data);
+        setTotal(totalPage.data);
+      }
 
-        } catch (err) {
-          console.log(err);
-        }
-      };
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (shopBoatId && !isSearching) {
       fetchOrders();
     }
   }, [shopBoatId, page]);
 
   const handleChangePage = (event, value) => {
-    setPage(value);
+    if (isSearching) {
+      setPageSearch(value);
+    } else {
+      setPage(value);
+    }
   };
 
   const updateData = (data) => {
@@ -79,14 +89,15 @@ const Orders = () => {
     setOrders(newOrders);
   };
 
-  const handleSearch = (data) => {
+  const handleSearch = (page, data) => {
     const fetchOrders = async () => {
       try {
-        const response = await getAllListOrderItem(shopBoatId, page, accessToken);
-        // if (response?.status === 200) {
-        //   setOrders(response.data.data.docs);
-        //   setTotal(response.data.data.totalPages);
-        // }
+        const response = await searchOrderProduct(shopBoatId, page - 1, data, accessToken);
+        const totalPage = await getTotalPageOrderProducts(shopBoatId, page - 1, data, accessToken);
+        if (response?.status === 200) {
+          setOrders(response.data);
+          setTotal(totalPage.data);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -97,7 +108,14 @@ const Orders = () => {
   return (
     <DashboardLayout layoutRole={1}>
       <Grid item xs={12}>
-        <SearchForm onSearch={handleSearch} />
+        <SearchForm
+          setIsSearching={setIsSearching}
+          onSearch={handleSearch}
+          fetchOrders={fetchOrders}
+          pageSearch={pageSearch}
+          setPageSearch={setPageSearch}
+          setPage={setPage}
+        />
       </Grid>
       <Grid item xs={12}>
         <OrdersTable orders={orders} updateData={updateData} />

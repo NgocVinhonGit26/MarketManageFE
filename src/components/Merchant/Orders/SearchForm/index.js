@@ -1,43 +1,73 @@
 import { Form, Button, InputGroup, Col, Row } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { errorToast } from "utilities/toast";
 
-const SearchForm = ({ onSearch }) => {
+const SearchForm = ({
+  setIsSearching,
+  onSearch,
+  fetchOrders,
+  pageSearch,
+  setPageSearch,
+  setPage,
+}) => {
   const [formData, setFormData] = useState({
     customerName: "",
     phoneNumber: "",
-    startDate: "",
-    endDate: "",
-    minValue: "",
-    maxValue: "",
-    address: "",
-    status: "all",
+    dateFrom: "",
+    dateTo: "",
+    totalFrom: 0,
+    totalTo: 0,
+    customerAddress: "",
+    status: "",
   });
 
-  const handleInputChange = (event) => {
-    const { name, value, type, checked } = event.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
+  const isFormDataEmpty = () => {
+    for (const key in formData) {
+      if (formData[key] !== "") {
+        return false;
+      }
+    }
+    return true;
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!isFormDataEmpty()) {
+      setIsSearching(true);
+    }
     // Gửi các giá trị tìm kiếm đến hàm xử lý tìm kiếm
-    onSearch(formData);
+    const payload = {
+      ...formData,
+      dateFrom: formData.dateFrom ? new Date(formData.dateFrom).toISOString().slice(0, 19).replace("T", " ") : null,
+      dateTo: formData.dateTo ? new Date(formData.dateTo).toISOString().slice(0, 19).replace("T", " ") : null,
+    };
+    if (formData.dateFrom > formData.dateTo) {
+      errorToast("Ngày bắt đầu không thể lớn hơn ngày kết thúc");
+      return;
+    }
+    // console.log("payload", payload);
+    onSearch(pageSearch, payload);
   };
+
+  useEffect(() => {
+    onSearch(pageSearch, formData);
+  }, [pageSearch]);
 
   const resetForm = () => {
     setFormData({
       customerName: "",
-      phoneNumber: "",
-      startDate: "",
-      endDate: "",
-      minValue: "",
-      maxValue: "",
-      address: "",
-      status: "all",
+      customerPhoneNumber: "",
+      customerAddress: "",
+      dateFrom: 0,
+      dateTo: 0,
+      totalFrom: "",
+      totalTo: "",
+      status: "",
     });
+    setIsSearching(false);
+    setPageSearch(1);
+    setPage(1);
+    fetchOrders();
   };
 
   return (
@@ -71,10 +101,10 @@ const SearchForm = ({ onSearch }) => {
               onChange={(e) => {
                 setFormData({
                   ...formData,
-                  phoneNumber: e.target.value,
+                  customerPhoneNumber: e.target.value,
                 });
               }}
-              value={formData.phoneNumber}
+              value={formData.customerPhoneNumber}
             />
           </Form.Group>
         </Col>
@@ -84,32 +114,32 @@ const SearchForm = ({ onSearch }) => {
         <Col>
           <Row>
             <Col>
-              <Form.Group controlId="startDate">
+              <Form.Group controlId="dateFrom">
                 <Form.Label>Từ ngày</Form.Label>
                 <Form.Control
                   type="date"
                   onChange={(e) => {
                     setFormData({
                       ...formData,
-                      startDate: e.target.value,
+                      dateFrom: e.target.value,
                     });
                   }}
-                  value={formData.startDate}
+                  value={formData.dateFrom}
                 />
               </Form.Group>
             </Col>
             <Col>
-              <Form.Group controlId="endDate">
+              <Form.Group controlId="dateTo">
                 <Form.Label>Đến ngày</Form.Label>
                 <Form.Control
                   type="date"
                   onChange={(e) => {
                     setFormData({
                       ...formData,
-                      endDate: e.target.value,
+                      dateTo: e.target.value,
                     });
                   }}
-                  value={formData.endDate}
+                  value={formData.dateTo}
                 />
               </Form.Group>
             </Col>
@@ -119,27 +149,29 @@ const SearchForm = ({ onSearch }) => {
         <Col className="d-flex align-items-end">
           <InputGroup>
             <Form.Control
+              name="totalFrom"
               type="number"
               placeholder="Giá trị từ"
               onChange={(e) => {
                 setFormData({
                   ...formData,
-                  minValue: e.target.value,
+                  totalFrom: e.target.value,
                 });
               }}
-              value={formData.minValue}
+              value={formData.totalFrom}
             />
             <InputGroup.Text>đến</InputGroup.Text>
             <Form.Control
+              name="totalTo"
               type="number"
               placeholder="Đến giá trị"
               onChange={(e) => {
                 setFormData({
                   ...formData,
-                  maxValue: e.target.value,
+                  totalTo: e.target.value,
                 });
               }}
-              value={formData.maxValue}
+              value={formData.totalTo}
             />
           </InputGroup>
         </Col>
@@ -148,7 +180,7 @@ const SearchForm = ({ onSearch }) => {
 
       <Row className="mb-3">
         <Col>
-          <Form.Group controlId="address" className="mb-3">
+          <Form.Group controlId="customerAddress" className="mb-3">
             <Form.Label>Địa chỉ</Form.Label>
             <Form.Control
               type="text"
@@ -156,10 +188,10 @@ const SearchForm = ({ onSearch }) => {
               onChange={(e) => {
                 setFormData({
                   ...formData,
-                  address: e.target.value,
+                  customerAddress: e.target.value,
                 });
               }}
-              value={formData.address}
+              value={formData.customerAddress}
             />
           </Form.Group>
         </Col>
@@ -177,10 +209,12 @@ const SearchForm = ({ onSearch }) => {
               }}
               value={formData.status}
             >
-              <option value={"all"}>Tất cả</option>
+              <option value={""}>Tất cả</option>
               <option value={"pending"}>Chờ xác nhận</option>
               <option value={"accepted"}>Đã xác nhận</option>
               <option value={"cancelled"}>Đã hủy</option>
+              <option value={"delivering"}>Đang giao hàng</option>
+              <option value={"completed"}>Đã hoàn thành</option>
             </Form.Control>
           </Form.Group>
         </Col>

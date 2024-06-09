@@ -37,7 +37,7 @@ import MerchantProducts from "components/Merchant/Products";
 import MerchantDashbroad from "components/Merchant/MerchantDashbroad";
 import Orders from "components/Merchant/Orders";
 import OrderTour from "components/TourService/OrderTour";
-import ImageUpload from "components/ImageUpload";
+
 import CartProduct from "components/Market/CartProduct";
 import Chart from "components/dashboard/Chart";
 import Dashboard from "components/dashboard/Dashboard";
@@ -48,6 +48,7 @@ import Blog from "components/TourService/Blog";
 import ReportAdmin from "components/Admin/ReportsTour";
 import ReportShopBoatByMonth from "components/Admin/ReportRevenueSB/ReportShopBoatByMonth";
 import ReportShopBoatByYear from "components/Admin/ReportRevenueSB/ReportShopBoatByYear";
+import ImgQR from "components/Merchant/ImgQR";
 
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
         <Route path="/merchant/products" element={<MerchantProducts />} />
         <Route path="/merchant/orders" element={<Orders />} />
         <Route path="/merchant/report" element={<Reports />} />
+        <Route path="/merchant/payfee" element={<ImgQR />} />
 
         {/* TourOnline */}
         <Route path="/tour" element={<TourService />} />

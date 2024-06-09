@@ -182,6 +182,48 @@ const updateAddressById = async (id, address, token) => {
     }
 }
 
+const getImgqrByIdAd = async (token) => {
+    try {
+        const config = {
+            headers: { 'Authorization': `Bearer ${token}` }
+        }
+        const response = await instance.get(`/admin/getImgqrById`, config);
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+const getImgqrByIdSB = async (token) => {
+    try {
+        const config = {
+            headers: { 'Authorization': `Bearer ${token}` }
+        }
+        const response = await instance.get(`/merchant/getImgqrById`, config);
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+const updateImgqrById = async (imgqr, token) => {
+    try {
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        let url = `/admin/updateImgqrById?imgQR=${imgqr}`;
+        const response = await instance.post(url, {}, config);
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
 
 
 
@@ -194,5 +236,8 @@ export {
     updateUserById,
     getOrderProductByCustomer,
     getOrderItemByOrderProductId,
-    updateAddressById
+    updateAddressById,
+    getImgqrByIdAd,
+    getImgqrByIdSB,
+    updateImgqrById
 }

@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
 import { updateShopBoatById } from "api/shopBoat";
-import ImageUpload from "components/ImageUpload";
+
 
 const style = {
   position: "absolute",

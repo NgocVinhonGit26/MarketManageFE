@@ -34,6 +34,7 @@ import LocalMallIcon from "@mui/icons-material/LocalMall";
 import StoreIcon from "@mui/icons-material/Store";
 import TourIcon from "@mui/icons-material/Tour";
 import HomeIcon from '@mui/icons-material/Home';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 
 
 import { signoutService } from "api/auth";
@@ -184,19 +185,19 @@ const MerchantListItems = ({ handleLogout, handleRedirectToHomepage }) => {
         <ListItemIcon>
           <LocalMallIcon />
         </ListItemIcon>
-        <ListItemText primary="Products" />
+        <ListItemText primary="Sản phẩm" />
       </ListItemButton>
       <ListItemButton component={RouterLink} to="/merchant/orders">
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
-        <ListItemText primary="Orders" />
+        <ListItemText primary="Đơn hàng" />
       </ListItemButton>
       <ListItemButton component={RouterLink} to="/merchant/report">
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Reports" />
+        <ListItemText primary="Báo cáo DT" />
       </ListItemButton>
       <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
@@ -210,6 +211,14 @@ const MerchantListItems = ({ handleLogout, handleRedirectToHomepage }) => {
         </ListItemIcon>
         <ListItemText primary="Trang chủ" />
       </ListItemButton>
+      <ListItemButton component={RouterLink} to="/merchant/payfee">
+        <ListItemIcon>
+          <QrCodeScannerIcon />
+        </ListItemIcon>
+        <ListItemText primary="Đóng phí" />
+      </ListItemButton>
+
+
     </React.Fragment>
   );
 };

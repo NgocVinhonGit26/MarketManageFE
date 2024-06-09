@@ -50,23 +50,6 @@ function AddModal({ updateData, addProduct }) {
 
   const [img, setImg] = useState('');
 
-
-
-
-  // useEffect(() => {
-  //   const fetchCategories = async () => {
-  //     const response = await getListCategories();
-  //     if (response?.status === 200) {
-  //       let categories = response?.data.data.map((category) => {
-  //         return { value: category.slug, label: category.name };
-  //       });
-  //       setListCategory(categories);
-  //     }
-  //   };
-
-  //   fetchCategories();
-  // }, []);
-
   const style = {
     position: "absolute",
     top: "500px",

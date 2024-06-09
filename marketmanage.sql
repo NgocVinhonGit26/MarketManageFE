@@ -1,6 +1,13 @@
 CREATE DATABASE MarketManage;
 USE MarketManage;
 
+CREATE TABLE imgqr (
+		id INT AUTO_INCREMENT PRIMARY KEY,
+		img varchar(255)
+		);
+        
+        INSERT INTO imgqr (img) VALUES ('https://res.cloudinary.com/dkcetq9et/image/upload/v1717871167/image_icon-512_cxntey.png');
+
 		CREATE TABLE User (
 		id INT AUTO_INCREMENT PRIMARY KEY,
 		name VARCHAR(255) NOT NULL,

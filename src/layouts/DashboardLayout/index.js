@@ -127,31 +127,37 @@ const AdminListItems = ({ handleLogout, handleRedirectToHomepage }) => {
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
-        <ListItemText primary="Users" />
+        <ListItemText primary="QL người dùng" />
       </ListItemButton>
       <ListItemButton component={RouterLink} to="/admin/shops">
         <ListItemIcon>
           <StoreIcon />
         </ListItemIcon>
-        <ListItemText primary="Shops" />
+        <ListItemText primary="QL thuyền buôn" />
+      </ListItemButton>
+      <ListItemButton component={RouterLink} to="/admin/product">
+        <ListItemIcon>
+          <LocalMallIcon />
+        </ListItemIcon>
+        <ListItemText primary="QL sản phẩm" />
       </ListItemButton>
       <ListItemButton component={RouterLink} to="/admin/tour-orders">
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
-        <ListItemText primary="Tour Orders" />
+        <ListItemText primary="Đơn đặt tour" />
       </ListItemButton>
       <ListItemButton component={RouterLink} to="/admin/tours">
         <ListItemIcon>
           <TourIcon />
         </ListItemIcon>
-        <ListItemText primary="Tour" />
+        <ListItemText primary="Quản lý tour" />
       </ListItemButton>
       <ListItemButton component={RouterLink} to="/admin/reports">
         <ListItemIcon>
           <BarChartIcon />
         </ListItemIcon>
-        <ListItemText primary="Reports" />
+        <ListItemText primary="TK Báo cáo" />
       </ListItemButton>
       <ListItemButton onClick={handleLogout}>
         <ListItemIcon>

@@ -149,6 +149,79 @@ const getProductByCategory = (page, limit, categorySlug) => {
   }
 };
 
+const getAllProductAdmin = (page, query = {}, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  let url = `/admin/getAllProductAdmin/${page}?`;
+  if (query.name) {
+    url += "&name=" + query.name;
+  }
+  if (query.priceFrom) {
+    url += "&priceFrom=" + query.priceFrom;
+  }
+  if (query.priceTo) {
+    url += "&priceTo=" + query.priceTo;
+  }
+  if (query.countInStock) {
+    url += "&countInStock=" + query.countInStock;
+  }
+  if (query.category) {
+    url += "&category=" + query.category;
+  }
+  if (query.sale) {
+    url += "&sale=" + query.sale;
+  }
+
+  try {
+    const response = instance.get(url, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+const getTotalPageProductAdmin = (page, query, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  let url = `/admin/getTotalPageProductAdmin/${page}?`;
+  if (query.name) {
+    url += "&name=" + query.name;
+  }
+  if (query.priceFrom) {
+    url += "&priceFrom=" + query.priceFrom;
+  }
+  if (query.priceTo) {
+    url += "&priceTo=" + query.priceTo;
+  }
+  if (query.countInStock) {
+    url += "&countInStock=" + query.countInStock;
+  }
+  if (query.category) {
+    url += "&category=" + query.category;
+  }
+  if (query.sale) {
+    url += "&sale=" + query.sale;
+  }
+
+  try {
+    const response = instance.get(url, config);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+
+}
+
+
 
 
 export {
@@ -160,5 +233,6 @@ export {
   getTotalPageProductForUser,
   getTotalPageProduct,
   getProductByCategory,
-
+  getAllProductAdmin,
+  getTotalPageProductAdmin
 };

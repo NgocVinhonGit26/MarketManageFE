@@ -50,4 +50,13 @@ const signoutService = async (token) => {
   }
 };
 
-export { signinService, signupService, signoutService };
+const checkEmail = async (email) => {
+  try {
+    const response = await instance.get(`/signup/checkEmail/${email}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { signinService, signupService, signoutService, checkEmail };

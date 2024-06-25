@@ -38,8 +38,11 @@ const ExpandMore = styled((props) => {
 export default function OrderTable(props) {
   const { quantityOder, setQuantityOrder, tour } = props;
   const navigate = useNavigate();
-  const userId = useSelector((state) => state.user.id);
+  // const userId = useSelector((state) => state.user.id);
+  const userId = localStorage.getItem("id");
   const dispatch = useDispatch();
+
+  // console.log("tour", tour)
 
   const [order, setOrder] = React.useState({
     idOrderTour: 0,
@@ -117,7 +120,7 @@ export default function OrderTable(props) {
         idOrderTour: prevOrder.idOrderTour + 1,
       }));
       localStorage.setItem('idOrderTour', order.idOrderTour + 1);
-      console.log("order>>2", order);
+      // console.log("order>>2", order);
       dispatch(addOrder(order));
       // dispatch(resetState())
       // const res = await orderTour(order, accessToken);
@@ -186,7 +189,7 @@ export default function OrderTable(props) {
                   </div>
                   <div className="text-infor">Thời gian tour:</div>
                 </div>
-                <div className="value-infor">{tour?.duration} </div>
+                <div className="value-infor">{tour?.tourDuration} </div>
               </div>
               <div className="detail-infor">
                 <div className="title-infor">

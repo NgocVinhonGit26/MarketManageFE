@@ -54,6 +54,8 @@ export default function TourOrdersTable({ tourOrders, setTourOrders, updateData 
     }
   };
 
+  console.log("tourOrders", tourOrders);
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -75,7 +77,7 @@ export default function TourOrdersTable({ tourOrders, setTourOrders, updateData 
           {tourOrders.map((row) => (
             <StyledTableRow key={uuidv4()}>
               <StyledTableCell align="center">
-                {moment(row?.createdAt).format("DD/MM/YYYY HH:mm:ss")}
+                {moment(row?.createAt).format("DD/MM/YYYY HH:mm:ss")}
               </StyledTableCell>
               <StyledTableCell align="center">
                 {row?.userName}
@@ -86,7 +88,7 @@ export default function TourOrdersTable({ tourOrders, setTourOrders, updateData 
               <StyledTableCell align="center">{row?.quantity}</StyledTableCell>
               <StyledTableCell align="center">{row?.tourPrice}</StyledTableCell>
               <StyledTableCell align="center">
-                {moment(row?.tourId?.tourTime).format("DD/MM/YYYY")}
+                {moment(row?.startTime).format("DD/MM/YYYY")}
               </StyledTableCell>
               <StyledTableCell align="center">{row?.price}</StyledTableCell>
               <StyledTableCell align="center">

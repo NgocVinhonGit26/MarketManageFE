@@ -1,31 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddModal from "../AddModal";
-const SearchForm = ({ onSearch, setTours }) => {
-  const [name, setName] = useState("");
-  const [priceFrom, setPriceFrom] = useState("");
-  const [priceTo, setPriceTo] = useState("");
-  const [transport, setTransport] = useState("");
-  const [startLocation, setStartLocation] = useState("");
-  const [tourDuration, setTourDuration] = useState("");
+const SearchForm = ({ onSearch, setTours, fetchTours, setIsSearching, pageSearch, setPageSearch, setPage, addTour }) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    priceFrom: "",
+    priceTo: "",
+    transport: "",
+    startLocation: "",
+    tourDuration: "",
+  });
+
+  const isFormDataEmpty = () => {
+    for (const key in formData) {
+      if (formData[key] !== "") {
+        return false;
+      }
+    }
+    return true;
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
     // Gửi các giá trị tìm kiếm đến hàm onSearch
-    onSearch(name, priceFrom, priceTo, transport, startLocation, tourDuration);
+    if (!isFormDataEmpty()) {
+      setIsSearching(true);
+    }
+    onSearch(pageSearch, formData);
   };
 
   const resetForm = () => {
-    setName("");
-    setPriceFrom("");
-    setPriceTo("");
-    setTransport("");
-    setStartLocation("");
-    setTourDuration("");
+    setFormData({
+      name: "",
+      priceFrom: "",
+      priceTo: "",
+      transport: "",
+      startLocation: "",
+      tourDuration: "",
+    });
+    setIsSearching(false);
+    fetchTours([])
+    setPageSearch(1);
+    setPage(1);
   };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  useEffect(() => {
+    onSearch(pageSearch, formData);
+  }, [pageSearch]);
 
   return (
     <Form className="mb-6">
@@ -36,8 +68,9 @@ const SearchForm = ({ onSearch, setTours }) => {
             <Form.Control
               type="text"
               placeholder="Tìm theo tên"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={formData.name}
+              name="name"
+              onChange={handleChange}
             />
           </Form.Group>
         </Col>
@@ -47,8 +80,9 @@ const SearchForm = ({ onSearch, setTours }) => {
             <Form.Control
               type="number"
               placeholder="Giá tối thiểu"
-              value={priceFrom}
-              onChange={(e) => setPriceFrom(e.target.value)}
+              value={formData.priceFrom}
+              name="priceFrom"
+              onChange={handleChange}
             />
           </Form.Group>
         </Col>
@@ -58,8 +92,9 @@ const SearchForm = ({ onSearch, setTours }) => {
             <Form.Control
               type="number"
               placeholder="Giá tối đa"
-              value={priceTo}
-              onChange={(e) => setPriceTo(e.target.value)}
+              value={formData.priceTo}
+              name="priceTo"
+              onChange={handleChange}
             />
           </Form.Group>
         </Col>
@@ -72,8 +107,9 @@ const SearchForm = ({ onSearch, setTours }) => {
             <Form.Control
               type="text"
               placeholder="Phương tiện"
-              value={transport}
-              onChange={(e) => setTransport(e.target.value)}
+              value={formData.transport}
+              name="transport"
+              onChange={handleChange}
             />
           </Form.Group>
         </Col>
@@ -83,8 +119,9 @@ const SearchForm = ({ onSearch, setTours }) => {
             <Form.Control
               type="text"
               placeholder="Điểm khởi hành"
-              value={startLocation}
-              onChange={(e) => setStartLocation(e.target.value)}
+              value={formData.startLocation}
+              name="startLocation"
+              onChange={handleChange}
             />
           </Form.Group>
         </Col>
@@ -94,8 +131,9 @@ const SearchForm = ({ onSearch, setTours }) => {
             <Form.Control
               type="text"
               placeholder="Thời lượng tour"
-              value={tourDuration}
-              onChange={(e) => setTourDuration(e.target.value)}
+              value={formData.tourDuration}
+              name="tourDuration"
+              onChange={handleChange}
             />
           </Form.Group>
         </Col>
@@ -103,7 +141,10 @@ const SearchForm = ({ onSearch, setTours }) => {
           <Button variant="primary" onClick={handleSearch}>
             Tìm kiếm
           </Button>
-          <AddModal setTours={setTours} />
+          <AddModal
+            setTours={setTours}
+            addTour={addTour}
+          />
           <IconButton className="ms-2" onClick={resetForm}>
             <DeleteIcon />
           </IconButton>

@@ -52,12 +52,22 @@ const Shops = () => {
     try {
       const response = await getAllShopBoats(page - 1, data, accessToken);
       const total = await getTotalPages(page - 1, data, accessToken);
+      console.log("total", total)
       setTotal(total.data);
       setShopBoats(response.data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handleChangePage = (event, value) => {
+    if (isSearching) {
+      setPageSearch(value);
+    }
+    else {
+      setPage(value);
+    }
+  }
 
   return (
     <DashboardLayout layoutRole={0}>
@@ -87,16 +97,7 @@ const Shops = () => {
           count={total}
           color="primary"
           size="large"
-          onChange={(e, value) => {
-            if (isSearching) {
-              // console.log("vheheh")
-              setPageSearch(value);
-            }
-            else {
-              // console.log("vhuhuhu")
-              setPage(value);
-            }
-          }}
+          onChange={handleChangePage}
         />
       </Grid>
     </DashboardLayout>

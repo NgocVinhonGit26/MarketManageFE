@@ -16,6 +16,9 @@ import { useLocation } from "react-router-dom";
 import { signupService } from "api/auth";
 import { successToast, errorToast } from "utilities/toast";
 import { useNavigate } from "react-router-dom";
+import GGLogin from "components/Signin/GGlogin";
+import { gapi } from "gapi-script";
+import GGLogout from "components/Signin/GGlogout";
 
 function Copyright(props) {
   return (
@@ -39,6 +42,8 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
+const clientId = "753324609964-v61bfjuttptp0l40ia95p0kkpt5p0ovg.apps.googleusercontent.com"
+
 export default function SignUp() {
   const [username, setUsername] = React.useState("");
   const [address, setAddress] = React.useState("");
@@ -48,19 +53,31 @@ export default function SignUp() {
   const [isSeller, setIsSeller] = React.useState(false);
   const navigate = useNavigate();
 
+  const validation = () => {
+    if (!username || !password || !name)
+      return false;
+    return true;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validation()) {
+      errorToast("Vui lòng điền đầy đủ thông tin");
+      return;
+    }
     try {
       const response = await signupService(name, address, username, password, isSeller);
-      if (response?.status === 200) {
-        successToast("Sign up successfully, redirecting to sign in page");
+      // console.log("response", response);
+      if (response?.status === 200 && response?.data?.message === "User registration was successful") {
+        successToast("Đăng ký thành công !!! Quý khách vui lòng đăng nhập để sử dụng dịch vụ");
         navigate("/signin");
-      } else {
-        errorToast("Sign up failed");
+      }
+      if (response?.status === 200 && response?.data?.message === "User already exist") {
+        errorToast("Tài khoản này đã tồn tại");
       }
     } catch (error) {
       console.log(error);
-      errorToast("Sign up failed");
+      errorToast("Đăng ký không thành công !!!");
     }
   };
 
@@ -68,6 +85,16 @@ export default function SignUp() {
     event.preventDefault();
     navigate("/signin");
   }
+
+  React.useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: clientId,
+        scope: ''
+      })
+    }
+    gapi.load('client:auth2', start)
+  })
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -164,6 +191,10 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <GGLogin />
+            </div>
+            {/* <GGLogout /> */}
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="" variant="body2" onClick={reditectToSignIn}>

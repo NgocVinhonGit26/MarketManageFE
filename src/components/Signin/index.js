@@ -19,6 +19,10 @@ import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { setUser } from "redux/slices/userSlice";
+import { gapi } from "gapi-script";
+import GGLogin from "./GGlogin";
+
+
 function Copyright(props) {
   return (
     <Typography
@@ -40,6 +44,8 @@ function Copyright(props) {
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
+
+const clientId = "753324609964-v61bfjuttptp0l40ia95p0kkpt5p0ovg.apps.googleusercontent.com"
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -68,7 +74,7 @@ export default function SignIn() {
       if (res?.status === 200) {
         localStorage.setItem("hadCart", false);
         localStorage.setItem("orderProductId", "")
-        console.log("localstorage>>>", localStorage.getItem("hadCart"));
+        // console.log("localstorage>>>", localStorage.getItem("hadCart"));
         successToast("Login successful");
         const payload = {
           token: res.data.token,
@@ -119,6 +125,18 @@ export default function SignIn() {
     await handleLogin(username, password);
   };
 
+  React.useEffect(() => {
+    function start() {
+      gapi.client.init({
+        clientId: clientId,
+        scope: ''
+      })
+    }
+    gapi.load('client:auth2', start)
+  })
+
+
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -163,10 +181,10 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth
@@ -175,6 +193,12 @@ export default function SignIn() {
             >
               Sign In
             </Button>
+
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <GGLogin />
+            </div>
+            {/* <GGLogout /> */}
+
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">

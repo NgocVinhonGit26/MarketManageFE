@@ -47,6 +47,11 @@ const SearchForm = ({
     }
     // console.log("payload", payload);
     onSearch(pageSearch, payload);
+    setFormData({
+      ...formData,
+      dateFrom: formData.dateFrom ? new Date(formData.dateFrom).toISOString().slice(0, 19).replace("T", " ") : null,
+      dateTo: formData.dateTo ? new Date(formData.dateTo).toISOString().slice(0, 19).replace("T", " ") : null,
+    });
   };
 
   useEffect(() => {

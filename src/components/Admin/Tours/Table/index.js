@@ -13,7 +13,7 @@ import EditModal from "./EditModal";
 import Tooltip from "@mui/material/Tooltip";
 import { deleteTour } from "api/tour";
 import { successToast, errorToast } from "utilities/toast";
-import { tourTimeParser } from "utilities/tourTime";
+
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -74,7 +74,7 @@ export default function ToursTable({ tours, setTours }) {
                 <p className=" font-semibold"> {tour.name}</p>
               </StyledTableCell>
               <StyledTableCell align="center">
-                {/* {tourTimeParser(tour.startTime, tour.scheduleType)} */}
+
                 {moment(tour.startTime).format("DD/MM/YYYY")}
               </StyledTableCell>
               <StyledTableCell align="center">

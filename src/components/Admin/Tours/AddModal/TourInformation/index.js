@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import * as React from "react";
 import parse from "html-react-parser";
+import TextEditor from "components/Common/TextEditor";
 
 const style = {
   position: "absolute",
@@ -26,154 +27,28 @@ const style = {
   pb: 3,
 };
 
-const AddEditModal = ({ infoData, setTourData, type = "edit" }) => {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const [info, setInfo] = useState({
-    key: infoData.key || "",
-    value: infoData.value || "",
-  });
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const resetForm = () => {
-    setInfo(infoData);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (type === "edit") {
-      setTourData((prev) => ({
-        ...prev,
-        tourInformation: prev.tourInformation.map((item) =>
-          item._id === infoData._id ? info : item
-        ),
-      }));
-    } else {
-      setTourData((prev) => ({
-        ...prev,
-        tourInformation: [...prev.tourInformation, info],
-      }));
-    }
-    handleClose();
-    //console.log(info);
-  };
-
-  return (
-    <React.Fragment>
-      {
-        <IconButton onClick={handleOpen}>
-          {type === "edit" ? <EditIcon /> : <AddCircleOutlineIcon />}
-        </IconButton>
-      }
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="child-modal-title"
-        aria-describedby="child-modal-description"
-      >
-        <Box
-          sx={{
-            ...style,
-            width: 800,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <div className="flex justify-between items-center mb-4 border-b-2 pb-2">
-            <h2 className="text-center font-bold text-2xl ">
-              Chinh sua noi dung thong tin tour
-            </h2>
-            <div className="flex right-0 bottom-2">
-              <Button variant="success mr-2" onClick={handleSubmit}>
-                Save
-              </Button>
-              <Button
-                variant="danger"
-                onClick={() => {
-                  resetForm();
-                  handleClose();
-                }}
-              >
-                Cancel
-              </Button>
-            </div>
-          </div>
-          <Form.Group controlId="key" className="mb-3">
-            <Form.Label>Ten muc</Form.Label>
-            <Form.Control
-              type="text"
-              name="key"
-              value={info.key}
-              onChange={(e) => setInfo({ ...info, key: e.target.value })}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="description">
-            <Form.Label>Description</Form.Label>
-            <CKEditor
-              editor={ClassicEditor}
-              data={info.value}
-              onReady={(editor) => {
-                // You can store the "editor" and use when it is needed.
-                //console.log("Editor is ready to use!", editor);
-              }}
-              onChange={(event, editor) => {
-                const data = editor.getData();
-                //console.log({ event, editor, data });
-                setInfo((prev) => ({
-                  ...prev,
-                  value: data,
-                }));
-              }}
-              onBlur={(event, editor) => {
-                //console.log("Blur.", editor);
-              }}
-              onFocus={(event, editor) => {
-                //console.log("Focus.", editor);
-              }}
-            />
-          </Form.Group>
-        </Box>
-      </Modal>
-    </React.Fragment>
-  );
-};
 
 const TourInformation = ({ tourInformation, setTourData }) => {
-  const handleDelete = (index) => {
-    const newTourInformation = [...tourInformation];
-    newTourInformation.splice(index, 1);
+  const [information, setInformation] = useState(tourInformation)
+  React.useEffect(() => {
     setTourData((prev) => ({
       ...prev,
-      tourInformation: newTourInformation,
+      tourInformation: information,
     }));
-  };
+  }, [information, setTourData]);
 
   return (
     <div className="overflow-y-auto" style={{ height: "500px" }}>
       <h5 className="border-bottom pb-2 mb-3 mt-3">
         <strong>Thông Tin Tour</strong>
-        <AddEditModal infoData={{}} setTourData={setTourData} type="add" />
       </h5>
-      {tourInformation?.map((item, index) => (
-        <div key={uuidv4()} className="mb-3">
-          <div className="font-semibold flex text-xl justify-between">
-            {item.key}
-            <div>
-              <AddEditModal infoData={item} setTourData={setTourData} />
-              <IconButton onClick={() => handleDelete(index)}>
-                <DeleteIcon />
-              </IconButton>
-            </div>
-          </div>
-          <span>{parse(item.value)}</span>
-        </div>
-      ))}
+
+      <Form.Group className="mb-3" controlId="description">
+        <TextEditor
+          information={information}
+          setInformation={setInformation}
+        />
+      </Form.Group>
     </div>
   );
 };

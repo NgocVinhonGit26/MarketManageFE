@@ -10,6 +10,7 @@ import { successToast, errorToast } from "utilities/toast";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import Tooltip from "@mui/material/Tooltip";
+import { set } from "date-fns";
 const style = {
   position: "absolute",
   top: "60%",
@@ -45,6 +46,40 @@ const EditModal = ({ tour, setTours }) => {
     tourInformation: tour.tourInformation || "",
   });
 
+  const removeVietnameseTones = (str) => {
+    str = str.replace(/á|à|ả|ã|ạ|â|ấ|ầ|ẩ|ẫ|ậ|ă|ắ|ằ|ẳ|ẵ|ặ/g, "a");
+    str = str.replace(/é|è|ẻ|ẽ|ẹ|ê|ế|ề|ể|ễ|ệ/g, "e");
+    str = str.replace(/i|í|ì|ỉ|ĩ|ị/g, "i");
+    str = str.replace(/ó|ò|ỏ|õ|ọ|ô|ố|ồ|ổ|ỗ|ộ|ơ|ớ|ờ|ở|ỡ|ợ/g, "o");
+    str = str.replace(/ú|ù|ủ|ũ|ụ|ư|ứ|ừ|ử|ữ|ự/g, "u");
+    str = str.replace(/ý|ỳ|ỷ|ỹ|ỵ/g, "y");
+    str = str.replace(/đ/g, "d");
+    str = str.replace(/Á|À|Ả|Ã|Ạ|Â|Ấ|Ầ|Ẩ|Ẫ|Ậ|Ă|Ắ|Ằ|Ẳ|Ẵ|Ặ/g, "A");
+    str = str.replace(/É|È|Ẻ|Ẽ|Ẹ|Ê|Ế|Ề|Ể|Ễ|Ệ/g, "E");
+    str = str.replace(/I|Í|Ì|Ỉ|Ĩ|Ị/g, "I");
+    str = str.replace(/Ó|Ò|Ỏ|Õ|Ọ|Ô|Ố|Ồ|Ổ|Ỗ|Ộ|Ơ|Ớ|Ờ|Ở|Ỡ|Ợ/g, "O");
+    str = str.replace(/Ú|Ù|Ủ|Ũ|Ụ|Ư|Ứ|Ừ|Ử|Ữ|Ự/g, "U");
+    str = str.replace(/Ý|Ỳ|Ỷ|Ỹ|Ỵ/g, "Y");
+    str = str.replace(/Đ/g, "D");
+    str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền, sắc, hỏi, ngã, nặng
+    str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
+    return str;
+  }
+
+  useEffect(() => {
+    const generateSlug = (name) => {
+      let nameWithoutTones = removeVietnameseTones(name);
+      return nameWithoutTones
+        .toLowerCase()
+        .replace(/ /g, "-")
+        .replace(/[^a-zA-Z0-9-]/g, "");
+    }
+    setTourData({
+      ...tourData,
+      slug: generateSlug(tourData.name)
+    })
+  }, [tourData.name]);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setTourData({
@@ -52,6 +87,23 @@ const EditModal = ({ tour, setTours }) => {
       [name]: value,
     });
   };
+
+  useEffect(() => {
+    setTourData({
+      ...tourData,
+      name: tour.name || "",
+      slug: tour.slug || "",
+      startTime: tour.startTime || "",
+      startLocation: tour.startLocation || "",
+      tourDuration: tour.tourDuration || "",
+      description: tour.description || "",
+      price: tour.price || 0,
+      avatar: tour.avatar || "",
+      transport: tour.transport || "",
+      tourInformation: tour.tourInformation || "",
+    });
+  }, [tour]);
+
 
   useEffect(() => {
     if (tourData.avatar !== "") {
@@ -75,7 +127,7 @@ const EditModal = ({ tour, setTours }) => {
         resetForm(res.data);
       }
     } catch (error) {
-      errorToast("Cập nhật tour thất bại");
+      // errorToast("Cập nhật tour thất bại");
       console.log(error);
     }
   };

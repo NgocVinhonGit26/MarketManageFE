@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { errorToast } from "utilities/toast";
 
 function SearchForm(props) {
 
-  const { onSearch, fetchTourOrders, setIsSearch } = props;
+  const { onSearch, fetchTourOrders, setIsSearch, pageSearch, setPageSearch, setPageCurrent } = props;
   const [formData, setFormData] = useState({
     userName: "",
     tourName: "",
+    startTimeFrom: "",
+    startTimeTo: "",
+    priceFrom: "",
+    priceTo: "",
     status: "",
+    createdAtFrom: "",
+    createdAtTo: "",
   });
 
   const isFormDataEmpty = () => {
@@ -33,11 +40,18 @@ function SearchForm(props) {
     setFormData({
       userName: "",
       tourName: "",
+      startTimeFrom: "",
+      startTimeTo: "",
+      priceFrom: "",
+      priceTo: "",
       status: "",
-
+      createdAtFrom: "",
+      createdAtTo: "",
     });
     setIsSearch(false);
     fetchTourOrders([])
+    setPageSearch(1);
+    setPageCurrent(1);
   };
 
   const handleSubmit = (event) => {
@@ -46,9 +60,36 @@ function SearchForm(props) {
     if (!isFormDataEmpty()) {
       setIsSearch(true);
     }
-    onSearch(formData);
-    console.log(formData);
+    const payload = {
+      ...formData,
+      startTimeFrom: formData.startTimeFrom ? new Date(formData.startTimeFrom).toISOString().slice(0, 19).replace("T", " ") : null,
+      startTimeTo: formData.startTimeTo ? new Date(formData.startTimeTo).toISOString().slice(0, 19).replace("T", " ") : null,
+      createdAtFrom: formData.createdAtFrom ? new Date(formData.createdAtFrom).toISOString().slice(0, 19).replace("T", " ") : null,
+      createdAtTo: formData.createdAtTo ? new Date(formData.createdAtTo).toISOString().slice(0, 19).replace("T", " ") : null,
+    };
+    if (payload.startTimeFrom > payload.startTimeTo) {
+      errorToast("Thời gian khởi hành !!! Ngày bắt đầu không thể lớn hơn ngày kết thúc")
+      return;
+    }
+    if (payload.createdAtFrom > payload.createdAtTo) {
+      errorToast("Thời gian đặt tour !!! Ngày bắt đầu không thể lớn hơn ngày kết thúc");
+      return;
+    }
+    onSearch(pageSearch, payload);
+    // console.log("payload", payload);
+    setFormData({
+      ...formData,
+      startTimeFrom: formData.startTimeFrom ? new Date(formData.startTimeFrom).toISOString().slice(0, 19).replace("T", " ") : null,
+      startTimeTo: formData.startTimeTo ? new Date(formData.startTimeTo).toISOString().slice(0, 19).replace("T", " ") : null,
+      createdAtFrom: formData.createdAtFrom ? new Date(formData.createdAtFrom).toISOString().slice(0, 19).replace("T", " ") : null,
+      createdAtTo: formData.createdAtTo ? new Date(formData.createdAtTo).toISOString().slice(0, 19).replace("T", " ") : null,
+    });
+
   };
+
+  useEffect(() => {
+    onSearch(pageSearch, formData);
+  }, [pageSearch]);
 
   return (
     <Form onSubmit={handleSubmit} onReset={handleReset}>
@@ -79,22 +120,22 @@ function SearchForm(props) {
       </Row>
       <Row className="mb-3">
         <Col>
-          <Form.Group controlId="departureStartDate">
+          <Form.Group controlId="startTimeFrom">
             <Form.Label>Thời gian khởi hành (Từ)</Form.Label>
             <Form.Control
               type="date"
-              name="departureStartDate"
+              name="startTimeFrom"
               value={formData.departureStartDate}
               onChange={handleChange}
             />
           </Form.Group>
         </Col>
         <Col>
-          <Form.Group controlId="departureEndDate">
+          <Form.Group controlId="startTimeTo">
             <Form.Label>Thời gian khởi hành (Đến)</Form.Label>
             <Form.Control
               type="date"
-              name="departureEndDate"
+              name="startTimeTo"
               value={formData.departureEndDate}
               onChange={handleChange}
             />
@@ -103,22 +144,22 @@ function SearchForm(props) {
       </Row>
       <Row className="mb-3">
         <Col>
-          <Form.Group controlId="totalBillMin">
+          <Form.Group controlId="priceFrom">
             <Form.Label>Tổng hóa đơn (Từ)</Form.Label>
             <Form.Control
               type="number"
-              name="totalBillMin"
+              name="priceFrom"
               value={formData.totalBillMin}
               onChange={handleChange}
             />
           </Form.Group>
         </Col>
         <Col>
-          <Form.Group controlId="totalBillMax">
+          <Form.Group controlId="priceTo">
             <Form.Label>Tổng hóa đơn (Đến)</Form.Label>
             <Form.Control
               type="number"
-              name="totalBillMax"
+              name="priceTo"
               value={formData.totalBillMax}
               onChange={handleChange}
             />
@@ -137,28 +178,29 @@ function SearchForm(props) {
               <option value={0}>Chưa xử lý</option>
               <option value={1}>Đã xác nhận</option>
               <option value={2}>Đã hủy</option>
+              <option value={3}>Đã hoàn thành</option>
             </Form.Control>
           </Form.Group>
         </Col>
       </Row>
       <Row className="mb-3">
         <Col>
-          <Form.Group controlId="bookingStartDate">
+          <Form.Group controlId="createdAtFrom">
             <Form.Label>Thời gian đặt tour (Từ)</Form.Label>
             <Form.Control
               type="date"
-              name="bookingStartDate"
+              name="createdAtFrom"
               value={formData.bookingStartDate}
               onChange={handleChange}
             />
           </Form.Group>
         </Col>
         <Col>
-          <Form.Group controlId="bookingEndDate">
+          <Form.Group controlId="createdAtTo">
             <Form.Label>Thời gian đặt tour (Đến)</Form.Label>
             <Form.Control
               type="date"
-              name="bookingEndDate"
+              name="createdAtTo"
               value={formData.bookingEndDate}
               onChange={handleChange}
             />

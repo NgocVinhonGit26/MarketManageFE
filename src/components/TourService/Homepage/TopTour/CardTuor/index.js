@@ -20,6 +20,8 @@ const CardTour = ({ tour }) => {
     navigate(`/tour/detail/${tour?.slug}`);
   }
 
+  // console.log("tour >>>>>>>", tour);
+
   return (
     <Card
       sx={{ maxWidth: "100%" }}
@@ -33,7 +35,7 @@ const CardTour = ({ tour }) => {
           component="img"
           height="140"
           image={
-            tour?.image ||
+            tour?.avatar ||
             "https://res.cloudinary.com/dkcetq9et/image/upload/v1715279235/tour-mien-tay-2-ngay-1-dem-gia-re_jwfrtx.jpg"
           }
           alt="green iguana"

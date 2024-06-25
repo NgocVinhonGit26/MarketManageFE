@@ -128,11 +128,11 @@ function AddModal({ updateData, addProduct }) {
       videoInfor: videoInfor
     }
 
-    console.log("data >>>>", data);
+    // console.log("data >>>>", data);
 
     try {
       const response = await createNewProduct(data, accessToken);
-      console.log("check >>>>", response);
+      // console.log("check >>>>", response);
       if (response?.status === 200) {
         addProduct(response.data);
         resetForm();

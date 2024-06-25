@@ -35,17 +35,23 @@ const TourOrders = () => {
   }, [pageCurrent]);
 
   const handleChangePage = (event, value) => {
-    setPageCurrent(value);
+    if (isSearch) {
+      setPageSearch(value);
+    }
+    else {
+      setPageCurrent(value);
+    }
   };
 
-  const handleSearch = async (queryCondition) => {
+  const handleSearch = async (page, queryCondition) => {
     // setPageCurrent(1);
     try {
-      const response = await getAllTourOrders(pageSearch - 1, queryCondition, accessToken);
+      const response = await getAllTourOrders(page - 1, queryCondition, accessToken);
       setTourOrders(response);
-      console.log("response >>>>>>> aka 123: ", response)
-      const total = await getTotalPageOrderTour(pageSearch - 1, queryCondition, accessToken);
+      // console.log("response >>>>>>> aka 123: ", response)
+      const total = await getTotalPageOrderTour(page - 1, queryCondition, accessToken);
       setTotal(total);
+      // console.log("response >>>>>>> aka 123: ", total)
     }
     catch (error) {
       console.log(error);
@@ -76,6 +82,9 @@ const TourOrders = () => {
             onSearch={handleSearch}
             fetchTourOrders={fetchTourOrders}
             setIsSearch={setIsSearch}
+            pageSearch={pageSearch}
+            setPageSearch={setPageSearch}
+            setPageCurrent={setPageCurrent}
           />
           <TourOrdersTable
             tourOrders={tourOrders}

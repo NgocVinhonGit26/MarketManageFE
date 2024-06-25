@@ -22,8 +22,8 @@ function SearchForm(props) {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        console.log("name", name)
-        console.log("value", value)
+        // console.log("name", name)
+        // console.log("value", value)
         setFormData({
             ...formData,
             [name]: value,

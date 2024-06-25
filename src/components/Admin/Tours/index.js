@@ -9,70 +9,77 @@ import { searchTour, getTotalPageTour } from "api/tour";
 const Tours = () => {
   const [tours, setTours] = useState([]);
   const [page, setPage] = useState(1);
+  const [pageSearch, setPageSearch] = useState(1);
   const [total, setTotal] = useState(0);
+  const [isSearching, setIsSearching] = useState(false);
   const limit = 5;
   const accessToken = localStorage.getItem("accessToken");
 
+
+  const fetchTours = async () => {
+    try {
+      const response = await searchTour(page - 1, accessToken, {});
+      const totalPageTour = await getTotalPageTour(page - 1, accessToken, {});
+      setTours(response);
+      setTotal(totalPageTour.data);
+      // console.log("response totalPageTour: ", total);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const fetchTours = async () => {
-      try {
-        const response = await searchTour(page - 1, accessToken);
-        const totalPageTour = await getTotalPageTour(page - 1, accessToken);
-        setTours(response);
-        setTotal(totalPageTour.data);
-        console.log("response totalPageTour: ", total);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchTours();
+    if (!isSearching) {
+      fetchTours();
+    }
   }, [page]);
 
   const handleChangePage = (event, value) => {
-    setPage(value);
+    if (isSearching) {
+      setPageSearch(value);
+    }
+    else {
+      setPage(value);
+    }
   };
 
-  const handleSearch = (name, priceFrom, priceTo, transport, startLocation, tourDuration) => {
-
-    let queryCondition = {};
-    if (name) {
-      queryCondition.name = name;
+  const handleSearch = async (page, queryCondition) => {
+    try {
+      const response = await searchTour(page - 1, accessToken, queryCondition);
+      const totalPageTour = await getTotalPageTour(page - 1, accessToken, queryCondition);
+      // console.log("response search tour: ", response); 
+      setTours(response);
+      setTotal(totalPageTour.data);
+      // setTotal(response.data.totalPages);
+    } catch (error) {
+      console.log(error);
     }
-    if (priceFrom) {
-      queryCondition.priceFrom = priceFrom;
-    }
-    if (priceTo) {
-      queryCondition.priceTo = priceTo;
-    }
-    if (transport) {
-      queryCondition.transport = transport;
-    }
-    if (startLocation) {
-      queryCondition.startLocation = startLocation;
-    }
-    if (tourDuration) {
-      queryCondition.tourDuration = tourDuration;
-    }
-    const fetchTours = async () => {
-      try {
-        const response = await searchTour(page - 1, accessToken, queryCondition);
-        console.log("response search tour: ", response);
-        setTours(response);
-        // setTotal(response.data.totalPages);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchTours();
   };
+
+  const addTour = (tour) => {
+    let newTours = [tour, ...tours];
+    setTours(newTours);
+  }
 
   return (
     <DashboardLayout layoutRole={0}>
       <h1>Quản lí Tour du lịch</h1>
       <Grid item xs={12}>
         <Paper sx={{ p: 2 }}>
-          <SearchForm onSearch={handleSearch} setTours={setTours} />
-          <ToursTable tours={tours} setTours={setTours} />
+          <SearchForm
+            onSearch={handleSearch}
+            setTours={setTours}
+            fetchTours={fetchTours}
+            setIsSearching={setIsSearching}
+            pageSearch={pageSearch}
+            setPageSearch={setPageSearch}
+            setPage={setPage}
+            addTour={addTour}
+          />
+          <ToursTable
+            tours={tours}
+            setTours={setTours}
+          />
         </Paper>
       </Grid>
       <Grid

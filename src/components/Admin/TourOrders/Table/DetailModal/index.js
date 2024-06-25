@@ -57,7 +57,7 @@ export default function DetailModal({ tourOrder }) {
                     <strong>Thời gian đặt</strong>
                   </td>
                   <td>
-                    {moment(tourOrder?.createdAt).format("DD/MM/YYYY HH:mm")}
+                    {moment(tourOrder?.createAt).format("DD/MM/YYYY HH:mm")}
                   </td>
                 </tr>
                 {/* <tr>
@@ -71,7 +71,7 @@ export default function DetailModal({ tourOrder }) {
                     <strong>Ngày xuất phát</strong>
                   </td>
                   <td>
-                    {moment(tourOrder?.tourId?.tourTime).format("DD/MM/YYYY")}
+                    {moment(tourOrder?.startTime).format("DD/MM/YYYY")}
                   </td>
                 </tr>
                 <tr>

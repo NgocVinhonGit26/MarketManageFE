@@ -34,10 +34,17 @@ const getListTour = async (token) => {
   }
 }
 
-const addTour = async (data) => {
+const createNewTour = async (data, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   try {
-    const response = await instance.post("/tours", data);
-    return response.data;
+    const response = await instance.post("/admin/insertTour", data, config);
+
+    return response;
   } catch (error) {
     throw error;
   }
@@ -83,7 +90,7 @@ const getTourBySlug = async (slug, token) => {
       },
     };
 
-    const response = await instance.get(`/tour/getTourBySlug/${slug}`, config);
+    const response = await instance.get(`/tour/getTourBySlug/${slug}`);
 
     return response.data;
   } catch (error) {
@@ -165,7 +172,7 @@ export {
   getAllTours,
   updateTourById,
   deleteTour,
-  addTour,
+  createNewTour,
   getBestSalerToursInHomePage,
   getTourBySlug,
   getListTour,

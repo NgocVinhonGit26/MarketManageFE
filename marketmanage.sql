@@ -11,7 +11,7 @@ CREATE TABLE imgqr (
 		CREATE TABLE User (
 		id INT AUTO_INCREMENT PRIMARY KEY,
 		name VARCHAR(255) NOT NULL,
-        avatar varchar(255) NOT NULL,
+        avatar varchar(255),
 		address VARCHAR(255),
 		phone_number VARCHAR(11),
 		username VARCHAR(255) NOT NULL,
@@ -19,6 +19,8 @@ CREATE TABLE imgqr (
 		role VARCHAR(255) NOT NULL,
         isdeleted boolean NOT NULL
 		);
+        
+
         
        --  ALTER TABLE User
 --  ADD COLUMN isdeleted boolean NOT NULL AFTER role;

@@ -37,7 +37,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function ShopsTable({ shopBoats, updateData, fetchShopBoats }) {
   const handleChangeStatus = async (id, status, data) => {
-    console.log("check onClick")
+    // console.log("check onClick")
     try {
       const accessToken = localStorage.getItem("accessToken");
       const response = await updateShopBoatStatus(id, {

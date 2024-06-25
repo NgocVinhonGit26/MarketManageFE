@@ -20,7 +20,31 @@ const getAllTourOrders = async (page, queryCondition = {}, token) => {
     url += `&tourName=${queryCondition.tourName}`;
   }
 
-  console.log("url >>>>>>> aka: ", url)
+  if (queryCondition.startTimeFrom) {
+    url += `&startTimeFrom=${queryCondition.startTimeFrom}`;
+  }
+
+  if (queryCondition.startTimeTo) {
+    url += `&startTimeTo=${queryCondition.startTimeTo}`;
+  }
+
+  if (queryCondition.priceFrom) {
+    url += `&priceFrom=${queryCondition.priceFrom}`;
+  }
+
+  if (queryCondition.priceTo) {
+    url += `&priceTo=${queryCondition.priceTo}`;
+  }
+
+  if (queryCondition.createdAtFrom) {
+    url += `&createdAtFrom=${queryCondition.createdAtFrom}`;
+  }
+
+  if (queryCondition.createdAtTo) {
+    url += `&createdAtTo=${queryCondition.createdAtTo}`;
+  }
+
+  // console.log("url >>>>>>> aka: ", url)
   try {
     const response = await instance.get(url, config);
     // console.log("response >>>>>>> aka: ", response)
@@ -40,11 +64,37 @@ const getTotalPageOrderTour = async (page, queryCondition = {}, token) => {
   if (queryCondition.status) {
     url += `&status=${queryCondition.status}`;
   }
+
   if (queryCondition.userName) {
     url += `&userName=${queryCondition.userName}`;
   }
+
   if (queryCondition.tourName) {
     url += `&tourName=${queryCondition.tourName}`;
+  }
+
+  if (queryCondition.startTimeFrom) {
+    url += `&startTimeFrom=${queryCondition.startTimeFrom}`;
+  }
+
+  if (queryCondition.startTimeTo) {
+    url += `&startTimeTo=${queryCondition.startTimeTo}`;
+  }
+
+  if (queryCondition.priceFrom) {
+    url += `&priceFrom=${queryCondition.priceFrom}`;
+  }
+
+  if (queryCondition.priceTo) {
+    url += `&priceTo=${queryCondition.priceTo}`;
+  }
+
+  if (queryCondition.createdAtFrom) {
+    url += `&createdAtFrom=${queryCondition.createdAtFrom}`;
+  }
+
+  if (queryCondition.createdAtTo) {
+    url += `&createdAtTo=${queryCondition.createdAtTo}`;
   }
 
   // console.log("url >>>>>>> aka: ", url)

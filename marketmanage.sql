@@ -8,7 +8,7 @@ CREATE TABLE imgqr (
         
         INSERT INTO imgqr (img) VALUES ('https://res.cloudinary.com/dkcetq9et/image/upload/v1717871167/image_icon-512_cxntey.png');
 
-		CREATE TABLE User (
+		CREATE TABLE user (
 		id INT AUTO_INCREMENT PRIMARY KEY,
 		name VARCHAR(255) NOT NULL,
         avatar varchar(255),
@@ -29,17 +29,17 @@ CREATE TABLE imgqr (
 
 
 
-INSERT INTO User (name, address, phone_number,username, password, role) VALUES 
-('admin', '123 Main Street, Anytown, USA', '123456789','joe.john@gaml.com', 'admin','ADMIN'),
-('Alice Smith', '456 Elm Street, Another Town, USA', '123456789', 'alice.smith@example.com', 'password2','USER'),
-('Michael Johnson', '789 Oak Street, Some City, USA', '123456789', 'michael.johnson@example.com', 'password3','MERCHANT'),
-('Emily Brown', '101 Pine Street, Someplace, USA', '123456789', 'emily.brown@example.com', 'password4','USER'),
-('David Wilson', '222 Maple Street, Elsewhere, USA', '123456789', 'david.wilson@example.com', 'password5','USER'),
-('Sarah Taylor', '333 Cedar Street, Somewhere, USA', '123456789', 'sarah.taylor@example.com', 'password6','MERCHANT'),
-('James Martinez', '444 Walnut Street, Anywhere, USA', '123456789', 'james.martinez@example.com', 'password7','MERCHANT'),
-('Jennifer Rodriguez', '555 Birch Street, Anyplace, USA', '123456789', 'jennifer.rodriguez@example.com', 'password8','USER'),
-('William Anderson', '666 Ash Street, Nowhere, USA', '123456789', 'william.anderson@example.com', 'password9','MERCHANT'),
-('Emma Thomas', '777 Spruce Street, Everywhere, USA', '123456789', 'emma.thomas@example.com', 'password10','USER');
+INSERT INTO user (name, address, phone_number,username, password, role,isdeleted) VALUES 
+('admin', '123 Main Street, Anytown, USA', '123456789','joe.john@gaml.com', 'admin','ADMIN', false),
+('Alice Smith', '456 Elm Street, Another Town, USA', '123456789', 'alice.smith@example.com', 'password2','USER',false),
+('Michael Johnson', '789 Oak Street, Some City, USA', '123456789', 'michael.johnson@example.com', 'password3','MERCHANT', false),
+('Emily Brown', '101 Pine Street, Someplace, USA', '123456789', 'emily.brown@example.com', 'password4','USER', false),
+('David Wilson', '222 Maple Street, Elsewhere, USA', '123456789', 'david.wilson@example.com', 'password5','USER', false),
+('Sarah Taylor', '333 Cedar Street, Somewhere, USA', '123456789', 'sarah.taylor@example.com', 'password6','MERCHANT', false),
+('James Martinez', '444 Walnut Street, Anywhere, USA', '123456789', 'james.martinez@example.com', 'password7','MERCHANT', false),
+('Jennifer Rodriguez', '555 Birch Street, Anyplace, USA', '123456789', 'jennifer.rodriguez@example.com', 'password8','USER', false),
+('William Anderson', '666 Ash Street, Nowhere, USA', '123456789', 'william.anderson@example.com', 'password9','MERCHANT', false),
+('Emma Thomas', '777 Spruce Street, Everywhere, USA', '123456789', 'emma.thomas@example.com', 'password10','USER', false);
 
    -- UPDATE User SET role = 'ADMIN' WHERE id = 11;
 	-- DELETE FROM user WHERE id = 11;
@@ -65,7 +65,7 @@ INSERT INTO User (name, address, phone_number,username, password, role) VALUES
 
 
 
-CREATE TABLE ShopBoat (
+CREATE TABLE shopboat (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     address VARCHAR(255),
@@ -78,12 +78,12 @@ CREATE TABLE ShopBoat (
     code VARCHAR(255),
     -- products JSON,
     -- images JSON,
-    FOREIGN KEY (owner) REFERENCES User(id)
+    FOREIGN KEY (owner) REFERENCES user(id)
 );
 
 -- UPDATE ShopBoat SET owner = 13 WHERE id = 2;
 
-INSERT INTO ShopBoat (name, address, owner, description, avatar, phone_number, type, status, code)
+INSERT INTO shopboat (name, address, owner, description, avatar, phone_number, type, status, code)
 VALUES 
 ('Boat Haven', '100 Harbor Drive, Marina Bay, Anytown, USA', 1, 'Your destination for all things boating', 'https://th.bing.com/th/id/R.74b4260070f4a610bc2e92d0d173a4a5?rik=CP61V%2fOrQslCgw&pid=ImgRaw&r=0', '15995165412', 'Thuyền Lớn', 0, 'SHB001'),
 ('Marine Outfitters', '200 Dock Street, Harborview, Another Town, USA', 2, 'We provide top-quality marine equipment', 'https://st.quantrimang.com/photos/image/2021/05/21/AVT-Doi17-2.jpg', '47896253017', 'Thuyền Nhỏ', 1, 'MOT002'),
@@ -97,7 +97,7 @@ VALUES
 ('Bluewater Boats', '1000 Marina Drive, Sailport, Everywhere, USA', 10, 'Your premier destination for boating adventures', 'https://st.quantrimang.com/photos/image/2021/05/21/AVT-Doi17-2.jpg', '63812549703', 'Thuyền Cao Tốc', 0, 'BWB010');
 
 
-CREATE TABLE Tour (
+CREATE TABLE tour (
     Id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     Slug VARCHAR(255) NOT NULL,
@@ -127,7 +127,7 @@ CREATE TABLE Tour (
 
 
 
- INSERT INTO Tour (Name, Slug, start_time, start_location, Description, Price, avatar, transport, tour_information,tour_duration) VALUES 
+ INSERT INTO tour (Name, Slug, start_time, start_location, Description, Price, avatar, transport, tour_information,tour_duration) VALUES 
  ('Trải Nghiệm Chợ Nổi Cái Răng', 'trai-nghiem-cho-noi-cai-rang', '2024-03-15 08:00:00', 'Chợ Nổi Cái Răng, Cần Thơ', 'Khám phá sự sôi động của chợ nổi Cái Răng và trải nghiệm văn hóa độc đáo của Đồng Bằng Sông Cửu Long.', 150.00, 'https://r2.nucuoimekong.com/wp-content/uploads/tour-mien-tay-2-ngay-1-dem-gia-re.jpg', 'Xe du lịch','Tham gia cùng chúng tôi trên chuyến đi dẫn đầu để khám phá sự náo nhiệt của chợ nổi Cái Răng. Học về phong tục địa phương và thưởng thức các món ngon đặc sản Đồng Bằng Sông Cửu Long.','3 ngày 2 đêm'),
  ('Tour Khám Phá Cái Răng', 'tour-kham-pha-cai-rang', '2024-03-16 09:00:00', 'Cái Răng, Cần Thơ', 'Khám phá vẻ đẹp của Cái Răng và vùng lân cận với chuyến đi dẫn đầu của chúng tôi.', 120.00, 'https://r2.nucuoimekong.com/wp-content/uploads/tour-mien-tay-2-ngay-1-dem-gia-re.jpg', 'Xe du lịch','Bắt đầu hành trình để khám phá sự quyến rũ của Cái Răng, từ chợ nổi đến các cảnh đẹp xanh tươi của nó.','2 ngày 1 đêm'),
  ('Tour Văn Hóa Cái Răng', 'tour-van-hoa-cai-rang', '2024-03-17 10:00:00', 'Cái Răng, Cần Thơ', 'Tham gia vào một hành trình văn hóa qua chợ nổi Cái Răng và khu vực xung quanh.', 130.00, 'https://r2.nucuoimekong.com/wp-content/uploads/tour-mien-tay-2-ngay-1-dem-gia-re.jpg', 'Xe du lịch','Khám phá những di tích văn hóa và tham gia vào các hoạt động vui nhộn trong chuyến tham quan này.','5 ngày 4 đêm'),
@@ -177,17 +177,19 @@ CREATE TRIGGER calculate_order_price BEFORE INSERT ON order_tour
 FOR EACH ROW
 BEGIN
     DECLARE tour_price DECIMAL(10, 2);
-    SET tour_price = (SELECT Price FROM Tour WHERE Id = NEW.tour_id);
+    SET tour_price = (SELECT Price FROM tour WHERE Id = NEW.tour_id);
     SET NEW.price = tour_price * NEW.quantity;
 END;
 $$
 DELIMITER ;
 
+-- DROP TRIGGER IF EXISTS calculate_order_price;
+
 
 INSERT INTO order_tour (status, payment_method, start_time, quantity, tour_id, user_id)
 VALUES (0, 'Credit Card', '2024-03-14 10:00:00', 2, 1, 2);
 
-CREATE TABLE Product (
+CREATE TABLE product (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(100) NOT NULL UNIQUE,
@@ -202,7 +204,7 @@ CREATE TABLE Product (
     created_at TIMESTAMP ,
     updated_at TIMESTAMP ,
     video_infor VARCHAR(255),
-    FOREIGN KEY (shop_boat_id) REFERENCES ShopBoat(id)
+    FOREIGN KEY (shop_boat_id) REFERENCES shopboat(id)
 );
 -- ALTER TABLE Product
 -- DROP COLUMN videoInfor;
@@ -212,7 +214,7 @@ CREATE TABLE Product (
 
 
 
-INSERT INTO Product (name, slug, description, price, sale, count_in_stock ,image, unit, category, shop_boat_id, created_at, updated_at)
+INSERT INTO product (name, slug, description, price, sale, count_in_stock ,image, unit, category, shop_boat_id, created_at, updated_at)
 VALUES
 ('Sầu Riêng', 'sau-rieng', 'Mô tả sản phẩm Táo', 3.50, 0.00, 100, 'https://chonoicairang.net/wp-content/uploads/2020/04/framesaurieng.jpg', 'kg','Hoa Quả', 2, NOW(), NOW()),
 ('Măng Cụt', 'mang-cut', 'Mô tả sản phẩm Lê', 4.00, 0.00, 150, 'https://chonoicairang.net/wp-content/uploads/2020/04/mang-cut.jpg', 'kg','Hoa Quả', 2, NOW(), NOW()),
@@ -228,7 +230,7 @@ VALUES
 ('Muối Tôm Tây Ninh', 'muoi-tom-tay-ninh', 'Mô tả sản phẩm Muối Tôm Tây Ninh', 5.00, 0.00, 100, 'https://chonoicairang.net/wp-content/uploads/2020/04/muoi-ot-tom-nhu-y-cho-noi-cai-rang-1536x2048.jpg', 'túi', 'Nông Sản Chế Biến', 2, NOW(), NOW()),
 ('Cá Ba Sa', 'ca-ba-sa', 'Mô tả sản phẩm Cá Ba Sa', 8.00, 0.00, 30, 'https://www.chothitngon.vn/plugins/responsive_filemanager/source/hai-san/ca-sa-pa.jpg', 'kg', 'Nông Sản Chế Biến', 2, NOW(), NOW());
 
-INSERT INTO Product (name, slug, description, price, sale, count_in_stock ,image, unit, category, shop_boat_id, created_at, updated_at)
+INSERT INTO product (name, slug, description, price, sale, count_in_stock ,image, unit, category, shop_boat_id, created_at, updated_at)
 VALUES
 ('Bưởi da xanh', 'buoi-da-xanh', 'Mô tả sản phẩm Bưởi', 5.50, 0.00, 100, 'https://chonoicairang.net/wp-content/uploads/2020/04/buoidaxanh.jpg', 'kg','Hoa Quả', 9, NOW(), NOW()),
 ('Gạo Ngọc Rồng', 'gao-ngoc-rong', 'Mô tả sản phẩm Gạo', 14, 0.00, 150, 'https://chonoicairang.net/wp-content/uploads/2020/04/gaohuuco.jpg', 'túi','Nông Sản Chế Biến', 9, NOW(), NOW()),
@@ -241,7 +243,7 @@ CREATE TABLE order_product (
     customer INT NOT NULL,
     created_at TIMESTAMP ,
     updated_at TIMESTAMP ,
-    FOREIGN KEY (customer) REFERENCES User(id)
+    FOREIGN KEY (customer) REFERENCES user(id)
 );
 
 INSERT INTO order_product (status, payment_method, total, customer, created_at, updated_at) 
@@ -262,9 +264,9 @@ CREATE TABLE order_item (
     quantity INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
     sale DECIMAL(10, 2) NOT NULL,
-    FOREIGN KEY (product_id) REFERENCES Product(id),
+    FOREIGN KEY (product_id) REFERENCES product(id),
     FOREIGN KEY (order_product_id) REFERENCES order_product(id),
-	FOREIGN KEY (shop_boat_id) REFERENCES ShopBoat(id)
+	FOREIGN KEY (shop_boat_id) REFERENCES shopboat(id)
 );
 -- status: pending, accepted, cancelled, delivering,completed
 
@@ -275,8 +277,8 @@ CREATE TABLE comments (
     user_id INT NOT NULL,
     content TEXT NOT NULL,
     created_at TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES Product(id),
-    FOREIGN KEY (user_id) REFERENCES User(id)
+    FOREIGN KEY (product_id) REFERENCES product(id),
+    FOREIGN KEY (user_id) REFERENCES user(id)
 );
  drop table react;
 CREATE TABLE react(
@@ -285,7 +287,7 @@ CREATE TABLE react(
     user_id INT NOT NULL,
     type VARCHAR(10),
     FOREIGN KEY (comment_id) REFERENCES comments(id),
-    FOREIGN KEY (user_id) REFERENCES User(id)
+    FOREIGN KEY (user_id) REFERENCES user(id)
 )
 
 

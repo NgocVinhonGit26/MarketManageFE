@@ -58,7 +58,7 @@ export default function SignIn() {
   const handleLogin = async (username, password) => {
     try {
       const res = await signinService(username, password);
-      // console.log("accessToken1", res.data.token);
+      console.log("accessToken1", res);
       localStorage.setItem("accessToken", res.data.token);
       localStorage.setItem("id", res.data.id);
       if (res.data.role === "ADMIN") {

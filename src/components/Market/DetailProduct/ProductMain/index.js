@@ -59,6 +59,9 @@ const ProductMain = (props) => {
     await fetchLastOrderProduct()
   }
   const fetchLastOrderProduct = async () => {
+    if (localStorage.getItem("id") === null) {
+      return
+    }
     const response = await getLastOrderProduct(localStorage.getItem("id"))
     // console.log("response: getLastOrderProduct", response.data)
     localStorage.setItem("orderProductId", response.data)

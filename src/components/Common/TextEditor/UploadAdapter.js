@@ -39,3 +39,6 @@ class UploadAdapter {
 }
 
 
+
+
+export default UploadAdapter;

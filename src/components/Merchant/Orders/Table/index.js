@@ -16,6 +16,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import Tooltip from "@mui/material/Tooltip";
 import { getOrderItemByOrderProductId } from "api/shopBoat";
+import { updateQuantityProductById } from "api/product";
+import { set } from "date-fns";
 
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -42,17 +44,8 @@ export default function OrdersTable({ orders, updateData }) {
   const idShopBoat = localStorage.getItem("shopBoatId");
   const [orderItems, setOrderItems] = React.useState([]);
   const [status, setStatus] = React.useState("pending");
-  const [isCompleted, setIsCompleted] = React.useState(false);
 
-  // const getOrderItem = async (orderProductId, status) => {
-  //   try {
-  //     const response = await getOrderItemByOrderProductId(idShopBoat, orderProductId, accessToken);
-  //     setOrderItems(response.data);
-  //     setStatus(status);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }
+
 
 
   const handleChaneStatus = async (orderProductId, status) => {
@@ -67,17 +60,25 @@ export default function OrdersTable({ orders, updateData }) {
           }
           return order;
         });
+
         // console.log("newOrder>>>>>", newOrder);
         updateData(newOrder);
         if (status === "completed") {
-          setIsCompleted(true);
+          const response = await getOrderItemByOrderProductId(idShopBoat, orderProductId, accessToken);
+          // console.log("response.data>>>>>", response.data);
+          response.data.map(async (item) => {
+            const response = await updateQuantityProductById(item.productId, item.quantity, accessToken);
+            // console.log("response>>>>>", response);
+          });
         }
+
       }
 
     } catch (err) {
       console.log(err);
     }
   };
+
 
 
   return (
@@ -155,8 +156,7 @@ export default function OrdersTable({ orders, updateData }) {
               <StyledTableCell align="center">
                 <DetailModal
                   order={order}
-                  isCompleted={isCompleted}
-                  setIsCompleted={setIsCompleted}
+
                 />
               </StyledTableCell>
               <StyledTableCell align="center">

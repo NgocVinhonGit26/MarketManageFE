@@ -20,8 +20,9 @@ const style = {
   p: 4,
 };
 
-const DetailModal = ({ order, isCompleted, setIsCompleted }) => {
+const DetailModal = ({ order }) => {
   const [open, setOpen] = React.useState(false);
+
   const accessToken = localStorage.getItem("accessToken");
   const [orderItems, setOrderItems] = React.useState([]);
   const idShopBoat = localStorage.getItem("shopBoatId");
@@ -36,37 +37,38 @@ const DetailModal = ({ order, isCompleted, setIsCompleted }) => {
       console.log(err);
     }
   }
+  // if (open) {
 
+  // }
   const handleOpen = () => {
-    setOpen(true);
+    setOpen(true)
     getOrderItem(order.id);
   };
+  const handleClose = () => setOpen(false);
 
-  const handleClose = () => {
-    setOpen(false);
-  }
 
-  const updateQuantityProduct = async (id, orderQuantity) => {
-    try {
-      const response = await updateQuantityProductById(id, orderQuantity, accessToken);
+  // const updateQuantityProduct = async (id, orderQuantity) => {
+  //   try {
+  //     const response = await updateQuantityProductById(id, orderQuantity, accessToken);
 
-    }
-    catch (err) {
-      console.log(err);
-    }
-  }
+  //   }
+  //   catch (err) {
+  //     console.log(err);
+  //   }
+  // }
 
-  useEffect(() => {
-    if (isCompleted) {
+  // useEffect(() => {
+  //   if (isCompleted) {
 
-      orderItems.forEach((item) => {
-        console.log("item akaka: ", item);
-        updateQuantityProduct(item.productId, item.quantity);
-      });
-      setIsCompleted(false);
-      setOrderItems([]);
-    }
-  }, [isCompleted]);
+  //     orderItems.forEach((item) => {
+  //       console.log("item akaka: ", item);
+  //       updateQuantityProduct(item.productId, item.quantity);
+  //     });
+  //     setIsCompleted(false);
+  //     setOrderItems([]);
+  //   }
+  // }, [isCompleted]);
+
   return (
     <div>
       <Button variant="primary" onClick={handleOpen} style={{ width: "80px", height: "40px" }}>

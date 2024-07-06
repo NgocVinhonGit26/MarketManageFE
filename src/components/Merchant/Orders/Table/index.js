@@ -42,7 +42,7 @@ export default function OrdersTable({ orders, updateData }) {
   const idShopBoat = localStorage.getItem("shopBoatId");
   const [orderItems, setOrderItems] = React.useState([]);
   const [status, setStatus] = React.useState("pending");
-
+  const [isCompleted, setIsCompleted] = React.useState(false);
 
   // const getOrderItem = async (orderProductId, status) => {
   //   try {
@@ -69,7 +69,9 @@ export default function OrdersTable({ orders, updateData }) {
         });
         // console.log("newOrder>>>>>", newOrder);
         updateData(newOrder);
-
+        if (status === "completed") {
+          setIsCompleted(true);
+        }
       }
 
     } catch (err) {
@@ -77,18 +79,6 @@ export default function OrdersTable({ orders, updateData }) {
     }
   };
 
-  // if (orderItems.length > 0) {
-  //   orderItems.map((item) => {
-  //     handleChaneStatus(item.id);
-  //   });
-  // }
-
-
-
-
-  useEffect(() => {
-    // console.log("orders>>>>>>", orders);
-  }, [orders]);
 
   return (
     <TableContainer component={Paper}>
@@ -163,7 +153,11 @@ export default function OrdersTable({ orders, updateData }) {
                 )}
               </StyledTableCell>
               <StyledTableCell align="center">
-                <DetailModal order={order} />
+                <DetailModal
+                  order={order}
+                  isCompleted={isCompleted}
+                  setIsCompleted={setIsCompleted}
+                />
               </StyledTableCell>
               <StyledTableCell align="center">
                 {order.statusOrderItems === "pending" && (

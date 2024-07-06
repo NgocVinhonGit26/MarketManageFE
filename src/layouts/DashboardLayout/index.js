@@ -240,13 +240,13 @@ export default function DashboardLayout({ children, layoutRole }) {
   };
 
   const accessToken = localStorage.getItem("accessToken")
+  const id = localStorage.getItem("id")
+  const role = localStorage.getItem("role")
 
   useLayoutEffect(() => {
     const checkRole = async () => {
-      // console.log("cookies >>>>>>", cookies);
-      // console.log("cookies.access_token >>>>>>", cookies.access_token)
-      if (cookies.access_token) {
-        const { id, role } = jwt_decode(cookies.access_token);
+      if (accessToken) {
+
         if (
           (role === 0 && layoutRole === 1) ||
           (role === 1 && layoutRole === 0)
@@ -266,7 +266,7 @@ export default function DashboardLayout({ children, layoutRole }) {
       }
     };
     checkRole();
-  }, [cookies.access_token, navigate]);
+  }, [accessToken, navigate]);
 
   const handleLogout = async () => {
     try {

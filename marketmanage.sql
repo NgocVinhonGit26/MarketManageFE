@@ -209,8 +209,8 @@ CREATE TABLE product (
 -- ALTER TABLE Product
 -- DROP COLUMN videoInfor;
 
--- ALTER TABLE Product
--- ADD COLUMN video_infor VARCHAR(255);
+--  ALTER TABLE Product
+--  ADD COLUMN isdeleted boolean;
 
 
 

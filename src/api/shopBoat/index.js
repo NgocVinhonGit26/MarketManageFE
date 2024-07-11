@@ -44,9 +44,14 @@ const updateProductById = async (id, data, token) => {
   }
 };
 
-const deleteProduct = async (id) => {
+const deleteProduct = async (id, token) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
   try {
-    const response = await instance.delete(`/products/${id}`);
+    const response = await instance.post(`/merchant/deleteProductById/${id}`, {}, config);
     return response;
   } catch (error) {
     console.log(error);

@@ -1,0 +1,10 @@
+.truncate-text {
+    max-width: 200px;
+    /* Đặt chiều rộng tối đa mà bạn muốn */
+    white-space: nowrap;
+    /* Ngăn văn bản xuống dòng */
+    overflow: hidden;
+    /* Ẩn phần văn bản vượt quá chiều rộng */
+    text-overflow: ellipsis;
+    /* Hiển thị dấu ba chấm cho phần văn bản bị cắt */
+}

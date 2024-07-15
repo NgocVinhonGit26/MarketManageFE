@@ -17,31 +17,27 @@ import Pagination from "@mui/material/Pagination";
 import { getCategoryBySlug } from "api/category";
 import { getTotalPageProduct } from "api/product";
 import { searchProductForUser } from "api/product";
-import { getTotalPageProductForUser } from "api/product";
+import { getTotalPageSearchProductForUser } from "api/product";
+import { searchProductByName } from "api/product";
+import { getTotalPageSearchProductByName } from "api/product";
+import { set } from "date-fns";
 
 const Searchpage = () => {
-  const [cost, setCost] = React.useState([20000, 500000]);
+  const [cost, setCost] = React.useState([0, 500000]);
   const minDistance = 10000;
+  const [priceFrom, setPriceFrom] = React.useState(0);
+  const [priceTo, setPriceTo] = React.useState(0);
   const location = useLocation();
   const { categorySlug, name } = useParams();
   const [page, setPage] = React.useState(1);
+  const [pageSearch, setPageSearch] = React.useState(1);
+  const [pageFilter, setPageFilter] = React.useState(1);
+  const [isSearch, setIsSearch] = React.useState(false);
+  const [isFilter, setIsFilter] = React.useState(false);
   const [limit, setLimit] = React.useState(8);
   const [totalPages, setTotalPages] = React.useState(1);
   const [products, setProducts] = React.useState([]);
   const [category, setCategory] = React.useState({});
-
-  React.useEffect(() => {
-    const fetchCategory = async () => {
-      try {
-        const response = await getCategoryBySlug(categorySlug);
-        setCategory(response.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchCategory();
-  }, [categorySlug]);
-
   const [state, setState] = React.useState({
     top: false,
     left: false,
@@ -49,23 +45,10 @@ const Searchpage = () => {
     right: false,
   });
 
-  const fetchProductsByCategory = async () => {
+  const fetchProducts = async (currentPage) => {
     try {
-      const response = await getProductByCategory(page, limit, categorySlug);
-      setProducts(response.data.data.docs);
-      setTotalPages(response.data.data.totalPages);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-
-  const accessToken = localStorage.getItem("accessToken");
-  const fetchProducts = async () => {
-    try {
-      const response = await searchProductForUser(page - 1, { name });
-      const totalPages = await getTotalPageProductForUser(page - 1, { name });
-      // console.log("searchProduct reposne", totalPages);
+      const response = await searchProductByName(currentPage - 1, { name });
+      const totalPages = await getTotalPageSearchProductByName(currentPage - 1, { name });
       setProducts(response.data);
       setTotalPages(totalPages.data);
     } catch (error) {
@@ -73,24 +56,42 @@ const Searchpage = () => {
     }
   };
 
-  React.useEffect(() => {
-    if (categorySlug) {
-      fetchProductsByCategory();
-    } else {
-      fetchProducts();
+  const filterByPrice = async (currentPage) => {
+
+    try {
+      const response = await searchProductForUser(currentPage - 1, { priceFrom, priceTo });
+      const totalPages = await getTotalPageSearchProductForUser(currentPage - 1, { priceFrom, priceTo });
+      setProducts(response.data.content);
+      setTotalPages(totalPages.data);
+    } catch (error) {
+      console.log(error);
     }
-  }, [page, limit, categorySlug, name]);
+  };
+
+  React.useEffect(() => {
+    if (isSearch) {
+      filterByPrice(pageSearch);
+    } else {
+      fetchProducts(page);
+    }
+  }, [page, pageSearch, isSearch]);
 
   const toggleDrawer = (anchor, open) => (event) => {
-    if (
-      event &&
-      event.type === "keydown" &&
-      (event.key === "Tab" || event.key === "Shift")
-    ) {
+    if (event && event.type === "keydown" && (event.key === "Tab" || event.key === "Shift")) {
       return;
     }
-
     setState({ ...state, [anchor]: open });
+  };
+
+  React.useEffect(() => {
+    setPriceFrom(cost[0]);
+    setPriceTo(cost[1]);
+  }, [cost]);
+
+  const handleFilterByPrice = () => {
+    setIsSearch(true);
+    setPageSearch(1);
+    filterByPrice(1);  // Reset to first page when filtering
   };
 
   const list = (anchor) => (
@@ -100,7 +101,6 @@ const Searchpage = () => {
         paddingLeft: "10px",
       }}
       role="presentation"
-      // onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <span
@@ -111,7 +111,6 @@ const Searchpage = () => {
       >
         BỘ LỌC
       </span>
-
       <Divider
         style={{
           color: "white",
@@ -135,12 +134,11 @@ const Searchpage = () => {
         cost={cost}
         setCost={setCost}
         minDistance={minDistance}
-        minPrice={10000}
+        minPrice={0}
         maxPrice={500000}
       />
-      {/* btn filter */}
       <Stack spacing={2} direction="row">
-        <Button variant="contained" color="success">
+        <Button variant="contained" color="success" onClick={handleFilterByPrice}>
           LỌC
         </Button>
         <div
@@ -199,20 +197,35 @@ const Searchpage = () => {
               <div className="woocommerce-result-count">
                 Hiển thị 1–12 của 13 kết quả
               </div>
-
               <div className="woocommerce-ordering">
-                <BtnOrder />
+                <BtnOrder
+                  setIsFilter={setIsFilter}
+                  setPageFilter={setPageFilter}
+                  pageFilter={pageFilter}
+                  setProducts={setProducts}
+                  setPage={setPage}
+                  fetchProducts={fetchProducts}
+                  setTotalPages={setTotalPages}
+                />
               </div>
             </div>
           </div>
-          {products.length > 0 ? (
+          {products?.length > 0 ? (
             <div className="search-content mt-2">
               <GridTable products={products} />
               <div className="flex justify-center mb-3">
                 <Pagination
                   count={totalPages}
-                  page={page}
-                  onChange={(e, page) => setPage(page)}
+                  onChange={(event, value) => {
+                    if (isSearch) {
+                      setPageSearch(value);
+                    } else if (isFilter) {
+                      setPageFilter(value);
+                    }
+                    else {
+                      setPage(value);
+                    }
+                  }}
                 />
               </div>
             </div>

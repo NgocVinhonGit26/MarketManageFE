@@ -8,12 +8,14 @@ import TabPanel from "@mui/lab/TabPanel";
 import Description from "./Description";
 import Information from "./Information";
 import Review from "./Review";
+import ReportSB from "./Report";
 const ProductFooter = (props) => {
   const { product } = props;
   const [value, setValue] = React.useState("1");
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  // console.log("product footer: ", product);
   return (
     <div className="product-footer">
       <Box sx={{ width: "100%", typography: "body1" }}>
@@ -26,7 +28,8 @@ const ProductFooter = (props) => {
             >
               <Tab label="MÔ TẢ" value="1" />
               <Tab label="THÔNG TIN BỔ SUNG" value="2" />
-              <Tab label="ĐÁNH GIÁ (0)" value="3" />
+              <Tab label="ĐÁNH GIÁ " value="3" />
+              <Tab label="PHẢN ÁNH" value="4" />
             </TabList>
           </Box>
           <TabPanel value="1">
@@ -38,6 +41,11 @@ const ProductFooter = (props) => {
           <TabPanel value="3">
             <Review
               productId={product.id}
+            />
+          </TabPanel>
+          <TabPanel value="4">
+            <ReportSB
+              product={product}
             />
           </TabPanel>
         </TabContext>

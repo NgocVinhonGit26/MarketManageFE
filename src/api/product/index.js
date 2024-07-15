@@ -68,7 +68,7 @@ const searchProduct = (page, query = {}, idShop, token) => {
   }
 };
 
-const searchProductForUser = (page, query = {}) => {
+const searchProductByName = (page, query = {}) => {
   let url = `/product/searchProductByName/${page}?`;
   if (query.name) {
     url += "&name=" + query.name;
@@ -83,7 +83,7 @@ const searchProductForUser = (page, query = {}) => {
   }
 }
 
-const getTotalPageProductForUser = (page, query = {}) => {
+const getTotalPageSearchProductByName = (page, query = {}) => {
   let url = `/product/getTotalPageSearchProductByName/${page}?`;
   if (query.name) {
     url += "&name=" + query.name;
@@ -93,6 +93,40 @@ const getTotalPageProductForUser = (page, query = {}) => {
     return response;
   }
   catch (error) {
+    console.log(error);
+  }
+}
+
+const searchProductForUser = (page, query = {}) => {
+  let url = `/product/searchProductForUser/${page}?`;
+  if (query.priceFrom) {
+    url += "&priceFrom=" + query.priceFrom;
+  }
+  if (query.priceTo) {
+    url += "&priceTo=" + query.priceTo;
+  }
+
+  try {
+    const response = instance.get(url);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalPageSearchProductForUser = (page, query = {}) => {
+  let url = `/product/getTotalPageSearchProductForUser/${page}?`;
+  if (query.priceFrom) {
+    url += "&priceFrom=" + query.priceFrom;
+  }
+  if (query.priceTo) {
+    url += "&priceTo=" + query.priceTo;
+  }
+
+  try {
+    const response = instance.get(url);
+    return response;
+  } catch (error) {
     console.log(error);
   }
 }
@@ -222,7 +256,6 @@ const getTotalPageProductAdmin = (page, query, token) => {
 }
 
 
-
 const updateQuantityProductById = (id, orderQuantity, token) => {
   const config = {
     headers: {
@@ -238,6 +271,51 @@ const updateQuantityProductById = (id, orderQuantity, token) => {
   }
 }
 
+const findAllByOrderByPriceAsc = (page) => {
+  try {
+    const response = instance.get(`/product/findAllByOrderByPriceAsc/${page}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const getTotalPageFindAllByOrderByPriceAsc = (page) => {
+  try {
+    const response = instance.get(`/product/getTotalPageFindAllByOrderByPriceAsc/${page}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const findAllByOrderByPriceDesc = (page) => {
+  try {
+    const response = instance.get(`/product/findAllByOrderByPriceDesc/${page}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+const findAllByOrderByCreatedAtAsc = (page) => {
+  try {
+    const response = instance.get(`/product/findAllByOrderByCreatedAtAsc/${page}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const findAllByOrderByCreatedAtDesc = (page) => {
+  try {
+    const response = instance.get(`/product/findAllByOrderByCreatedAtDesc/${page}`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 export {
@@ -245,11 +323,18 @@ export {
   getAllProductOrderByCategory,
   getProductBySlug,
   searchProduct,
+  searchProductByName,
+  getTotalPageSearchProductByName,
   searchProductForUser,
-  getTotalPageProductForUser,
+  getTotalPageSearchProductForUser,
   getTotalPageProduct,
   getProductByCategory,
   getAllProductAdmin,
   getTotalPageProductAdmin,
-  updateQuantityProductById
+  updateQuantityProductById,
+  findAllByOrderByPriceAsc,
+  getTotalPageFindAllByOrderByPriceAsc,
+  findAllByOrderByPriceDesc,
+  findAllByOrderByCreatedAtAsc,
+  findAllByOrderByCreatedAtDesc
 };

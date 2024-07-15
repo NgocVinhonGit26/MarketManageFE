@@ -270,6 +270,37 @@ CREATE TABLE order_item (
 );
 -- status: pending, accepted, cancelled, delivering,completed
 
+DELIMITER //
+
+CREATE TRIGGER update_order_product_status_on_update
+AFTER UPDATE ON order_item
+FOR EACH ROW
+BEGIN
+    DECLARE completed_count INT;
+    DECLARE total_count INT;
+    
+    -- Đếm số lượng các bản ghi có status = 'completed' với cùng order_product_id
+    SELECT COUNT(*) INTO completed_count
+    FROM order_item
+    WHERE order_product_id = NEW.order_product_id
+    AND status = 'completed';
+    
+    -- Đếm tổng số lượng các bản ghi với cùng order_product_id
+    SELECT COUNT(*) INTO total_count
+    FROM order_item
+    WHERE order_product_id = NEW.order_product_id;
+    
+    -- Nếu số lượng các bản ghi có status = 'completed' bằng tổng số lượng các bản ghi
+    IF completed_count = total_count THEN
+        -- Cập nhật trạng thái của order_product thành 'completed'
+        UPDATE order_product
+        SET status = 'completed'
+        WHERE id = NEW.order_product_id;
+    END IF;
+END //
+
+DELIMITER ;
+
 
 CREATE TABLE comments (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -288,7 +319,23 @@ CREATE TABLE react(
     type VARCHAR(10),
     FOREIGN KEY (comment_id) REFERENCES comments(id),
     FOREIGN KEY (user_id) REFERENCES user(id)
-)
+);
+
+
+CREATE TABLE reportshopboat(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    shop_boat_id INT NOT NULL,
+    user_id INT NOT NULL,
+    description TEXT NOT NULL,
+    imgrp VARCHAR(256),
+    code_order_product VARCHAR(32) NOT NULL,
+    status VARCHAR(64) NOT NULL,
+    created_at TIMESTAMP ,
+    FOREIGN KEY (shop_boat_id) REFERENCES shopboat(id),
+    FOREIGN KEY (user_id) REFERENCES user(id)
+);
+-- ALTER TABLE reportshopboat
+-- ADD COLUMN code_order_product VARCHAR(32) NOT NULL AFTER imgrp;
 
 
 

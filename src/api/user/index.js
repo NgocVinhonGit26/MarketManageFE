@@ -224,6 +224,69 @@ const updateImgqrById = async (imgqr, token) => {
     }
 }
 
+const createNewReport = async (data, token) => {
+    try {
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        const response = await instance.post(`/user/createNewReport`, data, config);
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+const getListReportSB = async (page, token) => {
+    try {
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+
+        const response = await instance.get(`/admin/getListReportSB/${page}`, config);
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+const getTotalPageReportSB = async (page, token) => {
+    try {
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+
+        const response = await instance.get(`/admin/getTotalPageReportSB/${page}`, config);
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+const updateStatusReport = async (id, status, token) => {
+    try {
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        let url = `/admin/updateStatusReport/${id}/${status}`;
+        const response = await instance.post(url, {}, config);
+        return response;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
 
 
 
@@ -239,5 +302,9 @@ export {
     updateAddressById,
     getImgqrByIdAd,
     getImgqrByIdSB,
-    updateImgqrById
+    updateImgqrById,
+    createNewReport,
+    getListReportSB,
+    getTotalPageReportSB,
+    updateStatusReport
 }

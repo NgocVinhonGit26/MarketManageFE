@@ -128,7 +128,8 @@ export default function BillsTable() {
             const newOrder = [0, 5, 1, 3, 2, 4, 6];
             try {
                 const response = await getOrderProductByCustomer(Number(idUser), accessToken);
-                const reorderedArray = response.data.map(subArray => {
+                const filteredData = response.data.filter(subArray => subArray[3] !== 0);
+                const reorderedArray = filteredData.map(subArray => {
                     return newOrder.map(index => {
                         const value = subArray[index];
                         if (typeof value === 'number' && value.toString().length === 13) {
@@ -141,7 +142,7 @@ export default function BillsTable() {
                         return value;
                     });
                 });
-                setDataLength(response.data.length);
+                setDataLength(filteredData.length);
                 setData(reorderedArray);
             } catch (error) {
                 console.log(error);
@@ -149,6 +150,7 @@ export default function BillsTable() {
         }
         fetchData();
     }, []);
+
 
     const rows = Array.from({ length: dataLength }, (_, index) => {
         const rowData = data[index];

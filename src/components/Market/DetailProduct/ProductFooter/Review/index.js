@@ -29,7 +29,7 @@ const Review = ({ productId }) => {
     });
 
     const createNewComment = async () => {
-        console.log(newComment);
+        // console.log(newComment);
         if (inputValue === "") {
             return;
         }
@@ -55,10 +55,6 @@ const Review = ({ productId }) => {
             createNewComment();
         }
     };
-
-    useEffect(() => {
-        console.log("listComment", listComment);
-    }, [listComment])
 
     useEffect(() => {
         const fetchComment = async () => {

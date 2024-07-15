@@ -50,6 +50,7 @@ import ReportShopBoatByMonth from "components/Admin/ReportRevenueSB/ReportShopBo
 import ReportShopBoatByYear from "components/Admin/ReportRevenueSB/ReportShopBoatByYear";
 import ImgQR from "components/Merchant/ImgQR";
 import AdminProducts from "components/Admin/Product";
+import ReportSB from "components/Admin/ReportSB";
 
 
 function App() {
@@ -80,6 +81,7 @@ function App() {
         <Route path="/admin/tours" element={<Tours />} />
         <Route path="/admin/tour-orders" element={<TourOrders />} />
         <Route path="/admin/reports" element={<ReportAdmin />} />
+        <Route path="/admin/reportSB" element={<ReportSB />} />
         <Route path="/admin/reportSBByMonth" element={<ReportShopBoatByMonth />} />
         <Route path="/admin/reportSBByYear" element={<ReportShopBoatByYear />} />
 

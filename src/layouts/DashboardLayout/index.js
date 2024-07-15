@@ -35,6 +35,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import TourIcon from "@mui/icons-material/Tour";
 import HomeIcon from '@mui/icons-material/Home';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
+import ReportIcon from '@mui/icons-material/Report';
 
 
 import { signoutService } from "api/auth";
@@ -159,6 +160,12 @@ const AdminListItems = ({ handleLogout, handleRedirectToHomepage }) => {
         </ListItemIcon>
         <ListItemText primary="TK Báo cáo" />
       </ListItemButton>
+      <ListItemButton component={RouterLink} to="/admin/reportSb">
+        <ListItemIcon>
+          <ReportIcon />
+        </ListItemIcon>
+        <ListItemText primary="QL Phản ánh" />
+      </ListItemButton>
       <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
           <ExitToAppIcon />
@@ -240,13 +247,13 @@ export default function DashboardLayout({ children, layoutRole }) {
   };
 
   const accessToken = localStorage.getItem("accessToken")
-  const id = localStorage.getItem("id")
-  const role = localStorage.getItem("role")
 
   useLayoutEffect(() => {
     const checkRole = async () => {
-      if (accessToken) {
-
+      // console.log("cookies >>>>>>", cookies);
+      // console.log("cookies.access_token >>>>>>", cookies.access_token)
+      if (cookies.access_token) {
+        const { id, role } = jwt_decode(cookies.access_token);
         if (
           (role === 0 && layoutRole === 1) ||
           (role === 1 && layoutRole === 0)
@@ -266,7 +273,7 @@ export default function DashboardLayout({ children, layoutRole }) {
       }
     };
     checkRole();
-  }, [accessToken, navigate]);
+  }, [cookies.access_token, navigate]);
 
   const handleLogout = async () => {
     try {

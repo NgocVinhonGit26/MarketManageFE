@@ -9,11 +9,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import TourLayout from "layouts/CustomerLayout/TourLayout";
 import FilterBar from "components/Market/Searchpage/FilterBar";
 import BasicBreadcrumbs from "components/Market/Searchpage/Breadcrumbs";
-import BtnOrder from "components/Market/Searchpage/BtnOrder";
+
 import GridTable from "./GridTable";
 import { useParams } from "react-router-dom";
 import { searchTour, getListTour } from "api/tour";
 import Pagination from "@mui/material/Pagination";
+import BtnOrder from "./BtnOrder";
 const Searchpage = () => {
   const { name } = useParams();
   const [cost, setCost] = React.useState([10000, 2000000]);
